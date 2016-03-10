@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="insidehead">
- <!--   <link rel="shortcut icon" href="../assets/images/favicon_1.ico">-->
     <title>MI - MCM Interactive Learning</title>
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/core.css" rel="stylesheet" type="text/css" />
@@ -13,14 +12,30 @@
     <link href="../assets/css/icons.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/pages.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/responsive.css" rel="stylesheet" type="text/css" />
-    <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-        <![endif]-->
-    <script src="../assets/js/modernizr.min.js"></script>
-	<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <!-- jQuery  -->
+	<script src="http://localhost:9595/jquery-ui/external/jquery/jquery.js"></script>
+	<script src="http://localhost:9595/jquery-ui/jquery-ui.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="../assets/plugins/parsleyjs/dist/parsley.min.js"></script>
+	
+	<style>
+		  
+
+			#sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+			#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 30px; }
+			#sortable li span { position: absolute; margin-left: -1.3em; }
+
+			#sortable2 { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+			#sortable2 li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 30px; }
+			#sortable2 li span { position: absolute; margin-left: -1.3em; }
+		  
+		  
+
+		  
+  </style>
+	
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#testQuest").click(function(){
@@ -29,8 +44,6 @@
 				var total = 0;
 					
 				$(".pregunta_simple").each(function(i,input){
-					
-					
 					if($(input).attr("respuesta").toLowerCase() == $(input).val().toLowerCase())
 					{	
 						$(input).removeClass("parsley-error");
@@ -63,6 +76,15 @@
 				$("#dvResultado").css("display","block");
 				
 			});
+			
+			
+			$("#sortable").sortable({
+			  update: function( event, ui ) 
+			  {
+				console.log(ui.item);  
+			  }
+			});
+			$("#sortable").disableSelection();
 		});
 	</script>	
 	
@@ -107,20 +129,76 @@
 											include("scripts/clases/class.mysql.php");
 											include("scripts/clases/class.data.php");
 											
-											$idEjercicio = isset($_REQUEST["ejercicio"]) ? $_REQUEST["ejercicio"] : 0 ; 
+											$idEjercicio = isset($_REQUEST["ejercicio"]) ? $_REQUEST["ejercicio"] : false ; 
 											
-											$data = new Data();
-											$datos = $data->obtenerGrupoPreguntasPorEjercicio($idEjercicio);
-
-											
-											$i = 1;
-											foreach($datos as $da)
+											if($idEjercicio)
 											{
 												
-												echo "<pre>".$i.".-".$da->HtmlGrupoPregunta."</pre>";
-												$i++;
+												$data = new Data();
+												$ejercicio = $data->obtenerEjercicio($idEjercicio);
+												
+												if($ejercicio->IdTipo != 3)
+												{
+													$datos = $data->obtenerGrupoPreguntasPorEjercicio($idEjercicio);
+													$i = 1;
+													foreach($datos as $da)
+													{
+														echo "<pre>".$i.".-".$da->HtmlGrupoPregunta."</pre>";
+														$i++;
+													}
+												}
+												else
+												{
+													$terminosPareados = $data->obtenerTerminosPareadosPorEjercicio($idEjercicio);
+													
+													/*echo "<pre>";
+													print_r($terminosPareados);												
+													echo "</pre>";*/
+													
+													
+												?>	
+													<table style="width:100%;">
+														<tr>
+															<td style="width:45%;">
+																<ul id="sortable2">
+																  <li class="ui-state-default">Item 1</li>
+																  <li class="ui-state-default">Item 2</li>
+																  <li class="ui-state-default">Item 3</li>
+																  <li class="ui-state-default">Item 4</li>
+																  <li class="ui-state-default">Item 5</li>
+																  <li class="ui-state-default">Item 6</li>
+																  <li class="ui-state-default">Item 7</li>
+																</ul>
+															</td>
+															<td style="width:45%;">
+																<ul id="sortable">
+															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 1</li>
+															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 2</li>
+															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 3</li>
+															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 4</li>
+															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 5</li>
+															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 6</li>
+															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 7</li>
+															</ul>
+																
+															
+															</td>													
+														</tr>
+													</table>
+													
+													
+													<?php
+		
+													
+													
+													
+													
+													
+													
+													
+													
+												}
 											}
-											
 										
 										 ?>
 									
@@ -135,6 +213,8 @@
 										<button class="btn btn-primary waves-effect waves-light" type="button" id="testQuest">
 											probar cuestionario
 										</button>
+										
+										<input type="hidden" name="hdnTipoEjercicio" id="hdnTipoEjercicio" value="<?php echo $ejercicio->IdTipo;?>" />
 									</div>
                                 </form>
                             </div>
@@ -225,20 +305,8 @@
     <script>
         var resizefunc = [];
     </script>
-    <!-- jQuery  -->
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/detect.js"></script>
-    <script src="../assets/js/fastclick.js"></script>
-    <script src="../assets/js/jquery.slimscroll.js"></script>
-    <script src="../assets/js/jquery.blockUI.js"></script>
-    <script src="../assets/js/waves.js"></script>
-    <script src="../assets/js/wow.min.js"></script>
-    <script src="../assets/js/jquery.nicescroll.js"></script>
-    <script src="../assets/js/jquery.scrollTo.min.js"></script>
-    <script src="../assets/js/jquery.core.js"></script>
-    <script src="../assets/js/jquery.app.js"></script>
-    <script type="text/javascript" src="../assets/plugins/parsleyjs/dist/parsley.min.js"></script>
+
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('form').parsley();
