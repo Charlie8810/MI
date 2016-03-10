@@ -12,10 +12,10 @@
     <link href="../assets/css/icons.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/pages.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/responsive.css" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="../assets/jquery/jquery-ui.css">
     <!-- jQuery  -->
-	<script src="http://localhost:9595/jquery-ui/external/jquery/jquery.js"></script>
-	<script src="http://localhost:9595/jquery-ui/jquery-ui.js"></script>
+	<script src="../assets/jquery/jquery.js"></script>
+	<script src="../assets/jquery/jquery-ui.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="../assets/plugins/parsleyjs/dist/parsley.min.js"></script>
@@ -42,46 +42,66 @@
 				var buenas = 0;
 				var malas = 0;
 				var total = 0;
-					
-				$(".pregunta_simple").each(function(i,input){
-					if($(input).attr("respuesta").toLowerCase() == $(input).val().toLowerCase())
-					{	
-						$(input).removeClass("parsley-error");
-						buenas++;
-					}
-					else
-					{
-						$(input).addClass("parsley-error");
-						malas++;
-					}
-				});
 				
-				$(".pregunta_multiple").each(function(i,select){
-					if($(select).find("option:selected").attr("correcta") == 1)
-					{
-						$(select).removeClass("parsley-error");
-						buenas++;
-					}
-					else
-					{
-						$(select).addClass("parsley-error");
-						malas++;
-					}
-				});
+				if($("#hdnTipoEjercicio").val() == "3")
+				{
+					$.each($(".izquierda"),function(i,e){
+						//console.log($(e).attr("referencia") + " - " + $($(".derecha")[i]).attr("referencia"));
+						if($(e).attr("referencia") == $($(".derecha")[i]).attr("referencia"))
+						{
+							buenas++;
+							$(e).removeClass("parsley-error");
+							$($(".derecha")[i]).removeClass("parsley-error");
+						}
+						else
+						{
+							malas++;
+							$(e).addClass("parsley-error");
+							$($(".derecha")[i]).addClass("parsley-error");
+						}
+					});					
+				}
+				else
+				{					
+					$(".pregunta_simple").each(function(i,input){
+						if($(input).attr("respuesta").toLowerCase() == $(input).val().toLowerCase())
+						{	
+							$(input).removeClass("parsley-error");
+							buenas++;
+						}
+						else
+						{
+							$(input).addClass("parsley-error");
+							malas++;
+						}
+					});
+					
+					$(".pregunta_multiple").each(function(i,select){
+						if($(select).find("option:selected").attr("correcta") == 1)
+						{
+							$(select).removeClass("parsley-error");
+							buenas++;
+						}
+						else
+						{
+							$(select).addClass("parsley-error");
+							malas++;
+						}
+					});
+				}
 				total = buenas + malas;
 				var score = Math.round((buenas / total) * 100);
 				//console.log(total);
 				$("#totales").html( buenas + " Correct of " + total);
 				$("#score").html("Your Result is: " + score +"%");
 				$("#dvResultado").css("display","block");
-				
 			});
 			
 			
 			$("#sortable").sortable({
 			  update: function( event, ui ) 
 			  {
-				console.log(ui.item);  
+				console.log($(ui.item).attr("referencia"));  
 			  }
 			});
 			$("#sortable").disableSelection();
@@ -149,37 +169,41 @@
 												}
 												else
 												{
+													
+													function shuffle_assoc($list) 
+													{ 
+														  if (!is_array($list)) return $list; 
+
+														  $keys = array_keys($list); 
+														  shuffle($keys); 
+														  $random = array(); 
+														  foreach ($keys as $key) 
+														  { 
+															$random[$key] = $list[$key]; 
+														  }
+														  return $random; 
+													} 
+													
 													$terminosPareados = $data->obtenerTerminosPareadosPorEjercicio($idEjercicio);
-													
-													/*echo "<pre>";
-													print_r($terminosPareados);												
-													echo "</pre>";*/
-													
+													$i = shuffle_assoc($terminosPareados->dt);
+													$d = shuffle_assoc($terminosPareados->dt);
 													
 												?>	
 													<table style="width:100%;">
 														<tr>
 															<td style="width:45%;">
 																<ul id="sortable2">
-																  <li class="ui-state-default">Item 1</li>
-																  <li class="ui-state-default">Item 2</li>
-																  <li class="ui-state-default">Item 3</li>
-																  <li class="ui-state-default">Item 4</li>
-																  <li class="ui-state-default">Item 5</li>
-																  <li class="ui-state-default">Item 6</li>
-																  <li class="ui-state-default">Item 7</li>
+																<?php foreach($i as $k=>$v) :?>
+																  <li class="ui-state-default izquierda" referencia="<?php echo $v['ID']; ?>"><?php echo $v['i']; ?></li>
+																<?php endforeach;?>
 																</ul>
 															</td>
 															<td style="width:45%;">
 																<ul id="sortable">
-															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 1</li>
-															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 2</li>
-															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 3</li>
-															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 4</li>
-															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 5</li>
-															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 6</li>
-															  <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 7</li>
-															</ul>
+																<?php foreach($d as $k=>$v) :?>
+																  <li class="ui-state-default derecha" referencia="<?php echo $v['ID']; ?>"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><?php echo $v['d']; ?></li>
+																<?php endforeach;?>
+																</ul>
 																
 															
 															</td>													

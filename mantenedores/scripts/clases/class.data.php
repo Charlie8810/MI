@@ -110,7 +110,7 @@ class Data extends MySQL
 		}
 	}
 	
-	function obtenerTerminosPareadosPorEjercicio($idEjercicio)
+	function obtenerTerminosPareadosPorEjercicioRESPALDO($idEjercicio)
 	{
 		$sql = "SELECT * FROM terminos_pareados 
 				WHERE idEjercicio = ".$idEjercicio."
@@ -131,6 +131,32 @@ class Data extends MySQL
 				$lista[] = $grupo_pregunta;
 			}
 			return $lista;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function obtenerTerminosPareadosPorEjercicio($idEjercicio)
+	{
+		$sql = "SELECT * FROM terminos_pareados 
+				WHERE idEjercicio = ".$idEjercicio."
+				ORDER BY rand() LIMIT 10;
+		;";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$grupo_pregunta = new stdclass();
+			while($gr = parent::fetch_assoc($consulta))
+			{
+				$IdTermino 	= $gr["IdTermino"];
+				$grupo_pregunta->TextoDerecha[$IdTermino] 	= $gr["TextoDerecha"];
+				$grupo_pregunta->TextoIzquierda[$IdTermino] = $gr["TextoIzquierda"];
+				$grupo_pregunta->dt[] = array('ID'=>$IdTermino,'d'=>$gr["TextoDerecha"], 'i'=>$gr["TextoIzquierda"]);
+			}
+			return $grupo_pregunta;
 		}
 		else
 		{
