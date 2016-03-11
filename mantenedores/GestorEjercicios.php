@@ -94,9 +94,7 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 			$("#curso").val('<?php echo $ejercicio->IdCurso; ?>');
 			$("#fase").val('<?php echo $ejercicio->IdFase; ?>');
 			$("#tipo_ejercicio").val('<?php echo $ejercicio->IdTipo; ?>');
-			//$("#tipo_ejercicio").trigger("change");
-			
-			
+						
 			<?php } ?>
 			
 			

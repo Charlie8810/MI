@@ -31,9 +31,20 @@
     <link rel="shortcut icon" href="assets/images/favicon.png">
     <title>MI - MCM Interactive Learning</title>
     <?php include("../matrices/css.php");?>
-    <script src="../assets/js/modernizr.min.js"></script>
-    <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+    <link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+	<script>
+        var resizefunc = [];
+    </script>
+    <!-- jQuery  -->
+    <?php include("../matrices/js.php");?>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('form').parsley();
+        });
+    </script>
     <script src="js/jquery.Rut.js" type="text/javascript"></script>
+	<script src="../assets/jquery/bootstrap-dialog.min.js"></script>
+	<script src="../assets/js/modernizr.min.js"></script>
     <script type="text/javascript">
         function buscar()
         {
@@ -45,16 +56,44 @@
         }
 		
 		$(document).ready(function(){
+			
+			$("#rut").Rut();
 			$("#rut").blur(function(){
-				$.getJSON("scripts/cargar-usuario-persona.php",{vrut:$(this).val()},function(json){
-					var p = json.persona;
-					
-					$("#nombres").val(p.Nombres);
-					$("#apellidop").val(p.ApellidoPaterno);
-					$("#apellidom").val(p.ApellidoMaterno);
-					$("#usuario").val(p.Nombres);
+				
+				if($.Rut.validar($(this).val())){
+					$.getJSON("scripts/cargar-usuario-persona.php",{vrut:$(this).val()},function(json){
+						var p = json.persona;
+						
+						$("#nombres").val(p.Nombres);
+						$("#apellidop").val(p.ApellidoPaterno);
+						$("#apellidom").val(p.ApellidoMaterno);
+						$("#usuario").val(p.Nombres);
 
-				});
+					});
+					if($(this).hasClass("parsley-error")){
+						$(this).removeClass("parsley-error");
+					}
+				}
+				else
+				{
+					BootstrapDialog.show({
+						title: '<span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Alerta',
+						message: '<h5>Rut ingresado es incorrecto</h5>',
+						closable: true,
+						draggable: true,
+						buttons: [{
+							label: 'Aceptar',
+							action: function(dialogItself){
+								dialogItself.close();
+							}
+						}],
+						type: BootstrapDialog.TYPE_WARNING,
+						size: BootstrapDialog.SIZE_SMALL
+					});
+					$(this).val("");
+					$(this).addClass("parsley-error");
+				}
+			
 			});
 		});
 		
@@ -424,16 +463,7 @@
         <!-- /Right-bar -->
     </div>
     <!-- END wrapper -->
-    <script>
-        var resizefunc = [];
-    </script>
-    <!-- jQuery  -->
-    <?php include("../matrices/js.php");?>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('form').parsley();
-        });
-    </script>				
+				
 	
 </body>
 </html>

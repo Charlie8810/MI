@@ -120,7 +120,7 @@
 												$ejercicios =  $data->listarEjercicios($fa->IdCurso, $fa->IdFase);
 												foreach($ejercicios as $ej){
 												?>
-												<li><a href="mantenedores/ReciveEjercicios.php?ejercicio=<?php echo $ej->IdEjercicio; ?>"> <?php echo $ej->Nombre; ?></a></li>    
+												<li><a href="mantenedores/RecibeEjercicios.php?ejercicio=<?php echo $ej->IdEjercicio; ?>"> <?php echo $ej->Nombre; ?></a></li>    
 												<?php } ?>
 											</ul>
                                         </div>
