@@ -1,3 +1,10 @@
+<?php 
+session_start(); 
+include("scripts/clases/class.mysql.php");
+include("scripts/clases/class.data.php");
+include("scripts/clases/class.combos.php");
+$idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,19 +15,22 @@
  <!--   <link rel="shortcut icon" href="../assets/images/favicon_1.ico">-->
     <title>MI - MCM Interactive Learning</title>
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/core.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/components.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/icons.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/pages.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/responsive.css" rel="stylesheet" type="text/css" />
-    <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-        <![endif]-->
-    <script src="../assets/js/modernizr.min.js"></script>
-	<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+	<script>
+        var resizefunc = [];
+    </script>
+    <!-- jQuery  -->
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/parsleyjs/dist/parsley.min.js"></script>
+
+	<script src="../assets/jquery/bootstrap-dialog.min.js"></script>
+	
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#btnAgregar").click(function(){
@@ -28,7 +38,7 @@
 				if($("#tipo_ejercicio").val() == "3")
 				{
 					var nuevapre = $("#dvPB1").clone(true);
-					nuevapre.find("textarea").val("");
+					nuevapre.find("input").val("");
 					$("#dvPrgs").append(nuevapre);	
 				}
 				else
@@ -55,6 +65,42 @@
 				}
 				
 			});
+			
+			<?php if(isset($_SESSION["cuestionariook"])){ ?>
+				BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
+					message: '<h5>Ejercicio guardado correctamente!</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_SUCCESS,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			<?php unset($_SESSION["cuestionariook"]); } ?>
+			
+			
+			<?php $ejercicio = null;
+				  $data = new Data();	
+				if($idEjercicio){ 
+					$ejercicio = $data->obtenerEjercicio($idEjercicio);
+			?>
+			
+			$("#nombre_ejercicio").val('<?php echo $ejercicio->Nombre; ?>');
+			$("#curso").val('<?php echo $ejercicio->IdCurso; ?>');
+			$("#fase").val('<?php echo $ejercicio->IdFase; ?>');
+			$("#tipo_ejercicio").val('<?php echo $ejercicio->IdTipo; ?>');
+			//$("#tipo_ejercicio").trigger("change");
+			
+			
+			<?php } ?>
+			
+			
+			
 		});
 	</script>	
 </head>
@@ -80,14 +126,17 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <h4 class="page-title">
-                                Gestor de Cursos</h4>
+                                Gestor de Ejercicios</h4>
                             <ol class="breadcrumb">
                                 <li><a href="#">Inicio</a></li>
                                 <li class="active">Registro de Cursos / Ejercicios</li>
                             </ol>
+							
                         </div>
+						
                     </div>
                     <div class="row">
+						
                         <div class="col-lg-12">
                             <div class="card-box">
                                 <form action="acciones/procesa_cuestionarios.php" method="post" action="#" data-parsley-validate novalidate>
@@ -105,11 +154,6 @@
 										<select class="selectpicker  form-control" data-style="btn-white" id="curso" name="curso">
 											<option>- - Seleccione - - </option>
 											<?php 
-										 
-											//imports
-											include("scripts/clases/class.mysql.php");
-											include("scripts/clases/class.combos.php");
-											
 											$selects = new selects();
 											$couses = $selects->listarCursos();
 											foreach($couses as $cu)
@@ -154,6 +198,70 @@
 										<h4 class="m-t-0 header-title">
 										<b>Preguntas</b></h4>
 										
+										
+										<?php if($idEjercicio && $ejercicio != null)
+										{ 
+											if($ejercicio->IdTipo == 3){ 
+											$terminospareados = $data->obtenerTerminosPareadosPorEjercicioGestor($idEjercicio);
+										?>
+											<?php 
+											
+											if(count($terminospareados) > 0):
+											
+											foreach($terminospareados as $terminopareado): ?>
+											<div id="dvPB1">
+												<div class="form-group">
+													<label for="P1">
+														Termino paredo*</label>
+													<pre>
+														<input type="text" style="width:45%;" name="izquierda[]" id="PI1" class="input" value="<?php echo $terminopareado->TextoIzquierda; ?>" /> ::: <input type="text" style="width:45%;" name="derecha[]" id="PD1" class="input" value="<?php echo $terminopareado->TextoDerecha; ?>" />
+													</pre>
+												</div>
+											</div>
+											<?php endforeach; 
+											
+											else: ?>
+												<div id="dvPB1">
+													<div class="form-group">
+														<label for="P1">
+															Termino pareado*</label>
+														<pre>
+															<input type="text" style="width:45%;" name="izquierda[]" id="PI1" class="input" /> ::: <input type="text" style="width:45%;" name="derecha[]" id="PD1" class="input" />
+														</pre>
+													</div>
+												</div>
+											
+											<?php endif; ?>
+										<?php }else{  
+											$preguntas = $data->obtenerGrupoPreguntasPorEjercicioGestor($idEjercicio);
+										?>
+											<?php 
+											
+											if(count($preguntas) > 0):
+											foreach($preguntas as $pregunta): ?>
+												<div id="dvP1">
+													<div class="form-group">
+														<label for="P1">
+															Pregunta*</label>
+														<textarea id="P1" name="pregunta[]" style="width:100%; height:100px;"><?php echo $pregunta->TextoGrupoPregunta; ?></textarea>
+													</div>
+												</div>
+											<?php endforeach; ?>
+											<?php else: ?>
+											
+											<div id="dvP1">
+												<div class="form-group">
+													<label for="P1">
+														Pregunta*</label>
+													<textarea id="P1" name="pregunta[]" style="width:100%; height:100px;"></textarea>
+												</div>
+											</div>
+											
+											<?php endif; ?>
+										<?php }
+										}else{ ?>
+										
+										
 										<div id="dvP1">
 											<div class="form-group">
 												<label for="P1">
@@ -166,13 +274,14 @@
 										<div id="dvPB1" style="display:none;">
 											<div class="form-group">
 												<label for="P1">
-													Pregunta*</label>
+													Termino pareado*</label>
 												<pre>
 													<input type="text" style="width:45%;" name="izquierda[]" id="PI1" class="input" /> ::: <input type="text" style="width:45%;" name="derecha[]" id="PD1" class="input" />
 												</pre>
 											</div>
 										</div>
 										
+										<?php } ?>
 										
 										
 									</div>
@@ -182,13 +291,19 @@
 
 									<div class="form-group text-right m-b-0">
 										
+										
+										
 										<button class="btn btn-primary waves-effect waves-light" type="button" id="btnAgregar">
-											Agregar Pregunta
+											<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Pregunta
 										</button>
 										
 										<button class="btn btn-primary waves-effect waves-light" type="submit">
-											Siguiente
+											<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Guardar
 										</button>
+										<a class="btn btn-primary waves-effect waves-light" href="ListadoEjercicios.php">
+											<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
+										</a>
+										<input type="hidden" name="IdEjercicio" value="<?php echo $idEjercicio; ?>" />
 									</div>
                                 </form>
                             </div>
@@ -276,23 +391,7 @@
         -->
     </div>
     <!-- END wrapper -->
-    <script>
-        var resizefunc = [];
-    </script>
-    <!-- jQuery  -->
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-    <script src="../assets/js/detect.js"></script>
-    <script src="../assets/js/fastclick.js"></script>
-    <script src="../assets/js/jquery.slimscroll.js"></script>
-    <script src="../assets/js/jquery.blockUI.js"></script>
-    <script src="../assets/js/waves.js"></script>
-    <script src="../assets/js/wow.min.js"></script>
-    <script src="../assets/js/jquery.nicescroll.js"></script>
-    <script src="../assets/js/jquery.scrollTo.min.js"></script>
-    <script src="../assets/js/jquery.core.js"></script>
-    <script src="../assets/js/jquery.app.js"></script>
-    <script type="text/javascript" src="../assets/plugins/parsleyjs/dist/parsley.min.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('form').parsley();

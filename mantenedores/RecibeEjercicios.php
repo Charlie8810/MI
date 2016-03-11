@@ -24,11 +24,11 @@
 		  
 
 			#sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
-			#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 30px; }
+			#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 40px; }
 			#sortable li span { position: absolute; margin-left: -1.3em; }
 
 			#sortable2 { list-style-type: none; margin: 0; padding: 0; width: 100%; }
-			#sortable2 li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 30px; }
+			#sortable2 li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 40px; }
 			#sortable2 li span { position: absolute; margin-left: -1.3em; }
 		  
 		  
@@ -98,12 +98,7 @@
 			});
 			
 			
-			$("#sortable").sortable({
-			  update: function( event, ui ) 
-			  {
-				console.log($(ui.item).attr("referencia"));  
-			  }
-			});
+			$("#sortable").sortable();
 			$("#sortable").disableSelection();
 		});
 	</script>	
@@ -211,16 +206,7 @@
 													</table>
 													
 													
-													<?php
-		
-													
-													
-													
-													
-													
-													
-													
-													
+													<?php											
 												}
 											}
 										
@@ -235,7 +221,7 @@
 									<div class="form-group text-right m-b-0">
 										
 										<button class="btn btn-primary waves-effect waves-light" type="button" id="testQuest">
-											probar cuestionario
+											Evaluar cuestionario
 										</button>
 										
 										<input type="hidden" name="hdnTipoEjercicio" id="hdnTipoEjercicio" value="<?php echo $ejercicio->IdTipo;?>" />

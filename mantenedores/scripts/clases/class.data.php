@@ -40,9 +40,25 @@ class Data extends MySQL
 	
 	function guardarEjercicio($ejercicio)
 	{
-		$sqlInsert = "insert into ejercicio (IdCurso, IdFase, IdTipo, Nombre) values (".$ejercicio->IdCurso.", ".$ejercicio->IdFase.", ".$ejercicio->IdTipo.", '".$ejercicio->Nombre."');";
-		$stmt = parent::consulta($sqlInsert);
-		return parent::lastInsertID();
+		
+		if($ejercicio->IdEjercicio)
+		{
+			$sqlUpdate = "update ejercicio 
+							set IdCurso = ".$ejercicio->IdCurso.", 
+								IdFase = ".$ejercicio->IdFase.", 
+								IdTipo = ".$ejercicio->IdTipo.", 
+								Nombre = '".$ejercicio->Nombre."'
+							where IdEjercicio = ".$ejercicio->IdEjercicio."	
+								";
+			$stmt = parent::consulta($sqlUpdate);
+			return $ejercicio->IdEjercicio;
+		}
+		else
+		{
+			$sqlInsert = "insert into ejercicio (IdCurso, IdFase, IdTipo, Nombre) values (".$ejercicio->IdCurso.", ".$ejercicio->IdFase.", ".$ejercicio->IdTipo.", '".$ejercicio->Nombre."');";
+			$stmt = parent::consulta($sqlInsert);
+			return parent::lastInsertID();
+		}
 	}
 	
 	function obtenerEjercicio($IdEjercicio)
@@ -68,11 +84,10 @@ class Data extends MySQL
 		}
 	}
 	
-	function EliminarEjercicio($ejercicio)
+	function EliminarEjercicio($IdEjercicio)
 	{
-		$sqlInsert = "delete from ejercicio (IdCurso, IdNivel, IdFase) values (".$ejercicio->IdCurso.", ".$ejercicio->IdNivel.",".$ejercicio->IdFase.");";
-		$stmt = parent::consulta($sqlInsert);
-		return parent::lastInsertID();
+		$sqlDelete = "delete from ejercicio where IdEjercicio = " . $IdEjercicio;
+		$stmt = parent::consulta($sqlDelete);
 	}
 	
 	function guardarGrupoPreguntas($grupo)
@@ -80,6 +95,19 @@ class Data extends MySQL
 		$sqlInsert = "insert into grupo_pregunta(idEjercicio, TextoGrupoPregunta, HtmlGrupoPregunta) values ($grupo->IdEjercicio, '$grupo->Texto', '$grupo->Html');";
 		$stmt = parent::consulta($sqlInsert);
 		return parent::lastInsertID();
+	}
+	
+	
+	function eliminarGrupoPreguntasPorEjercicio($idEjercicio)
+	{
+		$sqlDelete = "delete from grupo_pregunta where IdEjercicio=".$idEjercicio.";";
+		$stmt = parent::consulta($sqlDelete);
+	}
+	
+	function eliminarTerminosPareadosPorEjercicio($idEjercicio)
+	{
+		$sqlDelete = "delete from terminos_pareados where IdEjercicio=".$idEjercicio.";";
+		$stmt = parent::consulta($sqlDelete);
 	}
 	
 	function obtenerGrupoPreguntasPorEjercicio($idEjercicio)
@@ -110,24 +138,22 @@ class Data extends MySQL
 		}
 	}
 	
-	function obtenerTerminosPareadosPorEjercicioRESPALDO($idEjercicio)
+	function obtenerGrupoPreguntasPorEjercicioGestor($idEjercicio)
 	{
-		$sql = "SELECT * FROM terminos_pareados 
-				WHERE idEjercicio = ".$idEjercicio."
-				ORDER BY rand() LIMIT 10;
-		;";
+		$sql = "SELECT * FROM grupo_pregunta 
+				WHERE idEjercicio = ".$idEjercicio.";";
 		$consulta = parent::consulta($sql);
 		$num_total_registros = parent::num_rows($consulta);
 		$lista = array();
 		if($num_total_registros>0)
 		{
-			while($gr = parent::fetch_assoc($consulta))
-			{
+			while($gr = parent::fetch_assoc($consulta)){
+			
 				$grupo_pregunta = new stdclass();
-				$grupo_pregunta->IdTermino 		= $gr["IdTermino"];
-				$grupo_pregunta->IdEjercicio 	= $gr["IdEjercicio"];
-				$grupo_pregunta->TextoDerecha 	= $gr["TextoDerecha"];
-				$grupo_pregunta->TextoIzquierda = $gr["TextoIzquierda"];
+				$grupo_pregunta->IdGrupoPregunta 		= $gr["IdGrupoPregunta"];
+				$grupo_pregunta->IdEjercicio 			= $gr["IdEjercicio"];
+				$grupo_pregunta->TextoGrupoPregunta 	= $gr["TextoGrupoPregunta"];
+				$grupo_pregunta->HtmlGrupoPregunta 		= $gr["HtmlGrupoPregunta"];
 				$lista[] = $grupo_pregunta;
 			}
 			return $lista;
@@ -157,6 +183,31 @@ class Data extends MySQL
 				$grupo_pregunta->dt[] = array('ID'=>$IdTermino,'d'=>$gr["TextoDerecha"], 'i'=>$gr["TextoIzquierda"]);
 			}
 			return $grupo_pregunta;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function obtenerTerminosPareadosPorEjercicioGestor($idEjercicio)
+	{
+		$sql = "SELECT * FROM terminos_pareados 
+				WHERE idEjercicio = ".$idEjercicio.";";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$r = array();
+			while($gr = parent::fetch_assoc($consulta))
+			{
+				$terminopareado = new stdclass();
+				$terminopareado->IdTermino 	= $gr["IdTermino"];
+				$terminopareado->TextoDerecha 	= $gr["TextoDerecha"];
+				$terminopareado->TextoIzquierda = $gr["TextoIzquierda"];
+				$r[] = $terminopareado;
+			}
+			return $r;
 		}
 		else
 		{
@@ -235,6 +286,33 @@ class Data extends MySQL
 				$grupo_pregunta->IdTipo 		= $gr["IdTipo"];
 				$grupo_pregunta->Nombre 		= $gr["Nombre"];
 				$lista[] = $grupo_pregunta;
+			}
+			return $lista;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+	
+	function listarEjerciciosAll()
+	{
+		$sql = "select * from ejercicio";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		$lista = array();
+		if($num_total_registros>0)
+		{
+			while($gr = parent::fetch_assoc($consulta)){
+			
+				$ejercicio = new stdclass();
+				$ejercicio->IdEjercicio 	= $gr["IdEjercicio"];
+				$ejercicio->IdTipo 			= $gr["IdTipo"];
+				$ejercicio->Nombre 			= $gr["Nombre"];
+				$ejercicio->IdCurso 		= $gr["IdCurso"];
+				$ejercicio->IdFase 			= $gr["IdFase"];
+				$lista[] = $ejercicio;
 			}
 			return $lista;
 		}

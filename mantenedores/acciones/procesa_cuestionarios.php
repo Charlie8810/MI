@@ -1,4 +1,6 @@
 <?php
+session_start();
+//error_reporting(E_ALL);
 //imports
 include("../scripts/clases/class.mysql.php");
 include("../scripts/clases/class.data.php");
@@ -12,6 +14,7 @@ $nombre_ejercicio = isset($_POST["nombre_ejercicio"]) ? $_POST["nombre_ejercicio
 $grupopreguntas = isset($_POST["pregunta"]) ? $_POST["pregunta"] : false;
 $terminospareadosIzquierda = isset($_POST["izquierda"]) ? $_POST["izquierda"] : false;
 $terminospareadosDerecha = isset($_POST["derecha"]) ? $_POST["derecha"] : false;
+$idEjercicio = isset($_REQUEST["IdEjercicio"]) ? $_REQUEST["IdEjercicio"] : false;
 
 
 if($curso != false && $fase != false && $tipo_ejercicio != false)
@@ -19,6 +22,7 @@ if($curso != false && $fase != false && $tipo_ejercicio != false)
 	
 	$data = new Data();
 	$ejercicio = new stdClass();
+	$ejercicio->IdEjercicio = $idEjercicio;
 	$ejercicio->IdCurso = $curso;
 	$ejercicio->IdFase = $fase;
 	$ejercicio->IdTipo = $tipo_ejercicio;
@@ -28,6 +32,11 @@ if($curso != false && $fase != false && $tipo_ejercicio != false)
 	//nuevo tipo de preguntas
 	if($tipo_ejercicio == 3)
 	{
+		if($idEjercicio)
+		{
+			$data->eliminarTerminosPareadosPorEjercicio($idEjercicio);
+		}
+		
 		foreach($terminospareadosIzquierda as $key=>$opcion)
 		{
 			$opI = $terminospareadosIzquierda[$key];			
@@ -44,6 +53,11 @@ if($curso != false && $fase != false && $tipo_ejercicio != false)
 	}
 	else
 	{
+		if($idEjercicio)
+		{
+			$data->eliminarGrupoPreguntasPorEjercicio($idEjercicio);
+		}
+		
 		foreach($grupopreguntas as $kg=>$grupopregunta)
 		{
 			$imprimir = $grupopregunta;
@@ -99,17 +113,10 @@ if($curso != false && $fase != false && $tipo_ejercicio != false)
 			}
 		}
 	}
-	?>
-	<form method="post" action="../ReciveEjercicios.php" id="frmsubmit" >
-		<input type="hidden" name="htmltt" value="<?php echo htmlspecialchars($imprimir);?>">
-		<input type="hidden" name="ejercicio" value="<?php echo $idEjercicio;?>">
-	</form>
-	
-	<script type="text/javascript">
-		document.getElementById("frmsubmit").submit();
-	</script>
-	
-<?php
+
+	$_SESSION["cuestionariook"] = "1"; 
+	header("Location: " . $_SERVER["HTTP_REFERER"]);
+	//. "?e=".$idEjercicio
 }
 
 ?>
