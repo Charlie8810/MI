@@ -1,3 +1,6 @@
+<?php 
+	session_start();
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,18 +42,36 @@
 
 
             <div class="panel-body">
-            <div id="Notify"></div>
+            <div id="Notify">
+			<?php 
+			
+			if(isset($_SESSION["error_login"]))
+			{
+				
+				echo  '<div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong>Error</strong>
+							Debe ingresar un usuario y contraseña validos!!
+						</div>';
+				unset($_SESSION["error_login"]);
+			
+			}
+			
+			
+			?>
+			
+			</div>
             <form class="form-horizontal m-t-20" action="matrices/login.php" method="post">
                 
                 <div class="form-group ">
                     <div class="col-xs-12">
-                        <input name="user" id="user" class="form-control" type="text" required="" placeholder="User">
+                        <input name="user" id="user" class="form-control" type="text" required placeholder="User">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-xs-12">
-                        <input name="password" id="pass" class="form-control" type="password" required="" placeholder="Password">
+                        <input name="password" id="pass" class="form-control" type="password" required placeholder="Password">
                     </div>
                 </div>
                 <!--
@@ -92,7 +113,8 @@
                             result +='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
                             result += '<strong>OOPS!!!</strong> Not allowed to enter with empty fields on the form. Please enter your user and password to enter the website';
                             result += '</div>';
-                            document.getElementById('Notify').innerHTML = result;				
+                            document.getElementById('Notify').innerHTML = result;		
+							return false;							
                         }
                         else if(user == ''){
                             result = '<div class="alert alert-danger alert-dismissable">';
@@ -100,13 +122,15 @@
                             result += '<strong>OOPS!!!</strong> Not allowed to enter the user empty field on the form. Please enter your user to enter the website';
                             result += '</div>';
                             document.getElementById('Notify').innerHTML = result;
+							return false;
                         }
-                        else{
+						else if(pass == ''){
                             result = '<div class="alert alert-danger alert-dismissable">';
                             result +='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
-                            result += '<strong>OOPS!!!</strong> Not allowed to enter the password empty field on the form. Please enter your password to enter the website';
+                            result += '<strong>OOPS!!!</strong> Not allowed to enter the user empty field on the form. Please enter your user to enter the website';
                             result += '</div>';
                             document.getElementById('Notify').innerHTML = result;
+							return false;
                         }
                         
                         

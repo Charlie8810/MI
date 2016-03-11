@@ -3,8 +3,15 @@
 session_start();
 include_once "conexionsql.php";
 
+
+
+
 function verificar_login($user,$password,&$result) {
-    $sql = "SELECT * FROM Usuario WHERE Login = '$user' and Contrasena = '$password'";
+	
+	$p = md5($password);
+	
+	
+    $sql = "SELECT * FROM Usuario WHERE Login = '$user' and Contrasena = '$p'";
     $rec = mysql_query($sql);
     $count = 0;
 
@@ -28,9 +35,9 @@ function verificar_login($user,$password,&$result) {
 if(!isset($_SESSION['userid']))
 {
 
-    if(isset($_POST['login']))
+    if(isset($_POST['user']))
     {
-
+		$username = $_POST['user'];
         if(verificar_login($_POST['user'],$_POST['password'],$result) == 1)
         {
             $_SESSION['idPersona'] = $result->idPersona;
@@ -40,14 +47,14 @@ if(!isset($_SESSION['userid']))
             $res = "SELECT Perfil.Nombre FROM Usuario
                          inner join Persona on Persona.IdPersona = Usuario.idPersona
                          inner join Perfil on Persona.IdPerfil = Perfil.IdPerfil
-                         where Usuario.Login = '{$_POST['user']}';";
+                         where Usuario.Login = '".$username."';";
             
 
             $rec1 = mysql_query($res);
             
             $rows = mysql_fetch_array($rec1);
 
-            echo $rows['Nombre'];
+      
 
             if($rows['Nombre'] == 'SuperAdministrador' || $rows['Nombre'] == 'Administrador')
             {
@@ -55,16 +62,17 @@ if(!isset($_SESSION['userid']))
             }
             else if($rows['Nombre'] == 'Alumno' || $rows['Nombre'] == 'Profesor')
             {
-                header("location:../Nivel_1.php");
+                header("location: ../Nivel_1.php");
             }
             else
             {
-                header("location:Nivel_1.php");
+                header("location: Nivel_1.php");
             }            
         }
         else
         {
-            header('location :localhost/mi/login.php');
+			$_SESSION["error_login"] = 1;
+            header('location: /mi/login.php');
         }
     }
 
