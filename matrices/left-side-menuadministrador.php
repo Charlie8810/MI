@@ -7,10 +7,26 @@
                 <li class="has_sub"><a href="../mantenedores/panelControl.php" class="waves-effect"><i class="ti-home"></i><span>Home
                 </span></a></li>
 
+				<li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="ti-widget">
+                </i><span>Maintainers</span></a>
+                    <ul>
+                        <li class="has_sub"><a href="registroUsuarios_Persona.php" class="waves-effect"><span>Person</span> </a></li>
+						<li class="has_sub"><a href="registroUsuarios_Empresa.php" class="waves-effect"><span>Company</span> </a></li>
+						<li class="has_sub"><a href="MantenedorParametrosGlobales.php" class="waves-effect"><span>Parameter Glogal</span> </a></li>
+						<li class="has_sub"><a href="MantenedorEstado.php" class="waves-effect"><span>State</span> </a></li>
+						<li class="has_sub"><a href="MantenedorPerfil.php" class="waves-effect"><span>Profile</span> </a></li>
+						<li class="has_sub"><a href="MantenedorUsuario.php" class="waves-effect"><span>User</span> </a></li>
+						<li class="has_sub"><a href="MantenedorCursos.php" class="waves-effect"><span>Course</span> </a></li>
+						<li class="has_sub"><a href="ListadoEjercicios.php" class="waves-effect"><span>Exercise</span> </a></li>
+                    </ul>
+                </li>
+				
+				
+				
                  <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="ti-user">
                 </i><span>Users</span></a>
                     <ul>
-                        <li class="has_sub"><a href="/mi/mantenedores/registroUsuarios.php" class="waves-effect"><span>New/Modify</span> </a>
+                        <li class="has_sub"><a href="/mi/mantenedores/registroUsuarios.php" class="waves-effect"><span>New</span> </a>
                         </li>
                         <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>Manage</span> </a>
                             <ul style="">
@@ -27,27 +43,48 @@
                 <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="ti-pencil-alt">
                 </i><span>Courses</span></a>
                     <ul>
-                        <li class="has_sub"><a href="2-GestorCursos_Crear.php" class="waves-effect"><span>Manage</span> </a>
-                        </li>
-                        <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>Exercise</span> </a>
+                        <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>English</span> </a>
                             <ul style="">
-                                <li><a href="../mantenedores/2-GestorCursos_Ejercicios.php"><span>Create New Exercise</span></a></li>
+                                <li><a href="GestorEjercicios.php"><span>Create New Exercise</span></a></li>
                                 <li><a href="javascript:void(0);"><span>Manage Exercises</span></a></li>
-                            </ul>
-                        </li>
-                        <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>Group</span> </a>
-                            <ul style="">
                                 <li><a href="javascript:void(0);"><span>Create Group</span></a></li>
                                 <li><a href="javascript:void(0);"><span>Manage Groups</span></a></li>
-                            </ul>
-                        </li>
-                        <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>Levels</span> </a>
-                            <ul style="">
                                 <li><a href="javascript:void(0);"><span>Create Level</span></a></li>
                                 <li><a href="javascript:void(0);"><span>Manage Levels</span></a></li>
                             </ul>
                         </li>
-                        
+                        <!--<li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>Portugués</span> </a>
+                            <ul style="">
+                                <li><a href="javascript:void(0);"><span>Particular</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Grupo</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Nivel</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Empresa</span></a></li>
+                            </ul>
+                        </li>-->
+                        <!--<li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>Español</span> </a>
+                            <ul style="">
+                                <li><a href="javascript:void(0);"><span>Particular</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Grupo</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Nivel</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Empresa</span></a></li>
+                            </ul>
+                        </li>-->
+                        <!--<li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>Francés</span> </a>
+                            <ul style="">
+                                <li><a href="javascript:void(0);"><span>Particular</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Grupo</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Nivel</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Empresa</span></a></li>
+                            </ul>
+                        </li>-->
+                        <!--<li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>Alemán</span> </a>
+                            <ul style="">
+                                <li><a href="javascript:void(0);"><span>Particular</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Grupo</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Nivel</span></a></li>
+                                <li><a href="javascript:void(0);"><span>Empresa</span></a></li>
+                            </ul>
+                        </li>-->
                     </ul>
                 </li>
 
@@ -85,7 +122,25 @@
                 </li>
 
 
-               
+                <!--<li class="text-muted menu-title">Extra</li>
+                <li class="has_sub"><a href="#" class="waves-effect"><i class="ti-user"></i><span>Crm
+                </span></a>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Clientes </a></li>
+                        <li><a href="#">Contactos </a></li>
+                        <li><a href="#">Otras Configuraciones </a></li>
+                    </ul>
+                </li>
+                <li class="has_sub"><a href="#" class="waves-effect"><i class="ti-shopping-cart"></i>
+                    <span>eCommerce </span></a>
+                    <ul class="list-unstyled">
+                        <li><a href="ecommerce-dashboard.html">Dashboard</a></li>
+                        <li><a href="ecommerce-products.html">Products</a></li>
+                        <li><a href="ecommerce-product-detail.html">Product Detail</a></li>
+                        <li><a href="ecommerce-orders.html">Orders</a></li>
+                        <li><a href="ecommerce-sellers.html">Sellers</a></li>
+                    </ul>
+                </li>-->
             </ul>
             <div class="clearfix">
             </div>

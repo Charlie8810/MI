@@ -122,6 +122,10 @@ include("scripts/clases/class.combos.php");
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card-box">
+								<a class="btn btn-primary waves-effect waves-light" href="GestorEjercicios.php">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo Ejercicio
+								</a>
+							
 								<table id="grid-basic" class="table table-condensed table-hover table-striped">
 									<thead>
 										<tr>
