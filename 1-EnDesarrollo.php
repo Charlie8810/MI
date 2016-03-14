@@ -40,7 +40,7 @@
 						<div class="home-wrapper">
 							<h1 class="icon-main text-custom"><img src="assets/images/logo_dark.png" />
                             </h1>
-							<h1 class="home-text"><span class="rotate">MI MCM Interactive Learning,MI Crecimiento, MI Estudio</span></h1>
+							<h1 class="home-text"><span class="rotate">MI MCM Interactive Learning,MI Crecimiento,  MI Estudio</span></h1>
 							<p class="m-t-30 text-muted cd-text">
 								
 								Sistema de Apoyo al Estudio<br />
