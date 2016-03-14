@@ -118,7 +118,7 @@
 					});
 				});
 
-				// Text rotate se hace prueba de git en aptana studio
+				// Text rotate se hace prueba de git en aptana studio estan en el mismo directorio
 				$(".home-text .rotate").textrotator({
 					animation : "fade",
 					speed : 3000
