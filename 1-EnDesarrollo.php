@@ -53,7 +53,7 @@
 									<div class="row">
 										<div>
 											<div>
-												<span>0</span><span>D�as</span>
+												<span>0</span><span>Días</span>
 											</div>
 											<div>
 												<span>0</span><span>Horas</span>
