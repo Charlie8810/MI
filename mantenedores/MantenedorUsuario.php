@@ -45,6 +45,25 @@ session_start();
 			return false;
 		}
 		
+		if($("#persona").val() == '0')
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validación',
+					message: '<h5>Debe seleccionar un usuario</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
 		
 		
 	})
@@ -99,7 +118,6 @@ session_start();
                         <div class="col-sm-12">
                             <h4 class="page-title">
                                 Mantenedores de Usuario</h4>
-
                         </div>
                     </div>
                     <div class="row">
@@ -124,6 +142,7 @@ session_start();
                                     <label for="userName">
                                         Persona</label>
                                     <select name="persona" id="persona" class="selectpicker  form-control" data-style="btn-white">
+									<option value="0">- - Seleccione - - </option>
                                       
                                     </select>
 

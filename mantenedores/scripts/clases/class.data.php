@@ -21,11 +21,9 @@ class Data extends MySQL
 			$persona->IdPerfil 			= $pr["IdPerfil"];
 			$persona->Direccion 		= $pr["Direccion"];
 			$persona->IdRegion 			= $pr["IdRegion"];
-			$persona->IdComuna 			= $pr["IdRegion"];
+			$persona->IdComuna 			= $pr["IdComuna"];
 			$persona->Telefono 			= $pr["Telefono"];
 			$persona->Celular 			= $pr["Celular"];
-			$persona->Vigente 			= $pr["Vigente"];
-			$persona->IdCurso 			= $pr["IdCurso"];
 			$persona->IdEstado 			= $pr["IdEstado"];
 			
 			

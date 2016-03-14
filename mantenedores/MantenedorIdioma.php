@@ -10,13 +10,13 @@ session_start();
     <meta name="description" content="">
     <meta name="author" content="insidehead">
     <link rel="shortcut icon" href="assets/images/favicon.png">
+	<?php include("../matrices/js.php");?>
     <title>MI - MCM Interactive Learning</title>
 	<?php include("../matrices/css.php");?>
-	    <script>
+	<script>
         var resizefunc = [];
     </script>
     <!-- jQuery  -->
-    <?php include("../matrices/js.php");?>
     <script src="../assets/js/modernizr.min.js"></script>
 	<link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
 	<script src="../assets/jquery/bootstrap-dialog.min.js"></script>

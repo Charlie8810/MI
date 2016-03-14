@@ -2,7 +2,6 @@
 session_start(); 
 ?>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,35 +10,40 @@ session_start();
     <meta name="description" content="">
     <meta name="author" content="insidehead">
     <link rel="shortcut icon" href="assets/images/favicon.png">
+	<?php include("../matrices/js.php");?>
     <title>MI - MCM Interactive Learning</title>
     <?php include("../matrices/css.php");?>
-        <script>
+    <script>
         var resizefunc = [];
     </script>
-   <?php include("../matrices/js.php");?>
+
     <script src="../assets/js/modernizr.min.js"></script>
     <link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
     <script src="../assets/jquery/bootstrap-dialog.min.js"></script>
 
-
-    <script>
-    <?php if(isset($_SESSION["guardadookperfil"])){ ?>
-                BootstrapDialog.show({
-                    title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
-                    message: '<h5>Usuario guardado correctamente!</h5>',
-                    closable: true,
-                    draggable: true,
-                    buttons: [{
-                        label: 'Ok',
-                        action: function(dialogItself){
-                            dialogItself.close();
-                        }
-                    }],
-                    type: BootstrapDialog.TYPE_SUCCESS,
-                    size: BootstrapDialog.SIZE_SMALL
-                });
-            <?php unset($_SESSION["guardadookperfil"]); } ?>
-    </script>   
+     <script>
+	$(document).ready(function(){ 
+		
+	<?php if(isset($_SESSION["guardadookperfil"])){ ?>
+	    BootstrapDialog.show({
+			title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
+			message: '<h5>Perfil guardado correctamente!</h5>',
+			closable: true,
+		    draggable: true,
+			buttons: [{
+				label: 'Ok',
+				action: function(dialogItself){
+				dialogItself.close();
+			     	}
+					}],
+				type: BootstrapDialog.TYPE_SUCCESS,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			<?php unset($_SESSION["guardadookperfil"]); } ?>
+	});
+	
+	
+	</script>
                     
 </head>
 <body class="fixed-left">
@@ -93,8 +97,8 @@ session_start();
                                     <label for="userName">
                                         Estado*</label>
                                     <select class="selectpicker  form-control" data-style="btn-white" id="estado" name="estado">
-                                        <option Value = "0" > No Activo </option>
                                         <option Value = "1" > Activo </option>
+                                        <option Value = "0" > No Activo </option>
                                         
                                         
                                     </select>

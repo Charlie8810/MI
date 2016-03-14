@@ -45,15 +45,9 @@
     <script src="js/jquery.Rut.js" type="text/javascript"></script>
 	<script src="../assets/jquery/bootstrap-dialog.min.js"></script>
 	<script src="../assets/js/modernizr.min.js"></script>
+	    <link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+    <script src="../assets/jquery/bootstrap-dialog.min.js"></script>
     <script type="text/javascript">
-        function buscar()
-        {
-            var opcion = document.getElementById("rut").value;
-            
-            if(document.getElementById("rut").value.length >= 1){
-                window.location.href = "http://localhost/mi/mantenedores/registroUsuarios_Persona.php?Rut="+opcion;
-            }
-        }
 		
 		$(document).ready(function(){
 			
@@ -67,7 +61,19 @@
 						$("#nombres").val(p.Nombres);
 						$("#apellidop").val(p.ApellidoPaterno);
 						$("#apellidom").val(p.ApellidoMaterno);
-						$("#usuario").val(p.Nombres);
+						$("#email").val(p.Email);
+						$("#idperfil").val(p.IdPerfil);
+						$("#idEstado").val(p.IdEstado);
+						$("#direccion").val(p.Direccion);
+						$("#telefono").val(p.Telefono);
+						$("#celular").val(p.Celular);
+						
+						$("#region").val(p.IdRegion).trigger("change", [p.IdComuna]);
+						
+						
+						
+						//$("#comuna").val(p.IdComuna);
+						
 
 					});
 					if($(this).hasClass("parsley-error")){
@@ -97,15 +103,25 @@
 			});
 		});
 		
+$(document).ready(function(){ 
 		
-		<?php 
-		if(isset($_SESSION["resultado"]))
-		{
-				echo 'alert("Guardado con exito")';
-				unset($_SESSION["resultado"]);
-		}
-		
-		?>
+	<?php if(isset($_SESSION["guardadookpersona"])){ ?>
+	    BootstrapDialog.show({
+			title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
+			message: '<h5>persona guardada correctamente!</h5>',
+			closable: true,
+		    draggable: true,
+			buttons: [{
+				label: 'Ok',
+				action: function(dialogItself){
+				dialogItself.close();
+			     	}
+					}],
+				type: BootstrapDialog.TYPE_SUCCESS,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			<?php unset($_SESSION["guardadookpersona"]); } ?>
+	});
 		
 		
     </script>
@@ -174,14 +190,7 @@
                                     <input type="text" name="apellidom" parsley-trigger="change" required placeholder="Ingresar Apellido Materno"
                                         class="form-control" id="apellidom">
                                 </div>
-                                
-
-                                <div class="form-group">
-                                    <label for="userName">
-                                        Nombre de Usuario*</label>
-                                    <input type="text" name="usuario" parsley-trigger="change" placeholder="Ingresar Nombre de Usuario"
-                                        class="form-control" id="usuario">
-                                </div>
+                               
                                 <div class="form-group">
                                     <label for="emailAddress">
                                         Email*</label>
@@ -189,69 +198,30 @@
                                         class="form-control" id="email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="pass1">
-                                        Contraseña*</label>
-                                    <input id="pass1" name="pass" type="password" placeholder="Ingresar Contraseña" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="passWord2">
-                                        Confirmar Contraseña*</label>
-                                    <input data-parsley-equalto="#pass1" type="password" placeholder="Ingresar Confirmación de Contraseña"
-                                        class="form-control" id="passWord2">
-                                </div>
-                                <div class="form-group">
-                                    <label for="userName">
-                                        Enviar Contraseña a este Usuario*</label>
-                                    <select class="selectpicker  form-control" data-style="btn-white">
-                                        <option value="0">- - Seleccione - - </option>
-                                        <option value="1">Si</option>
-                                        <option value="2">No</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
                                     <label for="userName">
                                         Tipo de Usuario*</label>
                                     <select id="idperfil" name="idperfil" class="selectpicker  form-control" data-style="btn-white">
-                                        <option >- - Seleccione - - </option>
-                                        <option value="1">Super Administrador</option>
-                                        <option value="2">Administrador</option>
-                                        <option value="3">Alumno</option>
-                                        <option value="4">Profesor</option>                                        
-                                        <option value="5">Demo</option>
+                                        <option value="0">- - Seleccione - - </option>
                                     </select>
+								
                                 </div>
                                 <div class="form-group">
                                     <label for="userName">
-                                        Curso Idioma*</label>
-                                    <select class="selectpicker form-control" data-style="btn-white">
-                                        <option>- - Seleccione - - </option>
-                                        <option>Inglés</option>
-                                        <option>Portugués</option>
-                                        <option>Español</option>
-                                        <option>Francés</option>
-                                        <option>Alemán</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="userName">
-                                        Categoría*</label>
-                                    <select class="selectpicker form-control" data-style="btn-white">
-                                        <option>- - Seleccione - - </option>
-                                        <option>Básico</option>
-                                        <option>Medio</option>
-                                        <option>Avanzado</option>
+                                        Estado*</label>
+                                    <select  id="idEstado" name="idEstado" class="selectpicker form-control" data-style="btn-white">
+                                        <option value="0">- - Seleccione - - </option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="userName">
                                         Dirección*</label>
-                                    <input type="text" name="direccion" parsley-trigger="change" required placeholder="Ingresar Dirección"
-                                        class="form-control" id="Text5">
+                                    <input type="text" name="direccion" parsley-trigger="change" placeholder="Ingresar Dirección"
+                                        class="form-control" id="direccion">
                                 </div>
                                 <script type="text/javascript">
                                     $(document).ready(function(){
                                         
-										/*Cargar Regones */
+										/*Cargar Regiones */
 										$.getJSON("scripts/cargar-regiones.php",function(json){
 											$.each(json.regiones,function(i,region){
 													$('#region').append("<option value=\"" + region.code + "\">" + region.name + "</option>")
@@ -259,56 +229,42 @@
 										});
 										
 										/*Cargar comunas de region seleccionada*/
-                                        $("#region").change(function(){
+                                        $("#region").change(function(event, idComuna){
 											/*Limpio el html que esta dentro del select*/
 											$('#comuna').html("");
 											$('#comuna').append("<option value=\"\"> --Seleccione-- </option>")											
 											$.getJSON("scripts/dependencia-comuna.php",{code:$(this).val()},function(json){
 												$.each(json.comunas,function(i,comuna){
+													if(typeof idComuna != "undefined")	
+													{
+														var selected = (idComuna == comuna.code) ? "selected=\"selected\"" : "";
+														$('#comuna').append("<option value=\"" + comuna.code + "\" "+selected+">" + comuna.name + "</option>");
+													}
+													else
+													{
 														$('#comuna').append("<option value=\"" + comuna.code + "\">" + comuna.name + "</option>");
+													}
 												});
 											});
 										});
 										
+										/*Cargar Perfiles */
+										$.getJSON("scripts/cargar-perfiles.php",function(json){
+											$.each(json.perfiles,function(i,perfil){
+													$('#idperfil').append("<option value=\"" + perfil.code + "\">" + perfil.name + "</option>")
+											});
+										});
 										
+										/*Cargar Estados */
+										$.getJSON("scripts/cargar-estados.php",function(json){
+											$.each(json.estados,function(i,estado){
+													$('#idEstado').append("<option value=\"" + estado.code + "\">" + estado.name + "</option>")
+											});
+										});
 										
-                                        //$("#comuna").attr("disabled",true);
+                                        
                                     });
 
-                                    function cargar_regiones()
-                                    {
-                                        $.get("scripts/cargar-regiones.php", function(resultado){
-                                            if(resultado == false)
-                                            {
-                                                alert("Error");
-                                            }
-                                            else
-                                            {
-                                                $('#region').append(resultado);           
-                                            }
-                                        }); 
-                                    }
-                                    function dependencia_comuna()
-                                    {
-										
-                                        var code = $("#region").val();
-                                        $.get("scripts/dependencia-comuna.php", { code: code },
-                                            function(resultado)
-                                            {
-                                                if(resultado == false)
-                                                {
-                                                    alert("Error");
-                                                }
-                                                else
-                                                {
-                                                    $("#comuna").attr("disabled",false);
-                                                    document.getElementById("comuna").options.length=1;
-                                                    $('#comuna').append(resultado);         
-                                                }
-                                            }
-
-                                        );
-                                    }
                                 </script>
                                 <div class="form-group">
                                     <label for="userName">
@@ -327,7 +283,7 @@
                                 <div class="form-group">
                                     <label for="phone">
                                         Teléfono*</label>
-                                    <input type="phone" name="telefono" parsley-trigger="change" required placeholder="Ingresar Teléfono de Contacto"
+                                    <input type="phone" name="telefono" parsley-trigger="change"  placeholder="Ingresar Teléfono de Contacto"
                                         class="form-control" id="telefono">
                                 </div>
                                 <div class="form-group">
@@ -341,15 +297,11 @@
                                         Guardar
                                     </button>
 									
-
-                                    <button type="reset" class="btn btn-default waves-effect waves-light m-l-5">
-                                        Cancelar
-                                    </button>
                                 </div>
                                 </form>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                     <!--   <div class="col-lg-6">
                             <div class="card-box">
                                 <h4 class="m-t-0 header-title">
                                     <b>Otros Datos</b></h4>
@@ -374,13 +326,13 @@
                                     <div class="col-sm-7">
                                         <input type="url" required parsley-type="url" class="form-control" id="Url3" placeholder="45">
                                     </div>
-                                </div>
+                                </div> 
 
 
 
                                 </form>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <!-- container -->

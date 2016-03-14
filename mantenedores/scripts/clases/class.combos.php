@@ -25,6 +25,51 @@ class selects extends MySQL
 			return false;
 		}
 	}
+	
+    function listarPerfiles()
+	{
+		$consulta = parent::consulta("CALL sp_Perfil_Listar");
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$perfiles = array();
+			while($p = parent::fetch_assoc($consulta))
+			{
+				$perfil = new stdclass();
+				$perfil->code = $p["IdPerfil"];
+				$perfil->name = $p["Nombre"];				
+				$perfiles[]=$perfil;
+			}
+			return $perfiles;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function listarEstados()
+	{
+		$consulta = parent::consulta("CALL sp_Estados_Listar");
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$estados = array();
+			while($e = parent::fetch_assoc($consulta))
+			{
+				$estado = new stdclass();
+				$estado->code = $e["IdEstado"];
+				$estado->name = $e["Nombre"];				
+				$estados[]=$estado;
+			}
+			return $estados;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 
 
 	function cargarPersonas()

@@ -13,11 +13,14 @@
                         <li class="has_sub"><a href="registroUsuarios_Persona.php" class="waves-effect"><span>Person</span> </a></li>
 						<li class="has_sub"><a href="registroUsuarios_Empresa.php" class="waves-effect"><span>Company</span> </a></li>
 						<li class="has_sub"><a href="MantenedorParametrosGlobales.php" class="waves-effect"><span>Parameter Glogal</span> </a></li>
+						<li class="has_sub"><a href="MantenedorNivel.php" class="waves-effect"><span>Nivel</span> </a></li>
+						<li class="has_sub"><a href="MantenedorIdioma.php" class="waves-effect"><span>Idioma</span> </a></li>
 						<li class="has_sub"><a href="MantenedorEstado.php" class="waves-effect"><span>State</span> </a></li>
 						<li class="has_sub"><a href="MantenedorPerfil.php" class="waves-effect"><span>Profile</span> </a></li>
 						<li class="has_sub"><a href="MantenedorUsuario.php" class="waves-effect"><span>User</span> </a></li>
 						<li class="has_sub"><a href="MantenedorCursos.php" class="waves-effect"><span>Course</span> </a></li>
 						<li class="has_sub"><a href="ListadoEjercicios.php" class="waves-effect"><span>Exercise</span> </a></li>
+						
                     </ul>
                 </li>
 				
