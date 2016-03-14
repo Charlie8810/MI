@@ -53,7 +53,7 @@
 									<div class="row">
 										<div>
 											<div>
-												<span>0</span><span>Días</span>
+												<span>0</span><span>Dï¿½as</span>
 											</div>
 											<div>
 												<span>0</span><span>Horas</span>
@@ -118,7 +118,7 @@
 					});
 				});
 
-				// Text rotate
+				// Text rotate se hace prueba de git en aptana studio
 				$(".home-text .rotate").textrotator({
 					animation : "fade",
 					speed : 3000
