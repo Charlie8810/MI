@@ -121,7 +121,7 @@
         <!-- Top Bar End -->
         <!-- ========== Left Sidebar Start ========== -->
         
-        <?php include("../matrices/left-side-menu.php");?>
+        <?php include("../matrices/left-side-menuadministrador.php");?>
 
         <!-- Left Sidebar End -->
         <!-- ============================================================== -->

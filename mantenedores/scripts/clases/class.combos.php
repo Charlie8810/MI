@@ -25,6 +25,30 @@ class selects extends MySQL
 			return false;
 		}
 	}
+
+
+	function cargarPersonas()
+	{
+		//$consulta = parent::consulta("SELECT Nombre,idRegion FROM Region ORDER BY idRegion ASC");
+		$consulta = parent::consulta("select *  from persona");
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$personas = array();
+			while($persona = parent::fetch_assoc($consulta))
+			{
+				$per = new stdclass();
+				$per->code = $persona["IdPersona"];
+				$per->name = $persona["Nombres"] . ' ' . $persona["ApellidoPaterno"] . ' ' .  $persona["ApellidoMaterno"] ;				
+				$personas[]=$per;
+			}
+			return $personas;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 	
 	function listarRegiones()

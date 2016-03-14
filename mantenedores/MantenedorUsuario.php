@@ -1,3 +1,7 @@
+<?php 
+session_start(); 
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +12,67 @@
     <link rel="shortcut icon" href="assets/images/favicon.png">
     <title>MI - MCM Interactive Learning</title>
     <?php include("../matrices/css.php");?>
+		<script>
+        var resizefunc = [];
+    </script>
+    <!-- jQuery  -->
+    <?php include("../matrices/js.php");?>
     <script src="../assets/js/modernizr.min.js"></script>
-    <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+	<link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+	<script src="../assets/jquery/bootstrap-dialog.min.js"></script>
+
+	<script>
+	$(document).ready(function(){ 
+	
+	$('#formlogin').submit(function(){
+		
+		if($("#pass").val() != $("#repContrasena").val())
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Contraseñas no iguales',
+					message: '<h5>Las contrasenas no coinciden!</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
+		
+		
+	})
+	
+	
+					<?php if(isset($_SESSION["guardadooklogin"])){ ?>
+				BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
+					message: '<h5>Usuario guardado correctamente!</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_SUCCESS,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			<?php unset($_SESSION["guardadooklogin"]); } ?>
+		
+	});
+	
+	
+	</script>
+
+	
 </head>
 <body class="fixed-left">
     <!-- Begin page -->
@@ -21,7 +84,7 @@
         <!-- Top Bar End -->
         <!-- ========== Left Sidebar Start ========== -->
         
-        <?php include("../matrices/left-side-menu.php");?>
+        <?php include("../matrices/left-side-menuadministrador.php");?>
 
         <!-- Left Sidebar End -->
         <!-- ============================================================== -->
@@ -44,30 +107,18 @@
                             <div class="card-box">
                                 <h4 class="m-t-0 header-title">
                                     <b>Datos a Ingresar</b></h4>
-                                <form action="registroUsuario.php" method="POST" data-parsley-validate novalidate>
-                                    <script type="text/javascript">
-                                    $(document).ready(function(){
-                                        cargar_personas();
-                                       // $("#persona").change(function(){dependencia_comuna();});
-                                        //$("#comuna").change(function(){dependencia_comuna();});
+                                <form action="registroUsuario.php" id="formlogin" method="POST" data-parsley-validate novalidate>
+                                   <script type="text/javascript">
+									$(document).ready(function(){
                                         
+										/*Cargar personas */
+										$.getJSON("scripts/cargar-persona.php",function(json){
+											$.each(json.personas,function(i,persona){
+													$('#persona').append("<option value=\"" + persona.code + "\">" + persona.name + "</option>")
+											});
+										});
                                     });
 
-                                    function cargar_personas()
-                                    {
-                                        $.get("scripts/cargar-personas.php", function(resultado){
-                                            if(resultado == false)
-                                            {
-                                                alert("Error");
-                                            }
-                                            else
-                                            {
-                                                $('#persona').append(resultado);           
-                                            }
-                                        }); 
-                                    }
-                                    
-                                    
                                 </script>
                                 <div class="form-group">
                                     <label for="userName">
@@ -78,18 +129,25 @@
 
                                     <label for="userName">
                                         Login</label>
-                                    <input type="text" name="login" parsley-trigger="change" required placeholder="Ingresar Nombre / Razón Social"
+                                    <input type="text" name="login" parsley-trigger="change" required placeholder="Ingresar Nombre login"
                                         class="form-control" id="login">
                                 </div>
 								
                                 <div class="form-group">
                                     <label for="userName">
                                         Contraseña</label>
-                                    <input type="text" name="pass" parsley-trigger="change" required placeholder="Ingresar Nombre / Razón Social"
+                                    <input type="password" name="pass" parsley-trigger="change" required placeholder="Ingresar contraseña"
                                         class="form-control" id="pass">
                                 </div> 
+								
+								<div class="form-group">
+                                    <label for="userName">
+                                        Repetir Contraseña</label>
+                                    <input type="password" name="repContrasena" parsley-trigger="change" required placeholder="Repetir Contraseña"
+                                        class="form-control" id="repContrasena">
+                                </div> 
 
-								                                <div class="form-group">
+								   <div class="form-group">
                                     <label for="userName">
                                         Estado</label>
                                     <select name="estado" class="selectpicker  form-control" data-style="btn-white" id="estado">
@@ -101,9 +159,6 @@
                                 <div class="form-group text-right m-b-0">
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
-                                    </button>
-                                    <button type="reset" class="btn btn-default waves-effect waves-light m-l-5">
-                                        Cancelar
                                     </button>
                                 </div>
                                 </form>
@@ -192,15 +247,7 @@
  -->
     </div>
     <!-- END wrapper -->
-    <script>
-        var resizefunc = [];
-    </script>
-    <!-- jQuery  -->
-    <?php include("../matrices/js.php");?>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('form').parsley();
-        });
-    </script>				<!-- Google Analytics -->		<script>		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');		  ga('create', 'UA-74180346-1', 'auto');		  ga('send', 'pageview');		</script>		<!-- //Google Analytics -->		
+
+	
 </body>
 </html>

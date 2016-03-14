@@ -9,12 +9,10 @@ include_once "conexionsql.php";
 function verificar_login($user,$password,&$result) {
 	
 	$p = md5($password);
-	
-	
-    $sql = "SELECT * FROM Usuario WHERE Login = '$user' and Contrasena = '$p'";
+    $sql = "SELECT * FROM usuario WHERE Login = '$user' and Contrasena = '$p'";
     $rec = mysql_query($sql);
     $count = 0;
-
+	
     while($row = mysql_fetch_object($rec))
     {
         $count++;
@@ -44,10 +42,10 @@ if(!isset($_SESSION['userid']))
 
 
 
-            $res = "SELECT Perfil.Nombre FROM Usuario
-                         inner join Persona on Persona.IdPersona = Usuario.idPersona
-                         inner join Perfil on Persona.IdPerfil = Perfil.IdPerfil
-                         where Usuario.Login = '".$username."';";
+            $res = "SELECT perfil.Nombre FROM usuario
+                         inner join persona on persona.IdPersona = usuario.idPersona
+                         inner join perfil on persona.IdPerfil = perfil.IdPerfil
+                         where usuario.Login = '".$username."';";
             
 
             $rec1 = mysql_query($res);

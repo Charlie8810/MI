@@ -1,3 +1,8 @@
+<?php 
+session_start(); 
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +13,34 @@
     <link rel="shortcut icon" href="assets/images/favicon.png">
     <title>MI - MCM Interactive Learning</title>
     <?php include("../matrices/css.php");?>
+        <script>
+        var resizefunc = [];
+    </script>
+   <?php include("../matrices/js.php");?>
     <script src="../assets/js/modernizr.min.js"></script>
-    <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+    <link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+    <script src="../assets/jquery/bootstrap-dialog.min.js"></script>
+
+
+    <script>
+    <?php if(isset($_SESSION["guardadookperfil"])){ ?>
+                BootstrapDialog.show({
+                    title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
+                    message: '<h5>Usuario guardado correctamente!</h5>',
+                    closable: true,
+                    draggable: true,
+                    buttons: [{
+                        label: 'Ok',
+                        action: function(dialogItself){
+                            dialogItself.close();
+                        }
+                    }],
+                    type: BootstrapDialog.TYPE_SUCCESS,
+                    size: BootstrapDialog.SIZE_SMALL
+                });
+            <?php unset($_SESSION["guardadookperfil"]); } ?>
+    </script>   
+                    
 </head>
 <body class="fixed-left">
     <!-- Begin page -->
@@ -21,7 +52,7 @@
         <!-- Top Bar End -->
         <!-- ========== Left Sidebar Start ========== -->
         
-        <?php include("../matrices/left-side-menu.php");?>
+        <?php include("../matrices/left-side-menuadministrador.php");?>
 
         <!-- Left Sidebar End -->
         <!-- ============================================================== -->
@@ -72,9 +103,9 @@
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
                                     </button>
-                                    <button type="reset" class="btn btn-default waves-effect waves-light m-l-5">
+                                   <!-- <button type="reset" class="btn btn-default waves-effect waves-light m-l-5">
                                         Cancelar
-                                    </button>
+                                    </button>-->
                                 </div>
                                 </form>
                             </div>
@@ -162,15 +193,6 @@
  -->
     </div>
     <!-- END wrapper -->
-    <script>
-        var resizefunc = [];
-    </script>
-    <!-- jQuery  -->
-    <?php include("../matrices/js.php");?>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('form').parsley();
-        });
-    </script>				<!-- Google Analytics -->		<script>		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');		  ga('create', 'UA-74180346-1', 'auto');		  ga('send', 'pageview');		</script>		<!-- //Google Analytics -->		
-</body>
+     <!-- jQuery  -->
+    </body>
 </html>

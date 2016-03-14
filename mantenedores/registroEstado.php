@@ -1,4 +1,7 @@
 <?php
+session_start();
+?>
+<?php
 
 $nb = $_POST['nombre'];
 $des = $_POST['descripcion'];
@@ -6,14 +9,11 @@ $des = $_POST['descripcion'];
 
 include_once "../matrices/conexionsql.php";
 
-if ($nb != '') {
-	# code...
-	mysql_query("call sp_Estados_Guardar('".$nb."','".$des."')",$link);
-}
- else {
- 	# code...
- 	echo "Nombre de estado en blanco";
- }
+	mysql_query("call sp_Estado_Guardar('".$nb."','".$des."')",$link);
+
+
+$_SESSION["guardadookstate"] = "1";  
+header("Location: " . $_SERVER["HTTP_REFERER"]);
 
 
 

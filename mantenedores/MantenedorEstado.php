@@ -1,3 +1,7 @@
+<?php 
+session_start(); 
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +13,27 @@
     <title>MI - MCM Interactive Learning</title>
     <?php include("../matrices/css.php");?>
     <script src="../assets/js/modernizr.min.js"></script>
-    <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+    <link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+    <script src="../assets/jquery/bootstrap-dialog.min.js"></script>
+
+    <script>
+    <?php if(isset($_SESSION["guardadookstate"])){ ?>
+                BootstrapDialog.show({
+                    title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
+                    message: '<h5>Usuario guardado correctamente!</h5>',
+                    closable: true,
+                    draggable: true,
+                    buttons: [{
+                        label: 'Ok',
+                        action: function(dialogItself){
+                            dialogItself.close();
+                        }
+                    }],
+                    type: BootstrapDialog.TYPE_SUCCESS,
+                    size: BootstrapDialog.SIZE_SMALL
+                });
+            <?php unset($_SESSION["guardadookstate"]); } ?>
+    </script>
 </head>
 <body class="fixed-left">
     <!-- Begin page -->
@@ -21,7 +45,7 @@
         <!-- Top Bar End -->
         <!-- ========== Left Sidebar Start ========== -->
         
-        <?php include("../matrices/left-side-menu.php");?>
+        <?php include("../matrices/left-side-menuadministrador.php");?>
 
         <!-- Left Sidebar End -->
         <!-- ============================================================== -->
@@ -63,9 +87,9 @@
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
                                     </button>
-                                    <button type="reset" class="btn btn-default waves-effect waves-light m-l-5">
+                                   <!-- <button type="reset" class="btn btn-default waves-effect waves-light m-l-5">
                                         Cancelar
-                                    </button>
+                                    </button>-->
                                 </div>
                                 </form>
                             </div>
