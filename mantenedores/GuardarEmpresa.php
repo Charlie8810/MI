@@ -5,8 +5,6 @@ session_start();
 
 <?php
 
-session_start();
-
 $razonsocial = $_POST['razonsocial'];
 $direccion = $_POST['direccion'];
 $rut = str_replace(".","",$_POST['rut']);
