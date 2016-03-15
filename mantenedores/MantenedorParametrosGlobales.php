@@ -21,7 +21,8 @@ session_start();
     <script src="../assets/js/modernizr.min.js"></script>
 	<link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
 	<script src="../assets/jquery/bootstrap-dialog.min.js"></script>
-	
+    
+    
 	<script>
 	$(document).ready(function(){ 
 		
@@ -105,9 +106,6 @@ session_start();
                                 <div class="form-group text-right m-b-0">
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
-                                    </button>
-                                    <button type="reset" class="btn btn-default waves-effect waves-light m-l-5">
-                                        Cancelar
                                     </button>
                                 </div>
                                 </form>
@@ -195,6 +193,9 @@ session_start();
         </div>
  -->
     </div>
-    <!-- END wrapper -->
+   
+    
+    <script src="../assets/js/jquery.app.js"></script>
+    
   </body>
 </html>

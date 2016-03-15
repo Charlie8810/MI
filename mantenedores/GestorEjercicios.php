@@ -110,7 +110,7 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
         <!-- Top Bar End -->
         <!-- ========== Left Sidebar Start ========== -->
 
-        <?php include("../matrices/left-side-menu.php");?>
+        <?php include("../matrices/left-side-menuadministrador.php");?>
 
         <!-- Left Sidebar End -->
         <!-- ============================================================== -->
@@ -126,7 +126,7 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
                             <h4 class="page-title">
                                 Gestor de Ejercicios</h4>
                             <ol class="breadcrumb">
-                                <li><a href="#">Inicio</a></li>
+                                <li><a href="/mi/mantenedores/panelControl.php">Inicio</a></li>
                                 <li class="active">Registro de Cursos / Ejercicios</li>
                             </ol>
 							
@@ -389,7 +389,7 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
         -->
     </div>
     <!-- END wrapper -->
-
+    <script src="../assets/js/jquery.app.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('form').parsley();

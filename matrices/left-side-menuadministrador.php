@@ -49,7 +49,7 @@
                         <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>English</span> </a>
                             <ul style="">
                                 <li><a href="GestorEjercicios.php"><span>Create New Exercise</span></a></li>
-                                <li><a href="javascript:void(0);"><span>Manage Exercises</span></a></li>
+                                <li><a href="ListadoEjercicios.php"><span>Manage Exercises</span></a></li>
                                 <li><a href="javascript:void(0);"><span>Create Group</span></a></li>
                                 <li><a href="javascript:void(0);"><span>Manage Groups</span></a></li>
                                 <li><a href="javascript:void(0);"><span>Create Level</span></a></li>
@@ -114,9 +114,9 @@
                         </li>
                         <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>Administrator</span> </a>
                             <ul style="">
-                                <li><a href="javascript:void(0);"><span>Control Panel</span></a></li>
-                                <li><a href="javascript:void(0);"><span>Users</span></a></li>
-                                <li><a href="javascript:void(0);"><span>Courses</span></a></li>
+                                <li><a href="/mi/mantenedores/panelControl.php"><span>Control Panel</span></a></li>
+                                <li><a href="MantenedorUsuario.php"><span>Users</span></a></li>
+                                <li><a href="MantenedorCursos.php"><span>Courses</span></a></li>
                                 <li><a href="javascript:void(0);"><span>Articles and News</span></a></li>
                                 <li><a href="javascript:void(0);"><span></span></a></li>
                             </ul>

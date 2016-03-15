@@ -64,7 +64,7 @@
                                         alt="img">
                                     <h4>
                                         Manage Users<br />&nbsp;<br /></h4>
-                                    <a href="/mi/mantenedores/registroUsuarios.php" class="btn btn-sm btn-pink m-t-20">
+                                    <a href="../mi/mantenedores/registroUsuarios.php" class="btn btn-sm btn-pink m-t-20">
                                         Enter</a>
                                     
                                 </div>
@@ -79,7 +79,7 @@
                                         alt="img">
                                     <h4>
                                         Course Manager<br />&nbsp;<br /></h4>
-                                   <a href="#" class="btn btn-sm btn-pink m-t-20">
+                                   <a href="../mantenedores/MantenedorCursos.php" class="btn btn-sm btn-pink m-t-20">
                                         Enter</a>
                                    
                                 </div>

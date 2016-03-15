@@ -48,6 +48,95 @@ class selects extends MySQL
 		}
 	}
 	
+	function listarEmpresas()
+	{
+		$consulta = parent::consulta("CALL sp_Empresas_Listar");
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$empresas = array();
+			while($e = parent::fetch_assoc($consulta))
+			{
+				$empresa = new stdclass();
+				$empresa->code = $e["IdEmpresa"];
+				$empresa->name = $e["RazonSocial"];				
+				$empresas[]=$empresa;
+			}
+			return $empresas;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+    function listarProfesores()
+	{
+		$consulta = parent::consulta("CALL sp_Profesores_Listar");
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$profesores = array();
+			while($p = parent::fetch_assoc($consulta))
+			{
+				$profesor = new stdclass();
+				$profesor->code = $p["IdPersona"];
+				$profesor->name = $p["Nombres"];				
+				$profesores[]=$profesor;
+			}
+			return $profesores;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function listarNiveles()
+	{
+		$consulta = parent::consulta("CALL sp_Niveles_Listar");
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$niveles = array();
+			while($n = parent::fetch_assoc($consulta))
+			{
+				$nivel = new stdclass();
+				$nivel->code = $n["Id_Nivel"];
+				$nivel->name = $n["Nombre"];				
+				$niveles[]=$nivel;
+			}
+			return $niveles;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+    function listarIdiomas()
+	{
+		$consulta = parent::consulta("CALL sp_Idiomas_Listar");
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$idiomas = array();
+			while($n = parent::fetch_assoc($consulta))
+			{
+				$idioma = new stdclass();
+				$idioma->code = $n["id_Idioma"];
+				$idioma->name = $n["Nombre"];				
+				$idiomas[]=$idioma;
+			}
+			return $idiomas;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	
 	function listarEstados()
 	{
 		$consulta = parent::consulta("CALL sp_Estados_Listar");
