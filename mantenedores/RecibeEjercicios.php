@@ -108,7 +108,7 @@
     <!-- Begin page -->
     <div id="wrapper">
         <!-- Top Bar Start -->
-        <?php include("../matrices/topbaradministrador.php");?>
+        <?php include("../matrices/topbar.php");?>
         <!-- Top Bar End -->
         <!-- ========== Left Sidebar Start ========== -->
 
@@ -128,7 +128,7 @@
                             <h4 class="page-title">
                                 Gestor de Cursos</h4>
                             <ol class="breadcrumb">
-                                <li><a href="#">Inicio</a></li>
+                                <li><a href="/mi/Nivel_1.php">Inicio</a></li>
                                 <li class="active">Registro de Cursos / Ejercicios</li>
                             </ol>
                         </div>
@@ -315,7 +315,7 @@
     <script>
         var resizefunc = [];
     </script>
-
+    <script src="../assets/js/jquery.app.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {

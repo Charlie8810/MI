@@ -267,6 +267,6 @@ session_start();
     </div>
     <!-- END wrapper -->
 
-	
+	<script src="../assets/js/jquery.app.js"></script>
 </body>
 </html>

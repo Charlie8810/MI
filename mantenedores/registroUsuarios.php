@@ -154,6 +154,7 @@
         var resizefunc = [];
     </script>
     <!-- jQuery  -->
+    <script src="../assets/js/jquery.app.js"></script>
     <?php include("../matrices/js.php");?>
     <script type="text/javascript">
         $(document).ready(function () {

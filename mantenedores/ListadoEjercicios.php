@@ -98,7 +98,7 @@ include("scripts/clases/class.combos.php");
         <!-- Top Bar End -->
         <!-- ========== Left Sidebar Start ========== -->
 
-        <?php include("../matrices/left-side-menu.php");?>
+        <?php include("../matrices/left-side-menuadministrador.php");?>
 
         <!-- Left Sidebar End -->
         <!-- ============================================================== -->
@@ -114,7 +114,7 @@ include("scripts/clases/class.combos.php");
                             <h4 class="page-title">
                                 Listado de Ejercicios</h4>
                             <ol class="breadcrumb">
-                                <li><a href="#">Inicio</a></li>
+                                <li><a href="/mi/mantenedores/panelControl.php">Inicio</a></li>
                                 <li class="active">Registro de Cursos / Ejercicios</li>
                             </ol>
                         </div>
@@ -170,6 +170,7 @@ include("scripts/clases/class.combos.php");
         <!-- ============================================================== -->
     </div>
     <!-- END wrapper -->
+    <script src="../assets/js/jquery.app.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {

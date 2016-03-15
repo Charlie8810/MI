@@ -122,7 +122,7 @@ $(document).ready(function(){
         <!-- Top Bar End -->
         <!-- ========== Left Sidebar Start ========== -->
         
-        <?php include("../matrices/left-side-menu.php");?>
+        <?php include("../matrices/left-side-menuadministrador.php");?>
 
         <!-- Left Sidebar End -->
         <!-- ============================================================== -->
@@ -138,7 +138,7 @@ $(document).ready(function(){
                             <h4 class="page-title">
                                 Registro de Usuarios</h4>
                             <ol class="breadcrumb">
-                                <li><a href="/mi/Nivel_1.php">Inicio</a></li>
+                                <li><a href="/mi/mantenedores/panelControl.php">Inicio</a></li>
                                 <li><a href="/mi/mantenedores/registroUsuarios.php">Gestor de Usuarios</a></li>
                                 <li class="active">Registro de Usuarios</li>
                             </ol>
@@ -326,6 +326,6 @@ $(document).ready(function(){
         </div>
         <!-- /Right-bar -->
     </div>
-
+    <script src="../assets/js/jquery.app.js"></script>
   </body>
 </html>
