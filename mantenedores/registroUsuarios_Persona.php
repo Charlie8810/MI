@@ -2,7 +2,7 @@
 	session_start();
     require "../matrices/conexionsql.php";
     if (isset($_GET['rut'])) {
-        $sql = "SELECT Rut FROM Persona where Rut like '".$_GET['rut']."';";
+        $sql = "SELECT Rut FROM persona where Rut like '".$_GET['rut']."';";
         $rec = mysql_query($sql);
         $count = 0;
         while($row = mysql_fetch_object($rec)){

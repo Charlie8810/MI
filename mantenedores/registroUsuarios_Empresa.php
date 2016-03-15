@@ -1,3 +1,18 @@
+<?php
+	session_start();
+	require "../matrices/conexionsql.php";
+    if (isset($_GET['rut'])) {
+        $sql = "SELECT Rut FROM persona where Rut like '".$_GET['rut']."';";
+        $rec = mysql_query($sql);
+        $count = 0;
+        while($row = mysql_fetch_object($rec)){
+            $count++;
+            $result = $row;
+            print_r((array) $result);
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,10 +21,96 @@
     <meta name="description" content="">
     <meta name="author" content="insidehead">
     <link rel="shortcut icon" href="assets/images/favicon.png">
+	<?php include("../matrices/js.php");?>
     <title>MI - MCM Interactive Learning</title>
+	    <!-- END wrapper -->
+    <script>
+        var resizefunc = [];
+    </script>
+    <!-- jQuery  -->
     <?php include("../matrices/css.php");?>
-    <script src="../assets/js/modernizr.min.js"></script>
-    <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript">
+        $(document).ready(function () {
+            $('form').parsley();
+        });
+    </script>
+    <script src="js/jquery.Rut.js" type="text/javascript"></script>
+	<script src="../assets/jquery/bootstrap-dialog.min.js"></script>
+	<script src="../assets/js/modernizr.min.js"></script>
+	<link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+    <script src="../assets/jquery/bootstrap-dialog.min.js"></script>
+    <script type="text/javascript">
+	
+		
+		$(document).ready(function(){
+			
+			$("#rut").Rut();
+			$("#rut").blur(function(){
+				
+				if($.Rut.validar($(this).val())){
+					$.getJSON("scripts/cargar-usuario-empresa.php",{vrut:$(this).val()},function(json){
+						var e = json.empresa;
+						
+						$("#razonsocial").val(e.RazonSocial);
+						$("#direccion").val(e.Direccion);
+						$("#region").val(e.IdRegion);
+						$("#comuna").val(e.IdComuna);
+						$("#nombrecontacto").val(e.NombreContacto);
+						$("#emailcontacto").val(e.EmailContacto);
+						$("#telefono").val(e.TelefonoContacto);
+						$("#region").val(e.IdRegion).trigger("change", [e.IdComuna]);						
+
+					});
+					if($(this).hasClass("parsley-error")){
+						$(this).removeClass("parsley-error");
+					}
+				}
+				else
+				{
+					BootstrapDialog.show({
+						title: '<span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Alerta',
+						message: '<h5>Rut ingresado es incorrecto</h5>',
+						closable: true,
+						draggable: true,
+						buttons: [{
+							label: 'Aceptar',
+							action: function(dialogItself){
+								dialogItself.close();
+							}
+						}],
+						type: BootstrapDialog.TYPE_WARNING,
+						size: BootstrapDialog.SIZE_SMALL
+					});
+					$(this).val("");
+					$(this).addClass("parsley-error");
+				}
+			
+			});
+		});
+		
+$(document).ready(function(){ 
+		
+	<?php if(isset($_SESSION["guardadookempresa"])){ ?>
+	    BootstrapDialog.show({
+			title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
+			message: '<h5>Empresa guardada correctamente!</h5>',
+			closable: true,
+		    draggable: true,
+			buttons: [{
+				label: 'Ok',
+				action: function(dialogItself){
+				dialogItself.close();
+			     	}
+					}],
+				type: BootstrapDialog.TYPE_SUCCESS,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			<?php unset($_SESSION["guardadookempresa"]); } ?>
+	});
+		
+		
+    </script>
+
 </head>
 <body class="fixed-left">
     <!-- Begin page -->
@@ -48,81 +149,68 @@
                             <div class="card-box">
                                 <h4 class="m-t-0 header-title">
                                     <b>Datos a Ingresar</b></h4>
-                                <form action="#" data-parsley-validate novalidate>
-                                <div class="form-group">
-                                    <label for="userName">
-                                        Nombre / Razón Social*</label>
-                                    <input type="text" name="nick" parsley-trigger="change" required placeholder="Ingresar Nombre / Razón Social"
-                                        class="form-control" id="userName">
-                                </div>
-                                <div class="form-group">
-                                    <label for="userName">
+                                <form action="GuardarEmpresa.php" method="post" data-parsley-validate novalidate>
+								<div class="form-group">
+                                    <label for="rut">
                                         RUT*</label>
-                                    <input type="text" name="nick" parsley-trigger="change" required placeholder="Ingresar RUT"
-                                        class="form-control" id="Text4">
+                                    <input type="text" name="rut" parsley-trigger="change" required 
+                                        class="form-control" id="rut" placeholder="ej. 11.111.111-1">
                                 </div>
-
                                 <div class="form-group">
-                                    <label for="userName">
+                                    <label for="razonsocial">
+                                        Nombre / Razón Social*</label>
+                                    <input type="text" name="razonsocial" parsley-trigger="change" required placeholder="Ingresar Nombre / Razón Social"
+                                        class="form-control" id="razonsocial">
+                                </div>
+                                <div class="form-group">
+                                    <label for="direccion">
                                         Dirección*</label>
-                                    <input type="text" name="nick" parsley-trigger="change" required placeholder="Ingresar Dirección"
-                                        class="form-control" id="Text1">
+                                    <input type="text" name="direccion" parsley-trigger="change" required placeholder="Ingresar Dirección"
+                                        class="form-control" id="direccion">
                                 </div>
+								<script type="text/javascript">
+                                    $(document).ready(function(){
+                                        
+										/*Cargar Regiones */
+										$.getJSON("scripts/cargar-regiones.php",function(json){
+											$.each(json.regiones,function(i,region){
+													$('#region').append("<option value=\"" + region.code + "\">" + region.name + "</option>")
+											});
+										});
+										
+										/*Cargar comunas de region seleccionada*/
+                                        $("#region").change(function(event, idComuna){
+											/*Limpio el html que esta dentro del select*/
+											$('#comuna').html("");
+											$('#comuna').append("<option value=\"\"> --Seleccione-- </option>")											
+											$.getJSON("scripts/dependencia-comuna.php",{code:$(this).val()},function(json){
+												$.each(json.comunas,function(i,comuna){
+													if(typeof idComuna != "undefined")	
+													{
+														var selected = (idComuna == comuna.code) ? "selected=\"selected\"" : "";
+														$('#comuna').append("<option value=\"" + comuna.code + "\" "+selected+">" + comuna.name + "</option>");
+													}
+													else
+													{
+														$('#comuna').append("<option value=\"" + comuna.code + "\">" + comuna.name + "</option>");
+													}
+												});
+											});
+										});									  
+                                    });
 
-                                <script type="text/javascript">
-$(document).ready(function(){
-    cargar_regiones();
-    $("#region").change(function(){dependencia_comuna();});
-    //$("#comuna").change(function(){dependencia_comuna();});
-    $("#comuna").attr("disabled",true);
-    //$("#ciudad").attr("disabled",true);
-});
-
-function cargar_regiones()
-{
-    $.get("scripts/cargar-regiones.php", function(resultado){		
-		
-        if(resultado == false)
-        {
-            alert("Error");
-        }
-        else
-        {
-            $('#region').append(resultado);           
-        }
-    }); 
-	
-}
-function dependencia_comuna()
-{
-    var code = $("#region").val();
-    $.get("scripts/dependencia-comuna.php", { code: code },
-        function(resultado)
-        {
-            if(resultado == false)
-            {
-                alert("Error");
-            }
-            else
-            {
-                $("#comuna").attr("disabled",false);
-                document.getElementById("comuna").options.length=1;
-                $('#comuna').append(resultado);         
-            }
-        }
-
-    );
-}
-</script>
+                                </script>
+								
+								
                                 <div class="form-group">
-                                    <label for="userName">
+                                    <label for="region">
                                         Región*</label>
                                     <select class="selectpicker  form-control" data-style="btn-white" id="region" name="region">
                                        
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="userName">
+                                    <label for="comuna">
                                         Comuna*</label>
                                     <select class="selectpicker  form-control" data-style="btn-white"  id="comuna" name="comuna">
                                         
@@ -131,29 +219,26 @@ function dependencia_comuna()
 
 
                                 <div class="form-group">
-                                    <label for="userName">
+                                    <label for="nombrecontacto">
                                         Nombre de Contacto*</label>
-                                    <input type="text" name="nick" parsley-trigger="change" required placeholder="Ingresar Nombre de Contacto"
-                                        class="form-control" id="Text3">
+                                    <input type="text" name="nombrecontacto" parsley-trigger="change" required placeholder="Ingresar Nombre de Contacto"
+                                        class="form-control" id="nombrecontacto">
                                 </div>
                                 <div class="form-group">
-                                    <label for="emailAddress">
+                                    <label for="emailcontacto">
                                         Email de Contacto*</label>
-                                    <input type="email" name="email" parsley-trigger="change" required placeholder="Ingresar Email  de Contacto"
-                                        class="form-control" id="emailAddress">
+                                    <input type="email" name="emailcontacto" parsley-trigger="change" required placeholder="Ingresar Email  de Contacto"
+                                        class="form-control" id="emailcontacto">
                                 </div>
                                 <div class="form-group">
-                                    <label for="emailAddress">
+                                    <label for="telefono">
                                         Teléfono de Contacto*</label>
-                                    <input type="email" name="email" parsley-trigger="change" required placeholder="Ingresar Teléfono  de Contacto"
-                                        class="form-control" id="email1">
+                                    <input type="text" name="telefono" parsley-trigger="change" required placeholder="Ingresar Teléfono  de Contacto"
+                                        class="form-control" id="telefono">
                                 </div>
                                 <div class="form-group text-right m-b-0">
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
-                                    </button>
-                                    <button type="reset" class="btn btn-default waves-effect waves-light m-l-5">
-                                        Cancelar
                                     </button>
                                 </div>
                                 </form>
@@ -241,16 +326,6 @@ function dependencia_comuna()
         </div>
         <!-- /Right-bar -->
     </div>
-    <!-- END wrapper -->
-    <script>
-        var resizefunc = [];
-    </script>
-    <!-- jQuery  -->
-    <?php include("../matrices/js.php");?>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('form').parsley();
-        });
-    </script>				<!-- Google Analytics -->		<script>		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');		  ga('create', 'UA-74180346-1', 'auto');		  ga('send', 'pageview');		</script>		<!-- //Google Analytics -->		
-</body>
+
+  </body>
 </html>

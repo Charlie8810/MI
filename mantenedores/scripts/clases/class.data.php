@@ -36,6 +36,34 @@ class Data extends MySQL
 	}
 	
 	
+	function cargarEmpresa($rut)
+	{
+		$sql = "SELECT * FROM empresa WHERE Rut = '".$rut."';";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$em = parent::fetch_assoc($consulta);	
+			$empresa = new stdclass();
+			$empresa->IdEmpresa 		= $em["IdEmpresa"];
+			$empresa->Rut 			    = $em["Rut"];
+			$empresa->RazonSocial 	    = $em["RazonSocial"];
+			$empresa->Direccion 	    = $em["Direccion"];
+			$empresa->IdRegion 		    = $em["IdRegion"];
+			$empresa->IdComuna 			= $em["IdComuna"];
+			$empresa->NombreContacto 	= $em["NombreContacto"];	
+			$empresa->EmailContacto 	= $em["EmailContacto"];	
+			$empresa->TelefonoContacto 	= $em["TelefonoContacto"];				
+			
+			return $empresa;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	
 	function guardarEjercicio($ejercicio)
 	{
 		
