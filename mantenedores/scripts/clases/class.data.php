@@ -348,6 +348,109 @@ class Data extends MySQL
 		}
 		
 	}
+	
+	function listarCursosAll()
+	{
+		$sql = "select * from cursos";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		$lista = array();
+		if($num_total_registros>0)
+		{
+			while($gr = parent::fetch_assoc($consulta)){
+			
+				$curso = new stdclass();
+				$curso->IdCurso 			= $gr["IdCurso"];
+				$curso->Nombre 				= $gr["Nombre_Curso"];
+				$curso->IdProfesor 			= $gr["IdProfesor"];
+				$curso->IdNivel 			= $gr["IdNivel"];
+				$curso->IdIdioma 			= $gr["IdIdioma"];
+				$curso->IdEmpresa 			= $gr["IdEmpresa"];
+				$curso->Vigente 			= $gr["Vigente"];
+				
+				
+				$lista[] = $curso;
+			}
+			return $lista;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+	
+	
+	function listarAlumnosNoEnrrolados($idCurso)
+	{
+		$sql = "
+			select * 
+			from persona p 
+			where p.IdPersona not in (select IdPersona from relacioncursopersona where IdCurso = ".$idCurso.");";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		$lista = array();
+		if($num_total_registros>0)
+		{
+			while($gr = parent::fetch_assoc($consulta))
+			{
+			
+				$alumno = new stdclass();
+				$alumno->IdPersona 			= $gr["IdPersona"];
+				$alumno->NombreCompleto 	= $gr["Nombres"] . " " . $gr["ApellidoPaterno"] . " " . $gr["ApellidoMaterno"];
+				$alumno->Rut 				= $gr["Rut"];
+				$lista[] = $alumno;
+			}
+			return $lista;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+	
+	function listarAlumnosEnrrolados($idCurso)
+	{
+		$sql = "
+			select * 
+			from persona p 
+			where p.IdPersona in (select IdPersona from relacioncursopersona where IdCurso = ".$idCurso.");";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		$lista = array();
+		if($num_total_registros>0)
+		{
+			while($gr = parent::fetch_assoc($consulta))
+			{
+			
+				$alumno = new stdclass();
+				$alumno->IdPersona 			= $gr["IdPersona"];
+				$alumno->NombreCompleto 	= $gr["Nombres"] . " " . $gr["ApellidoPaterno"] . " " . $gr["ApellidoMaterno"];
+				$alumno->Rut 				= $gr["Rut"];
+				$lista[] = $alumno;
+			}
+			return $lista;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+	
+	function eliminarAsociacionCursoAlumno($idCurso)
+	{
+		$sqlDelete = "delete from relacioncursopersona where IdCurso=".$idCurso.";";
+		$stmt = parent::consulta($sqlDelete);
+	}
+	
+	function guardarAsociacionCursoAlumno($entrada)
+	{
+		$sqlInsert = "insert into relacioncursopersona(IdCurso, IdPersona) values ($entrada->IdCurso, $entrada->IdPersona);";
+		$stmt = parent::consulta($sqlInsert);
+		//return parent::lastInsertID();
+	}
 		
 	
 }
