@@ -4,7 +4,7 @@
 	include("scripts/clases/class.data.php");
 	include("scripts/clases/class.combos.php");
 		
-	$idCurso = $_REQUEST["c"];	
+	$idCurso = isset($_REQUEST["c"]) ? $_REQUEST["c"] : false;	
 	$data = new Data();	
 		
 ?>
@@ -124,10 +124,10 @@
 	                                </div>
                                 	
 	                                <div class="form-group">
-	                                    <button id="btn_enrrolar" style="width: 100%;" class="btn btn-primary waves-effect waves-light" type="button"> < Enrrolar seleccion </button>
+	                                    <button id="btn_enrrolar" style="width: 100%;" class="btn btn-primary waves-effect waves-light" type="button"> < Enrrolar </button>
 	                                </div>	
 	                                <div class="form-group">
-	                                    <button id="btn_desenrrolar" style="width: 100%;" class="btn btn-primary waves-effect waves-light" type="button"> Desenrrolar seleccion > </button>
+	                                    <button id="btn_desenrrolar" style="width: 100%;" class="btn btn-primary waves-effect waves-light" type="button"> Desenrrolar > </button>
 	                                </div>	
 	                                
                                 </div>			

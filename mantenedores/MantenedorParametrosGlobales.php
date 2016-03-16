@@ -1,5 +1,8 @@
 <?php 
 session_start(); 
+include("scripts/clases/class.mysql.php");
+include("scripts/clases/class.data.ParametroGlobal.php");
+$idParametro = isset($_REQUEST["p"]) ? $_REQUEST["p"] : false;
 ?>
 
 
@@ -42,8 +45,24 @@ session_start();
 					size: BootstrapDialog.SIZE_SMALL
 				});
 			<?php unset($_SESSION["guardadookparametro"]); } ?>
+			
+			
+			 <?php $data = new ParametroGlobal();	
+				if($idParametro){ 
+					$parametro = $data->obtenerParametro($idParametro);
+			?>
+			
+			$("#codigo").val('<?php echo $parametro->Codigo; ?>');
+			$("#valor").val('<?php echo $parametro->Valor; ?>');
+			$("#descripcion").val('<?php echo $parametro->Descripcion; ?>');
+			$("#IdParametro").val('<?php echo $parametro->IdParametro; ?>');
+						
+			<?php } ?>
+			
+			
 	});
 	
+		   
 	
 	</script>
 	
@@ -107,6 +126,10 @@ session_start();
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
                                     </button>
+                                    <a class="btn btn-default waves-effect waves-light m-1-5" href="ListadoParametroGlobal.php">
+										Volver
+									</a>
+                                    <input type="hidden" name="IdParametro" id="IdParametro" value="" />
                                 </div>
                                 </form>
                             </div>
