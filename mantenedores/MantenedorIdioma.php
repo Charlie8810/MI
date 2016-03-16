@@ -1,5 +1,11 @@
 <?php 
 session_start(); 
+include("scripts/clases/class.mysql.php");
+include("scripts/clases/class.data.idioma.php");
+
+$idIdioma = isset($_REQUEST["i"]) ? $_REQUEST["i"] : false;
+
+
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +33,7 @@ session_start();
 	<?php if(isset($_SESSION["guardadookidioma"])){ ?>
 	    BootstrapDialog.show({
 			title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
-			message: '<h5>Usuario guardado correctamente!</h5>',
+			message: '<h5>Idioma guardado correctamente!</h5>',
 			closable: true,
 		    draggable: true,
 			buttons: [{
@@ -39,7 +45,22 @@ session_start();
 				type: BootstrapDialog.TYPE_SUCCESS,
 					size: BootstrapDialog.SIZE_SMALL
 				});
-			<?php unset($_SESSION["guardadookidioma"]); } ?>
+	<?php unset($_SESSION["guardadookidioma"]); } ?>
+			
+			
+	<?php $idioma = null;
+		  $data = new Idioma();	
+		if($idIdioma){ 
+			$idioma = $data->obtenerIdioma($idIdioma);
+	?>
+	
+	$("#nombre").val('<?php echo $idioma->Nombre; ?>');
+	$("#descripcion").val('<?php echo $idioma->Descripcion; ?>');
+	$("#vigente").val('<?php echo $idioma->Vigente; ?>');
+				
+	<?php } ?>
+			
+			
 	});
 	
 	
@@ -112,9 +133,9 @@ session_start();
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
                                     </button>
-                                    <button type="reset" class="btn btn-default waves-effect waves-light m-l-5">
-                                        Cancelar
-                                    </button>
+									<a class="btn btn-default waves-effect waves-light m-l-5" href="ListadoIdioma.php">
+											<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
+								    </a>
                                 </div>
                                 </form>
                             </div>
