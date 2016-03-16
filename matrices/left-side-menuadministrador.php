@@ -18,8 +18,9 @@
 						<li class="has_sub"><a href="MantenedorEstado.php" class="waves-effect"><span>State</span> </a></li>
 						<li class="has_sub"><a href="MantenedorPerfil.php" class="waves-effect"><span>Profile</span> </a></li>
 						<li class="has_sub"><a href="MantenedorUsuario.php" class="waves-effect"><span>User</span> </a></li>
-						<li class="has_sub"><a href="MantenedorCursos.php" class="waves-effect"><span>Course</span> </a></li>
+						<li class="has_sub"><a href="ListadoCursos.php" class="waves-effect"><span>Course</span> </a></li>
 						<li class="has_sub"><a href="ListadoEjercicios.php" class="waves-effect"><span>Exercise</span> </a></li>
+						
 						
                     </ul>
                 </li>
