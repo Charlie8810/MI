@@ -1,5 +1,10 @@
 <?php 
 session_start(); 
+include("scripts/clases/class.mysql.php");
+include("scripts/clases/class.data.estado.php");
+
+$idEstado = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
+
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +45,22 @@ session_start();
 					size: BootstrapDialog.SIZE_SMALL
 				});
 			<?php unset($_SESSION["guardadookstate"]); } ?>
+            
+    
+    <?php $estado = null;
+          $data = new Estado(); 
+        if($idEstado){ 
+            $estado = $data->obtenerEstado($idEstado);
+    ?>
+    
+    $("#nombre").val('<?php echo $estado->Nombre; ?>');
+    $("#descripcion").val('<?php echo $estado->Descripcion; ?>');
+
+                
+    <?php } ?>
+            
+            
+    
 	});
 	
 	
@@ -97,9 +118,9 @@ session_start();
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
                                     </button>
-                                   <!-- <button type="reset" class="btn btn-default waves-effect waves-light m-l-5">
-                                        Cancelar
-                                    </button>-->
+                                    <a class="btn btn-default waves-effect waves-light m-l-5" href="ListadoEstado.php">
+                                            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
+                                    </a>
                                 </div>
                                 </form>
                             </div>

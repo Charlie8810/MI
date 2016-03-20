@@ -5,7 +5,6 @@ include("scripts/clases/class.data.idioma.php");
 
 $idIdioma = isset($_REQUEST["i"]) ? $_REQUEST["i"] : false;
 
-
 ?>
 
 <!DOCTYPE html>

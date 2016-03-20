@@ -1,5 +1,10 @@
 ﻿<?php
 	session_start();
+    include("scripts/clases/class.mysql.php");
+    include("scripts/clases/class.data.perfil.php");
+
+    $idPefil = isset($_REQUEST["p"]) ? $_REQUEST["p"] : false;
+    /* verificar si sirve*/
     require "../matrices/conexionsql.php";
     if (isset($_GET['rut'])) {
         $sql = "SELECT Rut FROM persona where Rut like '".$_GET['rut']."';";
@@ -20,7 +25,9 @@
             $result = $row;
             print_r((array) $result);
         }*/
-    ?>
+        
+    
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,6 +108,26 @@
 				}
 			
 			});
+            <?php $perfil = null;
+                    $data = new Perfil(); 
+                    if($idPefil){ 
+                        $perfil = $data->obtenerPerfil($idPefil);
+            ?>
+                $("#rut").val('<?php echo $persona->Rut; ?>');
+                $("#nombres").val('<?php echo $persona->Vigente; ?>');
+                $("#apellidop").val('<?php echo $persona->Vigente; ?>');
+                $("#apellidom").val('<?php echo $persona->Vigente; ?>');
+                $("#email").val('<?php echo $persona->Vigente; ?>');
+                $("#idperfil").val('<?php echo $persona->Vigente; ?>');
+                $("#idEstado").val('<?php echo $persona->Vigente; ?>');
+                $("#direccion").val('<?php echo $persona->Vigente; ?>');
+                $("#telefono").val('<?php echo $persona->Vigente; ?>');
+                $("#celular").val('<?php echo $persona->Vigente; ?>');
+                        
+                $("#region").val(p.IdRegion).trigger("change", [p.IdComuna]);
+                        
+                            
+            <?php } ?>
 		});
 		
 $(document).ready(function(){ 
