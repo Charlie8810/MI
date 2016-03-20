@@ -127,9 +127,9 @@ include("scripts/clases/class.data.ParametroGlobal.php");
 										<tr>
 											<th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
 											<th data-column-id="id" data-type="numeric">ID</th>
-											<th data-column-id="codigo">Nombre</th>
-											<th data-column-id="valor">Curso</th>
-											<th data-column-id="fechaCreacion">Fase</th>
+											<th data-column-id="codigo">Codigo</th>
+											<th data-column-id="valor">Valor</th>
+											<th data-column-id="fechaCreacion">Fecha Creación</th>
 										</tr>
 									</thead>
 									<tbody>
