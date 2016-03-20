@@ -1,5 +1,8 @@
 <?php 
 session_start(); 
+include("scripts/clases/class.mysql.php");
+include("scripts/clases/class.data.nivel.php");
+$idNivel = isset($_REQUEST["n"]) ? $_REQUEST["n"] : false;
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +44,20 @@ session_start();
 					size: BootstrapDialog.SIZE_SMALL
 				});
 			<?php unset($_SESSION["guardadooknivel"]); } ?>
+			
+			
+			<?php $data = new Nivel();	
+				if($idNivel){ 
+					$nivel = $data->obtenerNivel($idNivel);
+			?>
+			
+			$("#nombre").val('<?php echo $nivel->Nombre; ?>');
+			$("#descripcion").val('<?php echo $nivel->Descripcion; ?>');
+			$("#vigente").val('<?php echo $nivel->Vigente; ?>');
+			$("#idNivel").val('<?php echo $nivel->Id_Nivel; ?>');
+						
+			<?php } ?>
+			
 	});
 	
 	
@@ -110,6 +127,10 @@ session_start();
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
                                     </button>
+									<a class="btn btn-default waves-effect waves-light m-1-5" href="ListadoNivel.php">
+										Volver
+									</a>
+                                    <input type="hidden" name="idNivel" id="idNivel" value="" />
                                 </div>
                                 </form>
                             </div>

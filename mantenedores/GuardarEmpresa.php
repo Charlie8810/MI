@@ -19,7 +19,7 @@ include_once "../matrices/conexionsql.php";
 
 mysql_query("call sp_Empresa_Guardar('".$direccion."','".$emailcontacto."','".$comuna."','".$region."','".$nombrecontacto."','".$razonsocial."','".$rut."','".$telefono."')",$link);
 
-$_SESSION["guardadookempresa"] = "1";  
+$_SESSION["MantenedorEmpresaok"] = "1";  
 header("Location: " . $_SERVER["HTTP_REFERER"]);
 
 

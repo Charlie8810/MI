@@ -1,5 +1,9 @@
 <?php
 	session_start();
+	
+	include("scripts/clases/class.mysql.php");
+    include("scripts/clases/class.data.empresa.php");
+	
 	require "../matrices/conexionsql.php";
     if (isset($_GET['rut'])) {
         $sql = "SELECT Rut FROM persona where Rut like '".$_GET['rut']."';";
@@ -11,6 +15,8 @@
             print_r((array) $result);
         }
     }
+	
+	$idEmpresa = isset($_REQUEST["i"]) ? $_REQUEST["i"] : false;
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +37,7 @@
     <?php include("../matrices/css.php");?>
 	<script type="text/javascript">
         $(document).ready(function () {
-            $('form').parsley();
+            $('formempresas').parsley();
         });
     </script>
     <script src="js/jquery.Rut.js" type="text/javascript"></script>
@@ -44,6 +50,51 @@
 		
 		$(document).ready(function(){
 			
+		$('#formempresas').submit(function(){
+		
+		if($("#region").val() == '')
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Contraseñas no iguales',
+					message: '<h5>Debe seleccionar una region</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
+	    if($("#comuna").val() == '')
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Contraseñas no iguales',
+					message: '<h5>Debe seleccionar una region</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
+	})
+			
+			
+			
+			
 			$("#rut").Rut();
 			$("#rut").blur(function(){
 				
@@ -53,7 +104,6 @@
 						
 						$("#razonsocial").val(e.RazonSocial);
 						$("#direccion").val(e.Direccion);
-						$("#region").val(e.IdRegion);
 						$("#comuna").val(e.IdComuna);
 						$("#nombrecontacto").val(e.NombreContacto);
 						$("#emailcontacto").val(e.EmailContacto);
@@ -90,7 +140,7 @@
 		
 $(document).ready(function(){ 
 		
-	<?php if(isset($_SESSION["guardadookempresa"])){ ?>
+	<?php if(isset($_SESSION["MantenedorEmpresaok"])){ ?>
 	    BootstrapDialog.show({
 			title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
 			message: '<h5>Empresa guardada correctamente!</h5>',
@@ -105,7 +155,67 @@ $(document).ready(function(){
 				type: BootstrapDialog.TYPE_SUCCESS,
 					size: BootstrapDialog.SIZE_SMALL
 				});
-			<?php unset($_SESSION["guardadookempresa"]); } ?>
+			<?php unset($_SESSION["MantenedorEmpresaok"]); } ?>
+			
+			
+			/*Cargar Regiones */
+				$.getJSON("scripts/cargar-regiones.php",function(json){
+				$.each(json.regiones,function(i,region){
+						$('#region').append("<option value=\"" + region.code + "\">" + region.name + "</option>")
+				});
+				});
+
+				/*Cargar comunas de region seleccionada*/
+				$("#region").change(function(event, idComuna){
+				/*Limpio el html que esta dentro del select*/
+				$('#comuna').html("");
+				$('#comuna').append("<option value=\"\"> --Seleccione-- </option>")											
+				$.getJSON("scripts/dependencia-comuna.php",{code:$(this).val()},function(json){
+					$.each(json.comunas,function(i,comuna){
+						if(typeof idComuna != "undefined")	
+						{
+							var selected = (idComuna == comuna.code) ? "selected=\"selected\"" : "";
+							$('#comuna').append("<option value=\"" + comuna.code + "\" "+selected+">" + comuna.name + "</option>");
+						}
+						else
+						{
+							$('#comuna').append("<option value=\"" + comuna.code + "\">" + comuna.name + "</option>");
+						}
+					});
+				});
+				});	
+
+			
+			
+				<?php
+				
+				$empresa = null;
+					  $data = new Empresa();	
+					if($idEmpresa){ 
+						$empresa = $data->obtenerEmpresa($idEmpresa);
+				?>
+				
+				$("#rut").val('<?php echo $empresa->Rut; ?>');
+				$("#razonsocial").val('<?php echo $empresa->RazonSocial; ?>');
+				$("#direccion").val('<?php echo $empresa->Direccion; ?>');
+				
+				$("#nombrecontacto").val('<?php echo $empresa->NombreContacto; ?>');
+				$("#emailcontacto").val('<?php echo $empresa->EmailContacto; ?>');
+				$("#telefono").val('<?php echo $empresa->TelefonoContacto; ?>');
+				
+				
+				$("#region").val('<?php echo $empresa->IdRegion; ?>').trigger("change", ['<?php echo $empresa->IdComuna; ?>']);
+
+				
+				
+							
+				<?php } ?>
+				
+				
+				
+			
+			
+			
 	});
 		
 		
@@ -136,11 +246,11 @@ $(document).ready(function(){
                     <div class="row">
                         <div class="col-sm-12">
                             <h4 class="page-title">
-                                Registro de Usuarios</h4>
+                                Registro de Empresas</h4>
                             <ol class="breadcrumb">
                                 <li><a href="/mi/mantenedores/panelControl.php">Inicio</a></li>
-                                <li><a href="/mi/mantenedores/registroUsuarios.php">Gestor de Usuarios</a></li>
-                                <li class="active">Registro de Usuarios</li>
+                                <li><a href="/mi/mantenedores/registroUsuarios.php">Gestor de Empresas</a></li>
+                                <li class="active">Registro de Empresas</li>
                             </ol>
                         </div>
                     </div>
@@ -149,7 +259,7 @@ $(document).ready(function(){
                             <div class="card-box">
                                 <h4 class="m-t-0 header-title">
                                     <b>Datos a Ingresar</b></h4>
-                                <form action="GuardarEmpresa.php" method="post" data-parsley-validate novalidate>
+                                <form action="GuardarEmpresa.php" id="formempresas" method="post" data-parsley-validate novalidate>
 								<div class="form-group">
                                     <label for="rut">
                                         RUT*</label>
@@ -171,32 +281,7 @@ $(document).ready(function(){
 								<script type="text/javascript">
                                     $(document).ready(function(){
                                         
-										/*Cargar Regiones */
-										$.getJSON("scripts/cargar-regiones.php",function(json){
-											$.each(json.regiones,function(i,region){
-													$('#region').append("<option value=\"" + region.code + "\">" + region.name + "</option>")
-											});
-										});
-										
-										/*Cargar comunas de region seleccionada*/
-                                        $("#region").change(function(event, idComuna){
-											/*Limpio el html que esta dentro del select*/
-											$('#comuna').html("");
-											$('#comuna').append("<option value=\"\"> --Seleccione-- </option>")											
-											$.getJSON("scripts/dependencia-comuna.php",{code:$(this).val()},function(json){
-												$.each(json.comunas,function(i,comuna){
-													if(typeof idComuna != "undefined")	
-													{
-														var selected = (idComuna == comuna.code) ? "selected=\"selected\"" : "";
-														$('#comuna').append("<option value=\"" + comuna.code + "\" "+selected+">" + comuna.name + "</option>");
-													}
-													else
-													{
-														$('#comuna').append("<option value=\"" + comuna.code + "\">" + comuna.name + "</option>");
-													}
-												});
-											});
-										});									  
+																		  
                                     });
 
                                 </script>
@@ -205,15 +290,13 @@ $(document).ready(function(){
                                 <div class="form-group">
                                     <label for="region">
                                         Región*</label>
-                                    <select class="selectpicker  form-control" data-style="btn-white" id="region" name="region">
-                                       
+                                    <select class="selectpicker  form-control" data-style="btn-white" id="region" name="region" >
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="comuna">
                                         Comuna*</label>
                                     <select class="selectpicker  form-control" data-style="btn-white"  id="comuna" name="comuna">
-                                        
                                     </select>
                                 </div>
 
@@ -240,6 +323,9 @@ $(document).ready(function(){
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
                                     </button>
+									<a class="btn btn-default waves-effect waves-light m-l-5" href="ListadoEmpresa.php">
+											<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
+								    </a>
                                 </div>
                                 </form>
                             </div>
