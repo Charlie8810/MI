@@ -194,7 +194,7 @@ $(document).ready(function(){
                                 <div class="form-group">
                                     <label for="emailAddress">
                                         Email*</label>
-                                    <input type="email" name="email" parsley-trigger="change" placeholder="Ingresar Email"
+                                    <input type="email" name="email" parsley-trigger="change" required placeholder="Ingresar Email"
                                         class="form-control" id="email">
                                 </div>
                                 <div class="form-group">
@@ -289,7 +289,7 @@ $(document).ready(function(){
                                 <div class="form-group">
                                     <label for="phone">
                                         Celular*</label>
-                                    <input type="phone" name="celular" parsley-trigger="change" required placeholder="Ingresar Teléfono de Contacto"
+                                    <input type="phone" name="celular" parsley-trigger="change"  placeholder="Ingresar Teléfono de Contacto"
                                         class="form-control" id="celular">
                                 </div>
                                 <div class="form-group text-right m-b-0">

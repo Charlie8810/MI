@@ -64,7 +64,7 @@
                                         alt="img">
                                     <h4>
                                         Manage Users<br />&nbsp;<br /></h4>
-                                    <a href="../mi/mantenedores/registroUsuarios.php" class="btn btn-sm btn-pink m-t-20">
+                                    <a href="../mantenedores/registroUsuarios.php" class="btn btn-sm btn-pink m-t-20">
                                         Enter</a>
                                     
                                 </div>
@@ -79,13 +79,29 @@
                                         alt="img">
                                     <h4>
                                         Course Manager<br />&nbsp;<br /></h4>
-                                   <a href="../mantenedores/MantenedorCursos.php" class="btn btn-sm btn-pink m-t-20">
+                                   <a href="../mantenedores/ListadoCursos.php" class="btn btn-sm btn-pink m-t-20">
                                         Enter</a>
                                    
                                 </div>
                             </div>
-                        </div>						                        <div class="col-lg-2">                            <div class="card-box p-0">                                <div class="profile-widget text-center">                                    <div class="bg-warning bg-profile">                                    </div>                                    <img src="../assets/images/panel/academico.jpg" class="thumb-lg img-circle img-thumbnail"                                        alt="img">                                    <h4>                                        Academic Manager<br />&nbsp;<br /></h4>                                   <a href="#" class="btn btn-sm btn-pink m-t-20">                                        Enter</a>                                                                   </div>                            </div>                        </div>						
-                        <div class="col-lg-2">
+                        </div>	
+						<div class="col-lg-2">  
+							<div class="card-box p-0">  
+								<div class="profile-widget text-center">     
+								<div class="bg-warning bg-profile">      
+								</div>
+								
+								<img src="../assets/images/panel/academico.jpg" 
+								class="thumb-lg img-circle img-thumbnail"   
+								alt="img">                                   
+								<h4>Academic Manager<br />&nbsp;<br /></h4>   
+								<a href="../mantenedores/ListadoEjercicios.php" class="btn btn-sm btn-pink m-t-20">  
+								Enter</a>    
+								</div>     
+								</div>       
+						   </div>						
+						</div>						
+                        <!-- <div class="col-lg-2">
                             <div class="card-box p-0">
                                 <div class="profile-widget text-center">
                                     <div class="bg-custom bg-profile">
@@ -114,7 +130,7 @@
                                    
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <!-- end row-->
                 </div>
