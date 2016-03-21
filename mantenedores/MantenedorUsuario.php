@@ -1,5 +1,10 @@
 <?php 
 session_start(); 
+
+include("scripts/clases/class.mysql.php");
+include("scripts/clases/class.data.usuario.php");
+
+$idUsuario = isset($_REQUEST["u"]) ? $_REQUEST["u"] : false;
 ?>
 
 <!DOCTYPE html>
@@ -65,11 +70,10 @@ session_start();
 		}
 		
 		
-		
 	})
 	
 	
-					<?php if(isset($_SESSION["guardadooklogin"])){ ?>
+		<?php if(isset($_SESSION["guardadooklogin"])){ ?>
 				BootstrapDialog.show({
 					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
 					message: '<h5>Usuario guardado correctamente!</h5>',
@@ -85,6 +89,27 @@ session_start();
 					size: BootstrapDialog.SIZE_SMALL
 				});
 			<?php unset($_SESSION["guardadooklogin"]); } ?>
+			
+			/*Cargar personas */
+			$.getJSON("scripts/cargar-persona.php",function(json){
+				$.each(json.personas,function(i,persona){
+						$('#persona').append("<option value=\"" + persona.code + "\">" + persona.name + "</option>")
+				});
+			});
+		
+			<?php $data = new Usuario();	
+				if($idUsuario){ 
+					$usu = $data->obtenerUsuario($idUsuario);
+			?>
+			
+			$("#persona").val('<?php echo $usu->idPersona; ?>');
+			$("#login").val('<?php echo $usu->Login; ?>');
+			$("#estado").val('<?php echo $usu->Estado; ?>');
+			 
+						
+			<?php } ?> 
+			
+			
 		
 	});
 	
@@ -127,15 +152,6 @@ session_start();
                                     <b>Datos a Ingresar</b></h4>
                                 <form action="registroUsuario.php" id="formlogin" method="POST" data-parsley-validate novalidate>
                                    <script type="text/javascript">
-									$(document).ready(function(){
-                                        
-										/*Cargar personas */
-										$.getJSON("scripts/cargar-persona.php",function(json){
-											$.each(json.personas,function(i,persona){
-													$('#persona').append("<option value=\"" + persona.code + "\">" + persona.name + "</option>")
-											});
-										});
-                                    });
 
                                 </script>
                                 <div class="form-group">
@@ -179,6 +195,10 @@ session_start();
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
                                     </button>
+									
+									<a class="btn btn-default waves-effect waves-light m-1-5" href="ListadoUsuario.php">
+										Volver
+									</a>
                                 </div>
                                 </form>
                             </div>

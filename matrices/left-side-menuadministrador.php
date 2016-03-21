@@ -17,7 +17,7 @@
 						<li class="has_sub"><a href="ListadoIdioma.php" class="waves-effect"><span>Idioma</span> </a></li>
 						<li class="has_sub"><a href="ListadoEstado.php" class="waves-effect"><span>State</span> </a></li>
 						<li class="has_sub"><a href="ListarPerfil.php" class="waves-effect"><span>Profile</span> </a></li>
-						<li class="has_sub"><a href="MantenedorUsuario.php" class="waves-effect"><span>User</span> </a></li>
+						<li class="has_sub"><a href="ListadoUsuario.php" class="waves-effect"><span>User</span> </a></li>
 						<li class="has_sub"><a href="ListadoCursos.php" class="waves-effect"><span>Course</span> </a></li>
 						<li class="has_sub"><a href="ListadoEjercicios.php" class="waves-effect"><span>Exercise</span> </a></li>
 						
