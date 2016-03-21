@@ -33,6 +33,9 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
+			
+			var indice = 0;
+			
 			$("#btnAgregar").click(function(){
 				
 				if($("#tipo_ejercicio").val() == "3")
@@ -63,8 +66,20 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 					$("#dvP1").fadeOut("slow");
 					$("#dvPB1").fadeIn("slow");
 				}
+				else if($(this).val() == "4")
+				{
+					$("#dvP1").fadeOut("fast");
+					$("#dvPB1").fadeOut("fast");
+				}
 				
 			});
+			
+			
+			$("#btAgregarRespuetaAudio").click(function(){
+				$("#dvRespuestasAudio").append("<br/><input type=\"text\" name=\"respuestas_audio[]\" class=\"resp_audio\" style=\"width: 350px; margin-bottom: 3px;\" indice=\""+indice+"\" /> <button class=\"btEliminarAudioCurrent\" type=\"button\" onclick=\"eliminar_audio(this)\" indice=\""+indice+"\">-</button>");				
+				indice++;
+			});
+			
 			
 			<?php if(isset($_SESSION["cuestionariook"])){ ?>
 				BootstrapDialog.show({
@@ -97,9 +112,17 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 						
 			<?php } ?>
 			
-			
-			
 		});
+		
+		function eliminar_audio(elm)
+		{	
+			var elmArray = $("#dvRespuestasAudio > button.btEliminarAudioCurrent");
+			var rspArray = $("#dvRespuestasAudio > input.resp_audio");
+			var idx = $(elm).attr("indice");
+			
+			$(rspArray[idx + 1]).remove();
+			$(elmArray[idx]).remove();
+		}
 	</script>	
 </head>
 <body class="fixed-left">
@@ -230,7 +253,27 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 												</div>
 											
 											<?php endif; ?>
-										<?php }else{  
+										<?php }
+										
+										else if($ejercicio->IdTipo == 3){
+											
+										?>	
+											
+										<div id="dvPBAudio">
+											<div class="form-group">
+												<label for="P1">
+													Orden Audio*</label>
+												<pre>
+													<input type="file" class="tm_audio" name="tm_audio[]" />
+													<input type="text" name="respuestas_audio[]" class="resp_audio" />
+												</pre>
+											</div>
+										</div>	
+										
+											
+										<?php		
+											
+										}else{  
 											$preguntas = $data->obtenerGrupoPreguntasPorEjercicioGestor($idEjercicio);
 										?>
 											<?php 
@@ -278,6 +321,21 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 												</pre>
 											</div>
 										</div>
+										
+										<div id="dvPBAudio">
+											<div class="form-group">
+												<label for="P1">
+													Orden Audio*</label>
+												<div>
+													<input type="file" class="tm_audio" name="tm_audio[]" />
+													<h6>Respuestas</h6>
+													<div id="dvRespuestasAudio">
+														<input type="text" name="respuestas_audio[]" class="resp_audio" style="width: 350px; margin-bottom: 3px;" /> <button id="btAgregarRespuetaAudio" type="button">+</button>
+													</div>
+													
+												</div>
+											</div>
+										</div>	
 										
 										<?php } ?>
 										

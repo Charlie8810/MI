@@ -29,7 +29,7 @@ if($curso != false && $fase != false && $tipo_ejercicio != false)
 	$ejercicio->Nombre = $nombre_ejercicio;
 	$idEjercicio = $data->guardarEjercicio($ejercicio);
 	
-	//nuevo tipo de preguntas
+	//Terminos pareados
 	if($tipo_ejercicio == 3)
 	{
 		if($idEjercicio)
@@ -51,7 +51,12 @@ if($curso != false && $fase != false && $tipo_ejercicio != false)
 			
 		}
 	}
-	else
+	else if($tipo_ejercicio == 4)
+	{
+		
+	}
+	//PReguntas de completar
+	else if($tipo_ejercicio == 1 || $tipo_ejercicio == 2)
 	{
 		if($idEjercicio)
 		{
