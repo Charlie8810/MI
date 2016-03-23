@@ -144,7 +144,7 @@ include("scripts/clases/class.data.idioma.php");
 											<td><?php echo $idioma->id_Idioma; ?></td>
 											<td><?php echo $idioma->Nombre; ?></td>
 											<td><?php echo $idioma->Descripcion; ?></td>
-											<td><?php echo $idioma->Vigente; ?></td>
+											<td><?php echo ($idioma->Vigente)? "Si" : "No" ; ?></td>
 										</tr>
 									<?php endforeach;?>
 									</tbody>

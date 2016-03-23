@@ -38,6 +38,38 @@ class RelacionEmpresaDepartamento extends MySQL
 		}
 	}
 	
+	function RelacionEmpresaDepartamentoParaCursos()
+	{
+			$sql = "SELECT
+		        relacionempresadepto.IdRelacionEmpresaDepto,
+				CONCAT(empresa.RazonSocial, ' - ', departamento.Nombre) as Nombres
+
+				from relacionempresadepto
+				inner join empresa on empresa.IdEmpresa = relacionempresadepto.IdEmpresa
+				inner join departamento on departamento.IdDepartamento = relacionempresadepto.IdDepartamento
+				where relacionempresadepto.Vigente = 1
+				order by CONCAT(empresa.RazonSocial, ' - ', departamento.Nombre) asc";
+				
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$relacion = array();
+			while($p = parent::fetch_assoc($consulta))
+			{
+				$relacion = new stdclass();
+				$relacion->code = $p["IdRelacionEmpresaDepto"];
+				$relacion->name = $p["Nombres"];				
+				$relaciones[]=$relacion;
+			}
+			return $relaciones;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 	function obtenerEmpresa($IdEmpresa)
 	{
 		$sql = "SELECT * FROM empresa WHERE IdEmpresa = ".$IdEmpresa.";";

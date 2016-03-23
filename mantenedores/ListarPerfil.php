@@ -108,10 +108,10 @@ include("scripts/clases/class.data.perfil.php");
                     <div class="row">
                         <div class="col-sm-12">
                             <h4 class="page-title">
-                                Listado de Ejercicios</h4>
+                                Listado de Perfiles</h4>
                             <ol class="breadcrumb">
                                 <li><a href="/mi/mantenedores/panelControl.php">Inicio</a></li>
-                                <li class="active">Registro de Cursos / Ejercicios</li>
+                                <li class="active">Registro de Perfiles</li>
                             </ol>
                         </div>
                     </div>
@@ -144,7 +144,7 @@ include("scripts/clases/class.data.perfil.php");
 											<td><?php echo $perfil->IdPerfil; ?></td>
 											<td><?php echo $perfil->Nombre; ?></td>
 											<td><?php echo $perfil->Descripcion; ?></td>
-											<td><?php echo $perfil->Vigente; ?></td>
+											<td><?php echo ($perfil->Vigente)? "Si" : "No" ; ?></td>
 										</tr>
 									<?php endforeach;?>
 									</tbody>

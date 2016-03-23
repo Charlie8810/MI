@@ -108,10 +108,10 @@ include("scripts/clases/class.data.ParametroGlobal.php");
                     <div class="row">
                         <div class="col-sm-12">
                             <h4 class="page-title">
-                                Listado de Ejercicios</h4>
+                                Listado de Parametro Global</h4>
                             <ol class="breadcrumb">
                                 <li><a href="/mi/mantenedores/panelControl.php">Inicio</a></li>
-                                <li class="active">Registro de Cursos / Ejercicios</li>
+                                <li class="active">Registro de Parametro </li>
                             </ol>
                         </div>
                     </div>

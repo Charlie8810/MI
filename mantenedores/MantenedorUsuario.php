@@ -184,10 +184,10 @@ $idUsuario = isset($_REQUEST["u"]) ? $_REQUEST["u"] : false;
 
 								   <div class="form-group">
                                     <label for="userName">
-                                        Estado</label>
+                                        Vigente</label>
                                     <select name="estado" class="selectpicker  form-control" data-style="btn-white" id="estado">
-                                        <option value="1" >Activo</option>
-                                        <option value="2" >No Activo</option>
+                                        <option value="1" >Si</option>
+                                        <option value="0" >No</option>
                                     </select>
                                 </div>
 								

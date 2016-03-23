@@ -128,7 +128,7 @@ include("scripts/clases/class.data.usuario.php");
 											<th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
 											<th data-column-id="id" data-type="numeric">ID</th>
 											<th data-column-id="Login">Login</th>
-											<th data-column-id="Estado">Estado</th>
+											<th data-column-id="Estado">Vigente</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -142,7 +142,7 @@ include("scripts/clases/class.data.usuario.php");
 											<td></td>
 											<td><?php echo $usu->idPersona; ?></td>
 											<td><?php echo $usu->Login; ?></td>
-											<td><?php echo $usu->Estado; ?></td>
+											<td><?php echo ($usu->Estado)? "Si" : "No" ; ?></td>
 										</tr>
 									<?php endforeach;?>
 									</tbody>
