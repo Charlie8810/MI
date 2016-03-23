@@ -91,9 +91,9 @@
                                     $(document).ready(function(){
                                         									
 										/*Cargar empresas */
-										$.getJSON("scripts/cargar-empresas.php",function(json){
-											$.each(json.empresas,function(i,empresa){
-													$('#empresa').append("<option value=\"" + empresa.code + "\">" + empresa.name + "</option>")
+										$.getJSON("scripts/cargar-relempresasdepartamento.php",function(json){
+											$.each(json.relaciones,function(i,relacionesdepto){
+													$('#empresa').append("<option value=\"" + relacionesdepto.code + "\">" + relacionesdepto.name + "</option>")
 											});
 										});
 										
@@ -133,14 +133,6 @@
                                 </div>
 
 								<div class="form-group">
-                                    <label for="nivel">
-                                        Nivel</label>
-                                    <select name="nivel" id="nivel" class="selectpicker  form-control" data-style="btn-white">
-                                        <option value="0">- - Seleccione - - </option>
-                                    </select>
-                                </div>
-
-								<div class="form-group">
                                     <label for="idioma">
                                         Idioma</label>
                                     <select name="idioma" id="idioma" class="selectpicker  form-control" data-style="btn-white">
@@ -150,7 +142,7 @@
 								
                                 <div class="form-group">
                                     <label for="empresa">
-                                        Empresa</label>
+                                        Empresa - Departamento</label>
                                     <select name="empresa" id="empresa" class="selectpicker  form-control" data-style="btn-white">
                                         <option value="0" >- - Seleccione - - </option>
                                     </select>
@@ -172,8 +164,6 @@
                                         class="form-control" >
                                 </div>
        								
-													
-								
                                 <div class="form-group text-right m-b-0">
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar

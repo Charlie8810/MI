@@ -1,10 +1,10 @@
 <?php 
 session_start(); 
-
 include("scripts/clases/class.mysql.php");
-include("scripts/clases/class.data.usuario.php");
+include("scripts/clases/class.data.departamento.php");
 
-$idUsuario = isset($_REQUEST["u"]) ? $_REQUEST["u"] : false;
+$idDepartamento = isset($_REQUEST["d"]) ? $_REQUEST["d"] : false;
+
 ?>
 
 <!DOCTYPE html>
@@ -15,108 +15,56 @@ $idUsuario = isset($_REQUEST["u"]) ? $_REQUEST["u"] : false;
     <meta name="description" content="">
     <meta name="author" content="insidehead">
     <link rel="shortcut icon" href="assets/images/favicon.png">
+	<?php include("../matrices/js.php");?>
     <title>MI - MCM Interactive Learning</title>
     <?php include("../matrices/css.php");?>
-		<script>
+    <script>
         var resizefunc = [];
     </script>
-    <!-- jQuery  -->
-    <?php include("../matrices/js.php");?>
-    <script src="../assets/js/modernizr.min.js"></script>
-	<link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
-	<script src="../assets/jquery/bootstrap-dialog.min.js"></script>
 
-	<script>
+    <script src="../assets/js/modernizr.min.js"></script>
+    <link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+    <script src="../assets/jquery/bootstrap-dialog.min.js"></script>
+
+     <script>
 	$(document).ready(function(){ 
-	
-	$('#formlogin').submit(function(){
 		
-		if($("#pass").val() != $("#repContrasena").val())
-		{
-			BootstrapDialog.show({
-					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Contraseñas no iguales',
-					message: '<h5>Las contrasenas no coinciden!</h5>',
-					closable: true,
-					draggable: true,
-					buttons: [{
-						label: 'Ok',
-						action: function(dialogItself){
-							dialogItself.close();
-						}
+	<?php if(isset($_SESSION["guardadookdepartamento"])){ ?>
+	    BootstrapDialog.show({
+			title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
+			message: '<h5>Departamento guardado correctamente!</h5>',
+			closable: true,
+		    draggable: true,
+			buttons: [{
+				label: 'Ok',
+				action: function(dialogItself){
+				dialogItself.close();
+			     	}
 					}],
-					type: BootstrapDialog.TYPE_WARNING,
+				type: BootstrapDialog.TYPE_SUCCESS,
 					size: BootstrapDialog.SIZE_SMALL
 				});
-			return false;
-		}
-		
-		if($("#persona").val() == '0')
-		{
-			BootstrapDialog.show({
-					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validación',
-					message: '<h5>Debe seleccionar un usuario</h5>',
-					closable: true,
-					draggable: true,
-					buttons: [{
-						label: 'Ok',
-						action: function(dialogItself){
-							dialogItself.close();
-						}
-					}],
-					type: BootstrapDialog.TYPE_WARNING,
-					size: BootstrapDialog.SIZE_SMALL
-				});
-			return false;
-		}
-		
-		
-	})
+			<?php unset($_SESSION["guardadookdepartamento"]); } ?>
 	
 	
-		<?php if(isset($_SESSION["guardadooklogin"])){ ?>
-				BootstrapDialog.show({
-					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
-					message: '<h5>Usuario guardado correctamente!</h5>',
-					closable: true,
-					draggable: true,
-					buttons: [{
-						label: 'Ok',
-						action: function(dialogItself){
-							dialogItself.close();
-						}
-					}],
-					type: BootstrapDialog.TYPE_SUCCESS,
-					size: BootstrapDialog.SIZE_SMALL
-				});
-			<?php unset($_SESSION["guardadooklogin"]); } ?>
-			
-			/*Cargar personas */
-			$.getJSON("scripts/cargar-persona.php",function(json){
-				$.each(json.personas,function(i,persona){
-						$('#persona').append("<option value=\"" + persona.code + "\">" + persona.name + "</option>")
-				});
-			});
-		
-			<?php $data = new Usuario();	
-				if($idUsuario){ 
-					$usu = $data->obtenerUsuario($idUsuario);
-			?>
-			
-			$("#persona").val('<?php echo $usu->idPersona; ?>');
-			$("#login").val('<?php echo $usu->Login; ?>');
-			$("#estado").val('<?php echo $usu->Estado; ?>');
-			 
-						
-			<?php } ?> 
-			
-			
-		
-	});
+    <?php $departamento = null;
+          $data = new Departamento(); 
+        if($idDepartamento){ 
+            $departamento = $data->obtenerDepartamento($idDepartamento);
+    ?>
+    
+    $("#nombre").val('<?php echo $departamento->Nombre; ?>');
+    $("#vigente").val('<?php echo $departamento->Vigente; ?>');
+	$("#IdDepartamento").val('<?php echo $departamento->IdDepartamento; ?>');
 	
+                
+    <?php } ?>
+            
+            
+    });
 	
 	</script>
-
-	
+                    
 </head>
 <body class="fixed-left">
     <!-- Begin page -->
@@ -142,7 +90,7 @@ $idUsuario = isset($_REQUEST["u"]) ? $_REQUEST["u"] : false;
                     <div class="row">
                         <div class="col-sm-12">
                             <h4 class="page-title">
-                                Mantenedores de Usuario</h4>
+                                Mantenedores de Departamento</h4>
                         </div>
                     </div>
                     <div class="row">
@@ -150,55 +98,32 @@ $idUsuario = isset($_REQUEST["u"]) ? $_REQUEST["u"] : false;
                             <div class="card-box">
                                 <h4 class="m-t-0 header-title">
                                     <b>Datos a Ingresar</b></h4>
-                                <form action="registroUsuario.php" id="formlogin" method="POST" data-parsley-validate novalidate>
-                                   <script type="text/javascript">
-
-                                </script>
+                                <form action="registroDepartamento.php" method="POST" data-parsley-validate novalidate>
                                 <div class="form-group">
                                     <label for="userName">
-                                        Persona</label>
-                                    <select name="persona" id="persona" class="selectpicker  form-control" data-style="btn-white">
-									<option value="0">- - Seleccione - - </option>
-                                      
-                                    </select>
-
-                                    <label for="userName">
-                                        Login</label>
-                                    <input type="text" name="login" parsley-trigger="change" required placeholder="Ingresar Nombre login"
-                                        class="form-control" id="login">
+                                        Nombre*</label>
+                                    <input type="text" name="nombre" parsley-trigger="change" required placeholder=" Nombre Departamento "
+                                        class="form-control" id="nombre">
                                 </div>
-								
+								                               
                                 <div class="form-group">
                                     <label for="userName">
-                                        Contraseña</label>
-                                    <input type="password" name="pass" parsley-trigger="change" required placeholder="Ingresar contraseña"
-                                        class="form-control" id="pass">
-                                </div> 
-								
-								<div class="form-group">
-                                    <label for="userName">
-                                        Repetir Contraseña</label>
-                                    <input type="password" name="repContrasena" parsley-trigger="change" required placeholder="Repetir Contraseña"
-                                        class="form-control" id="repContrasena">
-                                </div> 
-
-								   <div class="form-group">
-                                    <label for="userName">
-                                        Vigente</label>
-                                    <select name="estado" class="selectpicker  form-control" data-style="btn-white" id="estado">
-                                        <option value="1" >Si</option>
-                                        <option value="0" >No</option>
+                                        Vigente*</label>
+                                    <select class="selectpicker  form-control" data-style="btn-white" id="vigente" name="vigente">
+                                        <option Value = "1" > Si </option>
+                                        <option Value = "0" > No </option>
+                                        
+                                        
                                     </select>
-                                </div>
-								
+                                </div>       
                                 <div class="form-group text-right m-b-0">
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
                                     </button>
-									
-									<a class="btn btn-default waves-effect waves-light m-1-5" href="ListadoUsuario.php">
-										Volver
-									</a>
+                                    <a class="btn btn-default waves-effect waves-light m-l-5" href="ListadoDepartamento.php">
+                                            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
+                                    </a>
+									<input type="hidden" name="IdDepartamento" id="IdDepartamento" value="" />
                                 </div>
                                 </form>
                             </div>
@@ -286,7 +211,7 @@ $idUsuario = isset($_REQUEST["u"]) ? $_REQUEST["u"] : false;
  -->
     </div>
     <!-- END wrapper -->
-
-	<script src="../assets/js/jquery.app.js"></script>
-</body>
+     <!-- jQuery  -->
+     <script src="../assets/js/jquery.app.js"></script>
+    </body>
 </html>

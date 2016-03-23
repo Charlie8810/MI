@@ -114,10 +114,10 @@ $idPefil = isset($_REQUEST["p"]) ? $_REQUEST["p"] : false;
                                 
                                 <div class="form-group">
                                     <label for="userName">
-                                        Estado*</label>
+                                        Vigente*</label>
                                     <select class="selectpicker  form-control" data-style="btn-white" id="vigente" name="vigente">
-                                        <option Value = "1" > Activo </option>
-                                        <option Value = "0" > No Activo </option>
+                                        <option Value = "1" > SI </option>
+                                        <option Value = "0" > NO </option>
                                         
                                         
                                     </select>

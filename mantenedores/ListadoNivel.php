@@ -144,7 +144,7 @@ include("scripts/clases/class.data.nivel.php");
 											<td><?php echo $niv->Id_Nivel; ?></td>
 											<td><?php echo $niv->Nombre; ?></td>
 											<td><?php echo $niv->Descripcion; ?></td>
-											<td><?php echo $niv->Vigente; ?></td>
+											<td><?php echo ($niv->Vigente)? "Si" : "No" ; ?></td>
 										</tr>
 									<?php endforeach;?>
 									</tbody>

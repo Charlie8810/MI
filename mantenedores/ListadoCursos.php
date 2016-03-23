@@ -133,7 +133,9 @@ include("scripts/clases/class.combos.php");
 											<th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
 											<th data-column-id="id" data-type="numeric">ID</th>
 											<th data-column-id="nombre">Nombre</th>
-											<th data-column-id="nivel">Nivel</th>
+											<th data-column-id="profesor">Profesor</th>
+											<th data-column-id="idioma">Idioma</th>
+											<th data-column-id="empresa">Departamento</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -147,7 +149,9 @@ include("scripts/clases/class.combos.php");
 											<td></td>
 											<td><?php echo $curso->IdCurso; ?></td>
 											<td><?php echo $curso->Nombre; ?></td>
-											<td><?php echo $curso->IdNivel; ?></td>
+											<td><?php echo $curso->Profesor; ?></td>
+											<td><?php echo $curso->Idioma; ?></td>
+											<td><?php echo $curso->Empresa; ?></td>
 										</tr>
 									<?php endforeach;?>
 									</tbody>

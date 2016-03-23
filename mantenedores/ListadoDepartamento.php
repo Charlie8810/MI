@@ -1,7 +1,7 @@
 <?php 
 session_start(); 
 include("scripts/clases/class.mysql.php");
-include("scripts/clases/class.data.usuario.php");
+include("scripts/clases/class.data.departamento.php");
 
 ?>
 <!DOCTYPE html>
@@ -44,18 +44,18 @@ include("scripts/clases/class.data.usuario.php");
 			}).on("loaded.rs.jquery.bootgrid", function(){
 				/* Executes after data is loaded and rendered */
 				grid.find(".command-edit").on("click", function(e){
-					location.href="MantenedorUsuario.php?u=" + $(this).data("row-id");
+					location.href="MantenedorDepartamento.php?d=" + $(this).data("row-id");
 				}).end().find(".command-delete").on("click", function(e){
 					var idEliminar = $(this).data("row-id");
 					BootstrapDialog.confirm({
 						title: '<span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Confirmacion',
-						message: '¿En Realidad desea eliminar el Usuario?',
+						message: '¿En Realidad desea eliminar el Departamento?',
 						draggable: true,
 						type: BootstrapDialog.TYPE_WARNING,
 						size: BootstrapDialog.SIZE_SMALL,
 						callback: function(result){
 							if(result) {
-								location.href="acciones/elimina_usuario.php?u=" + idEliminar;
+								location.href="acciones/elimina_departamento.php?d=" + idEliminar;
 							}
 						}
 					});
@@ -63,11 +63,11 @@ include("scripts/clases/class.data.usuario.php");
 			});
 			
 			
-			<?php if(isset($_SESSION["UsuarioEliminado"])){ ?>
+			<?php if(isset($_SESSION["EliminadoDepartamentoOk"])){ ?>
 				
 				BootstrapDialog.show({
-					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Eliminado Correcto',
-					message: '<h5>Usuario Eliminado correctamente!</h5>',
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Eliminacion Correcta',
+					message: '<h5>Departamento Eliminado correctamente!</h5>',
 					closable: true,
 					draggable: true,
 					buttons: [{
@@ -79,7 +79,7 @@ include("scripts/clases/class.data.usuario.php");
 					type: BootstrapDialog.TYPE_SUCCESS,
 					size: BootstrapDialog.SIZE_SMALL
 				});
-			<?php unset($_SESSION["UsuarioEliminado"]); } ?>
+			<?php unset($_SESSION["EliminadoDepartamentoOk"]); } ?>
 			
 			
 		});
@@ -108,18 +108,18 @@ include("scripts/clases/class.data.usuario.php");
                     <div class="row">
                         <div class="col-sm-12">
                             <h4 class="page-title">
-                                Listado de Usuarios</h4>
+                                Listado de Departamento</h4>
                             <ol class="breadcrumb">
                                 <li><a href="/mi/mantenedores/panelControl.php">Inicio</a></li>
-                                <li class="active">Registro de Usuarios / Usuarios</li>
+                                <li class="active">Registro de Departamento / Departamento</li>
                             </ol>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card-box">
-								<a class="btn btn-primary waves-effect waves-light" href="MantenedorUsuario.php">
-									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo Usuario
+								<a class="btn btn-primary waves-effect waves-light" href="MantenedorDepartamento.php">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo Departamento
 								</a>
 							
 								<table id="grid-basic" class="table table-condensed table-hover table-striped">
@@ -127,22 +127,22 @@ include("scripts/clases/class.data.usuario.php");
 										<tr>
 											<th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
 											<th data-column-id="id" data-type="numeric">ID</th>
-											<th data-column-id="Login">Login</th>
-											<th data-column-id="Estado">Vigente</th>
+											<th data-column-id="nombre">Nombre</th>
+											<th data-column-id="vigente">vigente</th>
 										</tr>
 									</thead>
 									<tbody>
 									
-									<?php $data = new Usuario(); 
+									<?php $data = new Departamento(); 
 									
-									$listarUsuarios = $data->listarUsuario();
-									foreach($listarUsuarios as $usu):
+									$listadoDepartamento = $data->listarDepartamento();
+									foreach($listadoDepartamento as $departamento):
 									?>
 										<tr>
 											<td></td>
-											<td><?php echo $usu->idPersona; ?></td>
-											<td><?php echo $usu->Login; ?></td>
-											<td><?php echo ($usu->Estado)? "Si" : "No" ; ?></td>
+											<td><?php echo $departamento->IdDepartamento; ?></td>
+											<td><?php echo $departamento->Nombre; ?></td>
+											<td><?php echo ($departamento->Vigente)? "Si" : "No" ; ?></td>
 										</tr>
 									<?php endforeach;?>
 									</tbody>

@@ -1,7 +1,7 @@
 <?php 
 session_start(); 
 include("scripts/clases/class.mysql.php");
-include("scripts/clases/class.data.usuario.php");
+include("scripts/clases/class.data.relacionempresadepto.php");
 
 ?>
 <!DOCTYPE html>
@@ -32,56 +32,19 @@ include("scripts/clases/class.data.usuario.php");
     <script type="text/javascript" src="../assets/plugins/parsleyjs/dist/parsley.min.js"></script>
 	<script>
 		$(document).ready(function(){
-			BootstrapDialog.DEFAULT_TEXTS['CANCEL'] = 'Cancelar';
 			var grid = $("#grid-basic").bootgrid({
 				formatters: {
 					"commands": function(column, row)
 					{
-						return 	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " + 
-								"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button> " ;
+						return 	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " 
 					}
 				}
 			}).on("loaded.rs.jquery.bootgrid", function(){
 				/* Executes after data is loaded and rendered */
 				grid.find(".command-edit").on("click", function(e){
-					location.href="MantenedorUsuario.php?u=" + $(this).data("row-id");
-				}).end().find(".command-delete").on("click", function(e){
-					var idEliminar = $(this).data("row-id");
-					BootstrapDialog.confirm({
-						title: '<span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Confirmacion',
-						message: '¿En Realidad desea eliminar el Usuario?',
-						draggable: true,
-						type: BootstrapDialog.TYPE_WARNING,
-						size: BootstrapDialog.SIZE_SMALL,
-						callback: function(result){
-							if(result) {
-								location.href="acciones/elimina_usuario.php?u=" + idEliminar;
-							}
-						}
-					});
+					location.href="GestorAsociacion_EmpDepPersona.php?rel=" + $(this).data("row-id");
 				});
 			});
-			
-			
-			<?php if(isset($_SESSION["UsuarioEliminado"])){ ?>
-				
-				BootstrapDialog.show({
-					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Eliminado Correcto',
-					message: '<h5>Usuario Eliminado correctamente!</h5>',
-					closable: true,
-					draggable: true,
-					buttons: [{
-						label: 'Ok',
-						action: function(dialogItself){
-							dialogItself.close();
-						}
-					}],
-					type: BootstrapDialog.TYPE_SUCCESS,
-					size: BootstrapDialog.SIZE_SMALL
-				});
-			<?php unset($_SESSION["UsuarioEliminado"]); } ?>
-			
-			
 		});
 	</script>
 	
@@ -108,41 +71,40 @@ include("scripts/clases/class.data.usuario.php");
                     <div class="row">
                         <div class="col-sm-12">
                             <h4 class="page-title">
-                                Listado de Usuarios</h4>
+                                Listado de Relacion Empresa Departamento</h4>
                             <ol class="breadcrumb">
                                 <li><a href="/mi/mantenedores/panelControl.php">Inicio</a></li>
-                                <li class="active">Registro de Usuarios / Usuarios</li>
+                                <li class="active">Registro Relacion Empresa Departamento</li>
                             </ol>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card-box">
-								<a class="btn btn-primary waves-effect waves-light" href="MantenedorUsuario.php">
-									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo Usuario
-								</a>
 							
 								<table id="grid-basic" class="table table-condensed table-hover table-striped">
 									<thead>
 										<tr>
 											<th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
 											<th data-column-id="id" data-type="numeric">ID</th>
-											<th data-column-id="Login">Login</th>
-											<th data-column-id="Estado">Vigente</th>
+											<th data-column-id="nombre">Empresa</th>
+											<th data-column-id="descripcion">Departamento</th>
+											<th data-column-id="vigente">Vigente</th>
 										</tr>
 									</thead>
 									<tbody>
 									
-									<?php $data = new Usuario(); 
+									<?php $data = new RelacionEmpresaDepartamento(); 
 									
-									$listarUsuarios = $data->listarUsuario();
-									foreach($listarUsuarios as $usu):
+									$listadorelacion = $data->listarRelacionEmpresaDepartamento();
+									foreach($listadorelacion as $relacion):
 									?>
 										<tr>
 											<td></td>
-											<td><?php echo $usu->idPersona; ?></td>
-											<td><?php echo $usu->Login; ?></td>
-											<td><?php echo ($usu->Estado)? "Si" : "No" ; ?></td>
+											<td><?php echo $relacion->IdRelacionEmpresaDepto; ?></td>
+											<td><?php echo $relacion->Empresa; ?></td>
+											<td><?php echo $relacion->Departamento; ?></td>
+											<td><?php echo ($relacion->Vigente)? "Si" : "No" ; ?></td>
 										</tr>
 									<?php endforeach;?>
 									</tbody>

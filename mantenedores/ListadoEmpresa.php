@@ -40,6 +40,7 @@ include("scripts/clases/class.data.empresa.php");
 					"commands": function(column, row)
 					{
 						return 	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " + 
+						        "<button type=\"button\" class=\"btn btn-xs btn-default command-show\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " +
 								"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button> " ;
 					}
 				}
@@ -61,6 +62,8 @@ include("scripts/clases/class.data.empresa.php");
 							}
 						}
 					});
+				}).end().find(".command-show").on("click", function(e){
+					location.href="GestorAsociacion_EmpresaDepartamento.php?e=" + $(this).data("row-id");
 				});
 			});
 			
