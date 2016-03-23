@@ -1,68 +1,7 @@
 <?php
 
-class Data extends MySQL
+class Ejercicios extends MySQL
 {
-	
-	function cargarPersona($rut)
-	{
-		$sql = "SELECT * FROM persona WHERE Rut = '".$rut."';";
-		$consulta = parent::consulta($sql);
-		$num_total_registros = parent::num_rows($consulta);
-		if($num_total_registros>0)
-		{
-			$pr = parent::fetch_assoc($consulta);	
-			$persona = new stdclass();
-			$persona->IdPersona 		= $pr["IdPersona"];
-			$persona->Nombres 			= $pr["Nombres"];
-			$persona->ApellidoPaterno 	= $pr["ApellidoPaterno"];
-			$persona->ApellidoMaterno 	= $pr["ApellidoMaterno"];
-			$persona->Rut 				= $pr["Rut"];
-			$persona->Email 			= $pr["Email"];
-			$persona->IdPerfil 			= $pr["IdPerfil"];
-			$persona->Direccion 		= $pr["Direccion"];
-			$persona->IdRegion 			= $pr["IdRegion"];
-			$persona->IdComuna 			= $pr["IdComuna"];
-			$persona->Telefono 			= $pr["Telefono"];
-			$persona->Celular 			= $pr["Celular"];
-			$persona->IdEstado 			= $pr["IdEstado"];
-			
-			
-			return $persona;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	
-	function cargarEmpresa($rut)
-	{
-		$sql = "SELECT * FROM empresa WHERE Rut = '".$rut."';";
-		$consulta = parent::consulta($sql);
-		$num_total_registros = parent::num_rows($consulta);
-		if($num_total_registros>0)
-		{
-			$em = parent::fetch_assoc($consulta);	
-			$empresa = new stdclass();
-			$empresa->IdEmpresa 		= $em["IdEmpresa"];
-			$empresa->Rut 			    = $em["Rut"];
-			$empresa->RazonSocial 	    = $em["RazonSocial"];
-			$empresa->Direccion 	    = $em["Direccion"];
-			$empresa->IdRegion 		    = $em["IdRegion"];
-			$empresa->IdComuna 			= $em["IdComuna"];
-			$empresa->NombreContacto 	= $em["NombreContacto"];	
-			$empresa->EmailContacto 	= $em["EmailContacto"];	
-			$empresa->TelefonoContacto 	= $em["TelefonoContacto"];				
-			
-			return $empresa;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
 	
 	function guardarEjercicio($ejercicio)
 	{
@@ -70,7 +9,8 @@ class Data extends MySQL
 		if($ejercicio->IdEjercicio)
 		{
 			$sqlUpdate = "update ejercicio 
-							set IdFase = ".$ejercicio->IdFase.", 
+							set IdCurso = ".$ejercicio->IdCurso.", 
+								IdFase = ".$ejercicio->IdFase.", 
 								IdTipo = ".$ejercicio->IdTipo.", 
 								Nombre = '".$ejercicio->Nombre."'
 							where IdEjercicio = ".$ejercicio->IdEjercicio."	
@@ -80,7 +20,7 @@ class Data extends MySQL
 		}
 		else
 		{
-			$sqlInsert = "insert into ejercicio (IdFase, IdTipo, Nombre) values (".$ejercicio->IdFase.", ".$ejercicio->IdTipo.", '".$ejercicio->Nombre."');";
+			$sqlInsert = "insert into ejercicio (IdCurso, IdFase, IdTipo, Nombre) values (".$ejercicio->IdCurso.", ".$ejercicio->IdFase.", ".$ejercicio->IdTipo.", '".$ejercicio->Nombre."');";
 			$stmt = parent::consulta($sqlInsert);
 			return parent::lastInsertID();
 		}
@@ -96,6 +36,7 @@ class Data extends MySQL
 			$pr = parent::fetch_assoc($consulta);	
 			$ejercicio = new stdclass();
 			$ejercicio->IdEjercicio 		= $pr["IdEjercicio"];
+			$ejercicio->IdCurso 			= $pr["IdCurso"];
 			$ejercicio->IdFase 				= $pr["IdFase"];
 			$ejercicio->IdTipo 				= $pr["IdTipo"];
 			$ejercicio->Nombre 				= $pr["Nombre"];
@@ -214,9 +155,127 @@ class Data extends MySQL
 		}
 	}
 	
+	function obtenerAudioPreguntaPorEjercicio($idEjercicio, $rspRnd = false)
+	{
+		
+		$sql = "SELECT * FROM audiopregunta 
+			WHERE idEjercicio = ".$idEjercicio;
+			
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$aup = new stdClass();
+			$gr = parent::fetch_assoc($consulta);
+			$aup->IdPreguntaAudio = $gr["IdPreguntaAudio"];
+			$aup->IdEjercicio = $gr["IdEjercicio"];
+			$aup->RutaAudio = $gr["RutaAudio"];
+			$aup->Titulo = $gr["Titulo"];
+			$aup->Descripcion = $gr["Descripcion"];
+			$aup->Respuestas = $this->obtenerAudioRespuestaPorPregunta($gr["IdPreguntaAudio"],$rspRnd);
+			return $aup;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function obtenerAudioRespuestaPorPregunta($idPregunta, $rand = false)
+	{
+		
+		$orden = (!$rand) ? "OrdenRespuestaAudio asc" : "rand()";
+		
+		$sql = "SELECT * FROM audiorespuesta 
+			WHERE IdPreguntaAudio = ".$idPregunta."
+			ORDER BY ".$orden;
+		
+		$lista = array();
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			while($gr = parent::fetch_assoc($consulta))
+			{
+				$respuesta = new stdClass();
+				$respuesta->IdRespuestaAudio = $gr["IdRespuestaAudio"];
+				$respuesta->IdPreguntaAudio = $gr["IdPreguntaAudio"];
+				$respuesta->TextoResupestaAudio = $gr["TextoResupestaAudio"];
+				$respuesta->TextoApolloRespuestaAudio = $gr["TextoApolloRespuestaAudio"];
+				$respuesta->OrdenRespuestaAudio = $gr["OrdenRespuestaAudio"];
+				$lista[] = $respuesta;
+			}
+			return $lista;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	
+	function obtenerFotoPreguntaPorEjercicio($idEjercicio, $rspRnd = false)
+	{
+		
+		$sql = "SELECT * FROM fotopregunta 
+			WHERE idEjercicio = ".$idEjercicio;
+			
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$aup = new stdClass();
+			$gr = parent::fetch_assoc($consulta);
+			$aup->IdPreguntaFoto = $gr["IdPreguntaFoto"];
+			$aup->IdEjercicio = $gr["IdEjercicio"];
+			$aup->RutaFoto = $gr["RutaFoto"];
+			$aup->Titulo = $gr["Titulo"];
+			$aup->Descripcion = $gr["Descripcion"];
+			$aup->Respuestas = $this->obtenerFotoRespuestaPorPregunta($gr["IdPreguntaFoto"],$rspRnd);
+			return $aup;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	
+	function obtenerFotoRespuestaPorPregunta($idPregunta, $rand = false)
+	{
+		
+		$orden = (!$rand) ? "OrdenRespuestaFoto asc" : "rand()";
+		
+		$sql = "SELECT * FROM fotorespuesta 
+			WHERE IdPreguntaFoto = ".$idPregunta."
+			ORDER BY ".$orden;
+		
+		$lista = array();
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			while($gr = parent::fetch_assoc($consulta))
+			{
+				$respuesta = new stdClass();
+				$respuesta->IdRespuestaFoto = $gr["IdRespuestaFoto"];
+				$respuesta->IdPreguntaFoto = $gr["IdPreguntaFoto"];
+				$respuesta->TextoResupestaFoto = $gr["TextoResupestaFoto"];
+				$respuesta->TextoApolloRespuestaFoto = $gr["TextoApolloRespuestaFoto"];
+				$respuesta->OrdenRespuestaFoto = $gr["OrdenRespuestaFoto"];
+				$lista[] = $respuesta;
+			}
+			return $lista;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 	function obtenerTerminosPareadosPorEjercicioGestor($idEjercicio)
 	{
-		$sql = "SELECT * FROM terminos_pareados 
+		$sql = "SELECT * FROM audiopregunta 
 				WHERE idEjercicio = ".$idEjercicio.";";
 		$consulta = parent::consulta($sql);
 		$num_total_registros = parent::num_rows($consulta);
@@ -241,7 +300,36 @@ class Data extends MySQL
 	
 	function guardarPreguntas($pregunta)
 	{
-		$sqlInsert = "insert into pregunta(IdGrupoPregunta,TextoPregunta) values ($pregunta->IdGrupoPregunta, '$pregunta->TextoPregunta');";
+		$sqlInsert = "insert into pregunta(IdEjercicio,TextoPregunta) values ($pregunta->IdGrupoPregunta, '$pregunta->TextoPregunta');";
+		$stmt = parent::consulta($sqlInsert);
+		return parent::lastInsertID();
+	}
+	
+	function guardarAudioPregunta($pregunta)
+	{
+		$sqlInsert = "insert into audiopregunta(IdEjercicio,RutaAudio,Titulo,Descripcion) values ($pregunta->IdEjercicio, '$pregunta->RutaAudio', '$pregunta->Titulo', '$pregunta->Descripcion');";
+		$stmt = parent::consulta($sqlInsert);
+		return parent::lastInsertID();
+	}
+	
+	function guardarFotoPregunta($pregunta)
+	{
+		$sqlInsert = "insert into fotopregunta(IdEjercicio,RutaFoto,Titulo,Descripcion) values ($pregunta->IdEjercicio, '$pregunta->RutaFoto', '$pregunta->Titulo', '$pregunta->Descripcion');";
+		$stmt = parent::consulta($sqlInsert);
+		return parent::lastInsertID();
+	}
+	
+	
+	function guardarAudioRespuesta($respuesta)
+	{
+		$sqlInsert = "insert into audiorespuesta(IdPreguntaAudio, TextoResupestaAudio, TextoApolloRespuestaAudio, OrdenRespuestaAudio) values ($respuesta->IdPreguntaAudio, '$respuesta->TextoResupestaAudio', '$respuesta->TextoApolloRespuestaAudio', $respuesta->OrdenRespuestaAudio);";
+		$stmt = parent::consulta($sqlInsert);
+		return parent::lastInsertID();
+	}
+	
+	function guardarFotoRespuesta($respuesta)
+	{
+		$sqlInsert = "insert into fotorespuesta(IdPreguntaFoto, TextoResupestaFoto, TextoApolloRespuestaFoto, OrdenRespuestaFoto) values ($respuesta->IdPreguntaFoto, '$respuesta->TextoResupestaFoto', '$respuesta->TextoApolloRespuestaFoto', $respuesta->OrdenRespuestaFoto);";
 		$stmt = parent::consulta($sqlInsert);
 		return parent::lastInsertID();
 	}

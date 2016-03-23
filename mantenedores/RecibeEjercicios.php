@@ -30,6 +30,11 @@
 			#sortable2 { list-style-type: none; margin: 0; padding: 0; width: 100%; }
 			#sortable2 li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 40px; }
 			#sortable2 li span { position: absolute; margin-left: -1.3em; }
+			
+			
+			#sortable3 { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+			#sortable3 li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 40px; }
+			#sortable3 li span { position: absolute; margin-left: -1.3em; }
 		  
 		  
 
@@ -43,7 +48,7 @@
 				var malas = 0;
 				var total = 0;
 				
-				if($("#hdnTipoEjercicio").val() == "3")
+				if($("#hdnTipoEjercicio").val() == "3" || $("#hdnTipoEjercicio").val() == "4" || $("#hdnTipoEjercicio").val() == "5")
 				{
 					$.each($(".izquierda"),function(i,e){
 						//console.log($(e).attr("referencia") + " - " + $($(".derecha")[i]).attr("referencia"));
@@ -100,6 +105,16 @@
 			
 			$("#sortable").sortable();
 			$("#sortable").disableSelection();
+			
+			$("#sortable3").sortable();
+			$("#sortable3").disableSelection();
+			
+			$("#sortable5").sortable();
+			$("#sortable5").disableSelection();
+			
+			
+			
+			
 		});
 	</script>	
 	
@@ -143,6 +158,7 @@
 										 //imports
 											include("scripts/clases/class.mysql.php");
 											include("scripts/clases/class.data.php");
+											include("scripts/clases/class.data.Ejercicios.php");
 											
 											$idEjercicio = isset($_REQUEST["ejercicio"]) ? $_REQUEST["ejercicio"] : false ; 
 											
@@ -152,7 +168,7 @@
 												$data = new Data();
 												$ejercicio = $data->obtenerEjercicio($idEjercicio);
 												
-												if($ejercicio->IdTipo != 3)
+												if($ejercicio->IdTipo == 1 || $ejercicio->IdTipo == 2)
 												{
 													$datos = $data->obtenerGrupoPreguntasPorEjercicio($idEjercicio);
 													$i = 1;
@@ -162,7 +178,69 @@
 														$i++;
 													}
 												}
-												else
+												else if($ejercicio->IdTipo == 4)
+												{
+														$ex = new Ejercicios();
+														$ap = $ex->obtenerAudioPreguntaPorEjercicio($idEjercicio,true);
+														$ap2 = $ex->obtenerAudioPreguntaPorEjercicio($idEjercicio);
+													?>	
+													<div><audio id="question_player" src="<?php echo $ap->RutaAudio; ?>" type="audio/mp3" controls="controls" style="width: 90%;"></div>
+													<br/>
+													<table style="width:100%;">
+														<tr>
+															<td style="width:50%;">
+																<ul id="sortable3">
+																<?php foreach($ap->Respuestas as $v) :?>
+																  <li class="ui-state-default izquierda" referencia="<?php echo $v->OrdenRespuestaAudio; ?>"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><?php echo $v->TextoResupestaAudio; ?></li>
+																<?php endforeach;?>
+																</ul>
+															</td>				
+															<td>
+																<ul id="sortable3">
+																<?php foreach($ap2->Respuestas as $v) :?>
+																  <li class="ui-state-default derecha" referencia="<?php echo $v->OrdenRespuestaAudio; ?>"><?php echo $v->TextoApolloRespuestaAudio; ?></li>
+																<?php endforeach;?>
+																</ul>
+															</td>									
+														</tr>
+													</table>
+													
+													<?php
+												}
+												else if($ejercicio->IdTipo == 5)
+												{
+														$ex = new Ejercicios();
+														$ap = $ex->obtenerFotoPreguntaPorEjercicio($idEjercicio,true);
+														$ap2 = $ex->obtenerFotoPreguntaPorEjercicio($idEjercicio);
+														
+														print_r($ap);
+														
+													?>	
+													<div>
+														<img src="<?php echo $ap->RutaFoto; ?>" alt="" /></div>
+													<br/>
+													<table style="width:100%;">
+														<tr>
+															<td style="width:50%;">
+																<ul id="sortable5">
+																<?php foreach($ap->Respuestas as $v) :?>
+																  <li class="ui-state-default izquierda" referencia="<?php echo $v->OrdenRespuestaFoto; ?>"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span><?php echo $v->TextoResupestaFoto; ?></li>
+																<?php endforeach;?>
+																</ul>
+															</td>				
+															<td>
+																<ul id="sortable6">
+																<?php foreach($ap2->Respuestas as $v) :?>
+																  <li class="ui-state-default derecha" referencia="<?php echo $v->OrdenRespuestaFoto; ?>"><?php echo $v->TextoApolloRespuestaFoto; ?></li>
+																<?php endforeach;?>
+																</ul>
+															</td>									
+														</tr>
+													</table>
+													
+													<?php
+												}
+												else if($ejercicio->IdTipo == 3)
 												{
 													
 													function shuffle_assoc($list) 
@@ -241,84 +319,18 @@
         <!-- End Right content here -->
         <!-- ============================================================== -->
         <!-- 
-        <div class="side-bar right-bar nicescroll">
-            <h4 class="text-center">
-                Chat</h4>
-            <div class="contact-list nicescroll">
-                <ul class="list-group contacts-list">
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-1.jpg" alt="">
-                        </div>
-                        <span class="name">Chadengle</span> <i class="fa fa-circle online"></i></a><span
-                            class="clearfix"></span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-2.jpg" alt="">
-                        </div>
-                        <span class="name">Tomaslau</span> <i class="fa fa-circle online"></i></a><span class="clearfix">
-                        </span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-3.jpg" alt="">
-                        </div>
-                        <span class="name">Stillnotdavid</span> <i class="fa fa-circle online"></i></a><span
-                            class="clearfix"></span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-4.jpg" alt="">
-                        </div>
-                        <span class="name">Kurafire</span> <i class="fa fa-circle online"></i></a><span class="clearfix">
-                        </span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-5.jpg" alt="">
-                        </div>
-                        <span class="name">Shahedk</span> <i class="fa fa-circle away"></i></a><span class="clearfix">
-                        </span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-6.jpg" alt="">
-                        </div>
-                        <span class="name">Adhamdannaway</span> <i class="fa fa-circle away"></i></a><span
-                            class="clearfix"></span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-7.jpg" alt="">
-                        </div>
-                        <span class="name">Ok</span> <i class="fa fa-circle away"></i></a><span class="clearfix">
-                        </span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-8.jpg" alt="">
-                        </div>
-                        <span class="name">Arashasghari</span> <i class="fa fa-circle offline"></i></a><span
-                            class="clearfix"></span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-9.jpg" alt="">
-                        </div>
-                        <span class="name">Joshaustin</span> <i class="fa fa-circle offline"></i></a><span
-                            class="clearfix"></span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-10.jpg" alt="">
-                        </div>
-                        <span class="name">Sortino</span> <i class="fa fa-circle offline"></i></a><span class="clearfix">
-                        </span></li>
-                </ul>
-            </div>
-        </div>
-        -->
-    </div>
     <!-- END wrapper -->
     <script>
         var resizefunc = [];
     </script>
     <script src="../assets/js/jquery.app.js"></script>
-
+	<script src="../assets/reproductor/mediaelement-and-player.min.js"></script>
+	<link rel="stylesheet" href="../assets/reproductor/mediaelementplayer.min.css" />
     <script type="text/javascript">
+    
+    	$('audio,video').mediaelementplayer();
         $(document).ready(function () {
+        	
             $('form').parsley();
         });
     </script>

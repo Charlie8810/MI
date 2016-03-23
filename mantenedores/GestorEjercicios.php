@@ -3,6 +3,7 @@ session_start();
 include("scripts/clases/class.mysql.php");
 include("scripts/clases/class.data.php");
 include("scripts/clases/class.combos.php");
+include("scripts/clases/class.data.Ejercicios.php");
 $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 ?>
 <!DOCTYPE html>
@@ -37,17 +38,27 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 			var indice = 0;
 			
 			$("#btnAgregar").click(function(){
-				
-				if($("#tipo_ejercicio").val() == "3")
+				var tipo_ejercicio = $("#tipo_ejercicio").val();
+				if(tipo_ejercicio == "3")
 				{
 					var nuevapre = $("#dvPB1").clone(true);
 					nuevapre.find("input").val("");
 					$("#dvPrgs").append(nuevapre);	
 				}
-				else
+				else if(tipo_ejercicio == "4")
+				{
+					var nuevapre = $($(".audio_clonar")[0]).clone(true);
+					$(".dvRespuestasAudio").append(nuevapre);	
+				}
+				else if(tipo_ejercicio == "5")
+				{
+					var nuevapre = $($(".foto_clonar")[0]).clone(true);
+					$(".dvRespuestasFoto").append(nuevapre);
+					
+				}
+				else //if(tipo_ejercicio == "1" || tipo_ejercicio == "2")
 				{
 					var nuevapre = $("#dvP1").clone(true);
-					nuevapre.find("textarea").val("");
 					$("#dvPrgs").append(nuevapre);					
 				}
 				
@@ -58,26 +69,39 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 				
 				if($(this).val() == "1" || $(this).val() == "2")
 				{
-					$("#dvP1").fadeIn("slow");
-					$("#dvPB1").fadeOut("slow");
+					$("#dvP1").fadeIn("fast");
+					$("#dvPB1").fadeOut("fast");
+					$("#dvPBAudio").fadeOut("fast");
+					$("#dvPBFoto").fadeOut("fast");
+					
 				}
 				else if($(this).val() == "3")
 				{
-					$("#dvP1").fadeOut("slow");
-					$("#dvPB1").fadeIn("slow");
+					$("#dvP1").fadeOut("fast");
+					$("#dvPB1").fadeIn("fast");
+					$("#dvPBAudio").fadeOut("fast");
+					$("#dvPBFoto").fadeIn("fast");
 				}
 				else if($(this).val() == "4")
 				{
 					$("#dvP1").fadeOut("fast");
 					$("#dvPB1").fadeOut("fast");
+					$("#dvPBAudio").fadeIn("fast");
+					$("#dvPBFoto").fadeOut("fast");
+				}
+				else if($(this).val() == "5")
+				{
+					$("#dvP1").fadeOut("fast");
+					$("#dvPB1").fadeOut("fast");
+					$("#dvPBAudio").fadeOut("fast");
+					$("#dvPBFoto").fadeIn("fast");
 				}
 				
 			});
 			
 			
-			$("#btAgregarRespuetaAudio").click(function(){
-				$("#dvRespuestasAudio").append("<br/><input type=\"text\" name=\"respuestas_audio[]\" class=\"resp_audio\" style=\"width: 350px; margin-bottom: 3px;\" indice=\""+indice+"\" /> <button class=\"btEliminarAudioCurrent\" type=\"button\" onclick=\"eliminar_audio(this)\" indice=\""+indice+"\">-</button>");				
-				indice++;
+			$(".btAgregarRespuetaAudio").click(function(){
+				$(".dvRespuestasAudio").append("<br/><input type=\"text\" name=\"respuestas_audio[]\" class=\"resp_audio\" style=\"width: 350px; margin-bottom: 3px;\" />");
 			});
 			
 			
@@ -116,12 +140,13 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 		
 		function eliminar_audio(elm)
 		{	
-			var elmArray = $("#dvRespuestasAudio > button.btEliminarAudioCurrent");
+			/*var elmArray = $("#dvRespuestasAudio > button.btEliminarAudioCurrent");
 			var rspArray = $("#dvRespuestasAudio > input.resp_audio");
 			var idx = $(elm).attr("indice");
 			
 			$(rspArray[idx + 1]).remove();
-			$(elmArray[idx]).remove();
+			$(elmArray[idx]).remove();*/
+			
 		}
 	</script>	
 </head>
@@ -160,7 +185,7 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 						
                         <div class="col-lg-12">
                             <div class="card-box">
-                                <form action="acciones/procesa_cuestionarios.php" method="post" action="#" data-parsley-validate novalidate>
+                                <form action="acciones/procesa_cuestionarios.php" method="post" action="#" enctype="multipart/form-data" data-parsley-validate novalidate>
 		
 
 									<div class="form-group">
@@ -212,6 +237,8 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 											<option value="1">Completar</option>
 											<option value="2">Seleccion</option>
 											<option value="3">Términos Pareados</option>
+											<option value="4">Orden por Audio</option>
+											<option value="5">Orden Imagen</option>
 										</select>
 									</div>
 									
@@ -255,23 +282,105 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 											<?php endif; ?>
 										<?php }
 										
-										else if($ejercicio->IdTipo == 3){
-											
+										else if($ejercicio->IdTipo == 4){
+												
+											$exercise = new Ejercicios();
+											$audiopreg = $exercise->obtenerAudioPreguntaPorEjercicio($idEjercicio);
+										
 										?>	
 											
 										<div id="dvPBAudio">
 											<div class="form-group">
 												<label for="P1">
 													Orden Audio*</label>
-												<pre>
-													<input type="file" class="tm_audio" name="tm_audio[]" />
-													<input type="text" name="respuestas_audio[]" class="resp_audio" />
-												</pre>
+												<div>
+													
+													<div><audio id="question_player" src="<?php echo $audiopreg->RutaAudio; ?>" type="audio/mp3" controls="controls">	
+													</div>
+													
+													<input type="file" class="tm_audio" name="tm_audio" />
+													
+													<h6>Respuestas</h6>
+													
+													<div class="dvRespuestasAudio" style="margin-bottom: 5px;">
+														<div>
+															<div class="col-lg-6">
+																<p>Respuetas</p> 	
+															</div>
+															<div class="col-lg-6">
+																<p>Texto posterior</p> 	
+															</div>	
+														</div>
+														<?php foreach($audiopreg->Respuestas as $rsp): ?>
+														<div class="audio_clonar">
+															<div class="col-lg-6">
+																<input type="text" name="respuestas_audio[]" class="resp_audio" style="width: 95%; margin-bottom: 3px;" value="<?php echo $rsp->TextoResupestaAudio; ?>" /> 	
+															</div>
+															<div class="col-lg-6">
+																<input type="text" name="apoyo_audio[]" class="apoy_audio" style="width: 95%; margin-bottom: 3px;" value="<?php echo $rsp->TextoApolloRespuestaAudio; ?>" /> 	
+															</div>
+														</div>
+														<?php endforeach;?>
+													</div>
+												</div>
 											</div>
 										</div>	
 										
 											
 										<?php		
+										
+										
+										}
+										else if($ejercicio->IdTipo == 5)
+										{
+												
+											$exercise = new Ejercicios();
+											$audiopreg = $exercise->obtenerFotoPreguntaPorEjercicio($idEjercicio);
+											
+											
+										
+										?>
+										
+										
+										<div id="dvPBFoto">
+											<div class="form-group">
+												<label for="P1">
+													Orden Imagen*</label>
+												<div>
+													
+													<div>
+														<img src="<?php echo $ap->RutaFoto; ?>" alt="" />	
+													</div>
+													
+													<input type="file" class="tm_foto" name="tm_foto" />
+													
+													<h6>Respuestas</h6>
+													
+													<div class="dvRespuestasFoto">
+														<div>
+															<div class="col-lg-6">
+																<p>Respuetas</p> 	
+															</div>
+															<div class="col-lg-6">
+																<p>Texto posterior</p> 	
+															</div>	
+														</div>
+														<?php foreach($audiopreg->Respuestas as $rsp): ?>
+														<div class="audio_clonar">
+															<div class="col-lg-6">
+																<input type="text" name="respuestas_imagen[]" class="respuestas_imagen" value="<?php echo $rsp->TextoResupestaFoto; ?>" /> 	
+															</div>
+															<div class="col-lg-6">
+																<input type="text" name="apoyo_imagen[]" class="apoyo_imagen" value="<?php echo $rsp->TextoApolloRespuestaFoto; ?>" /> 	
+															</div>
+														</div>
+														<?php endforeach;?>
+													</div>
+												</div>
+											</div>
+										</div>	
+										
+										<?php
 											
 										}else{  
 											$preguntas = $data->obtenerGrupoPreguntasPorEjercicioGestor($idEjercicio);
@@ -316,39 +425,78 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 											<div class="form-group">
 												<label for="P1">
 													Termino pareado*</label>
-												<pre>
+												<div>
 													<input type="text" style="width:45%;" name="izquierda[]" id="PI1" class="input" /> ::: <input type="text" style="width:45%;" name="derecha[]" id="PD1" class="input" />
-												</pre>
+												</div>
 											</div>
 										</div>
 										
-										<div id="dvPBAudio">
+										<div id="dvPBAudio" style="display:none;">
 											<div class="form-group">
 												<label for="P1">
 													Orden Audio*</label>
 												<div>
-													<input type="file" class="tm_audio" name="tm_audio[]" />
+													<input type="file" class="tm_audio" name="tm_audio" />
 													<h6>Respuestas</h6>
-													<div id="dvRespuestasAudio">
-														<input type="text" name="respuestas_audio[]" class="resp_audio" style="width: 350px; margin-bottom: 3px;" /> <button id="btAgregarRespuetaAudio" type="button">+</button>
-													</div>
 													
+													<div class="dvRespuestasAudio" style="margin-bottom: 5px;">
+														<div>
+															<div class="col-md-6">
+																<p>Respuetas</p> 	
+															</div>
+															<div class="col-md-6">
+																<p>Texto posterior</p> 	
+															</div>	
+														</div>
+														<div class="audio_clonar">
+															<div class="col-md-6">
+																<input type="text" name="respuestas_audio[]" class="resp_audio" style="width: 95%; margin-bottom: 3px;" /> 	
+															</div>
+															<div class="col-md-6">
+																<input type="text" name="apoyo_audio[]" class="apoy_audio" style="width: 95%; margin-bottom: 3px;" /> 	
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div id="dvPBFoto" style="display:none;">
+											<div class="form-group">
+												<label for="P23">
+													Orden Imagen*</label>
+												<div>
+													<input type="file" class="tm_foto" name="tm_foto" />
+													<h6>Respuestas</h6>
+													
+													<div class="dvRespuestasFoto">
+														<div>
+															<div class="col-md-6">
+																<p>Respuetas</p> 	
+															</div>
+															<div class="col-md-6">
+																<p>Texto posterior</p> 	
+															</div>	
+														</div>
+														<div class="foto_clonar">
+															<div class="col-md-6">
+																<input type="text" name="respuestas_foto[]" class="resp_foto" style="width: 95%; margin-bottom: 3px;" /> 	
+															</div>
+															<div class="col-md-6">
+																<input type="text" name="apoyo_foto[]" class="apoy_foto" style="width: 95%; margin-bottom: 3px;" /> 	
+															</div>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>	
+											
 										
 										<?php } ?>
 										
 										
 									</div>
-									
-									
-									
-
 									<div class="form-group text-right m-b-0">
-										
-										
-										
 										<button class="btn btn-primary waves-effect waves-light" type="button" id="btnAgregar">
 											<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Pregunta
 										</button>
@@ -361,6 +509,11 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 										</a>
 										<input type="hidden" name="IdEjercicio" value="<?php echo $idEjercicio; ?>" />
 									</div>
+									
+									
+									
+									
+									
                                 </form>
                             </div>
                         </div>
@@ -376,79 +529,23 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
         <!-- End Right content here -->
         <!-- ============================================================== -->
         <!-- 
-        <div class="side-bar right-bar nicescroll">
-            <h4 class="text-center">
-                Chat</h4>
-            <div class="contact-list nicescroll">
-                <ul class="list-group contacts-list">
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-1.jpg" alt="">
-                        </div>
-                        <span class="name">Chadengle</span> <i class="fa fa-circle online"></i></a><span
-                            class="clearfix"></span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-2.jpg" alt="">
-                        </div>
-                        <span class="name">Tomaslau</span> <i class="fa fa-circle online"></i></a><span class="clearfix">
-                        </span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-3.jpg" alt="">
-                        </div>
-                        <span class="name">Stillnotdavid</span> <i class="fa fa-circle online"></i></a><span
-                            class="clearfix"></span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-4.jpg" alt="">
-                        </div>
-                        <span class="name">Kurafire</span> <i class="fa fa-circle online"></i></a><span class="clearfix">
-                        </span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-5.jpg" alt="">
-                        </div>
-                        <span class="name">Shahedk</span> <i class="fa fa-circle away"></i></a><span class="clearfix">
-                        </span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-6.jpg" alt="">
-                        </div>
-                        <span class="name">Adhamdannaway</span> <i class="fa fa-circle away"></i></a><span
-                            class="clearfix"></span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-7.jpg" alt="">
-                        </div>
-                        <span class="name">Ok</span> <i class="fa fa-circle away"></i></a><span class="clearfix">
-                        </span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-8.jpg" alt="">
-                        </div>
-                        <span class="name">Arashasghari</span> <i class="fa fa-circle offline"></i></a><span
-                            class="clearfix"></span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-9.jpg" alt="">
-                        </div>
-                        <span class="name">Joshaustin</span> <i class="fa fa-circle offline"></i></a><span
-                            class="clearfix"></span></li>
-                    <li class="list-group-item"><a href="#">
-                        <div class="avatar">
-                            <img src="../assets/images/users/avatar-10.jpg" alt="">
-                        </div>
-                        <span class="name">Sortino</span> <i class="fa fa-circle offline"></i></a><span class="clearfix">
-                        </span></li>
-                </ul>
-            </div>
-        </div>
         -->
     </div>
     <!-- END wrapper -->
+    
+    
+    
+    	
+	
+	
+	<script src="/mi/assets/reproductor/mediaelement-and-player.min.js"></script>
+	<link rel="stylesheet" href="/mi/assets/reproductor/mediaelementplayer.min.css" />
+    
+    
     <script src="../assets/js/jquery.app.js"></script>
     <script type="text/javascript">
+    
+    	$('audio,video').mediaelementplayer();
         $(document).ready(function () {
             $('form').parsley();
         });

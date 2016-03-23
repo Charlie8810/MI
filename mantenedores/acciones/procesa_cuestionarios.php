@@ -4,7 +4,7 @@ session_start();
 //imports
 include("../scripts/clases/class.mysql.php");
 include("../scripts/clases/class.data.php");
-
+include("../scripts/clases/class.data.Ejercicios.php");
 
 //Parametros
 $curso = isset($_POST["curso"]) ? $_POST["curso"] : false;
@@ -12,6 +12,10 @@ $fase = isset($_POST["fase"]) ? $_POST["fase"] : false;
 $tipo_ejercicio = isset($_POST["tipo_ejercicio"]) ? $_POST["tipo_ejercicio"] : false;
 $nombre_ejercicio = isset($_POST["nombre_ejercicio"]) ? $_POST["nombre_ejercicio"] : false;
 $grupopreguntas = isset($_POST["pregunta"]) ? $_POST["pregunta"] : false;
+$respuestasAudio = isset($_POST["respuestas_audio"]) ? $_POST["respuestas_audio"] : false;
+$textApoyoAudio = isset($_POST["apoyo_audio"]) ? $_POST["apoyo_audio"] : false;
+$respuestasFoto = isset($_POST["respuestas_foto"]) ? $_POST["respuestas_foto"] : false;
+$textApoyoFoto = isset($_POST["apoyo_foto"]) ? $_POST["apoyo_foto"] : false;
 $terminospareadosIzquierda = isset($_POST["izquierda"]) ? $_POST["izquierda"] : false;
 $terminospareadosDerecha = isset($_POST["derecha"]) ? $_POST["derecha"] : false;
 $idEjercicio = isset($_REQUEST["IdEjercicio"]) ? $_REQUEST["IdEjercicio"] : false;
@@ -53,7 +57,57 @@ if($curso != false && $fase != false && $tipo_ejercicio != false)
 	}
 	else if($tipo_ejercicio == 4)
 	{
+		$ejercici_0 = new Ejercicios();
+		$dir_subida = 'C:\wamp\www\mi\uploads\audios\/';
+		$url_subida = '/mi/uploads/audios/' . basename($_FILES['tm_audio']['name']);
+		$fichero_subido = $dir_subida . basename($_FILES['tm_audio']['name']);
 		
+		if (move_uploaded_file($_FILES['tm_audio']['tmp_name'], $fichero_subido)) 
+		{
+			
+			$pregaud = new stdClass();
+			$pregaud->IdEjercicio = $idEjercicio;
+			$pregaud->RutaAudio = $url_subida;
+			$pregaud->Titulo = "Listen and Order the following words";
+			$pregaud->Descripcion = "Listen and Order the following words";
+			$idPregaud = $ejercici_0->guardarAudioPregunta($pregaud);
+		    foreach ($respuestasAudio as $key => $respuesta) 
+			{
+				$respaud = new stdClass();
+				$respaud->IdPreguntaAudio = $idPregaud;
+				$respaud->TextoResupestaAudio = $respuesta;
+				$respaud->TextoApolloRespuestaAudio = $textApoyoAudio[$key];
+				$respaud->OrdenRespuestaAudio = $key;
+				$ejercici_0->guardarAudioRespuesta($respaud);
+			}
+		}
+	}
+	else if($tipo_ejercicio == 5)
+	{
+		$ejercici_0 = new Ejercicios();
+		$dir_subida = 'C:\wamp\www\mi\uploads\imagenes\/';
+		$url_subida = '/mi/uploads/imagenes/' . basename($_FILES['tm_foto']['name']);
+		$fichero_subido = $dir_subida . basename($_FILES['tm_foto']['name']);
+		
+		if (move_uploaded_file($_FILES['tm_foto']['tmp_name'], $fichero_subido)) 
+		{
+			
+			$pregaud = new stdClass();
+			$pregaud->IdEjercicio = $idEjercicio;
+			$pregaud->RutaFoto = $url_subida;
+			$pregaud->Titulo = "See and Order the following words";
+			$pregaud->Descripcion = "See and Order the following words";
+			$idPregaud = $ejercici_0->guardarFotoPregunta($pregaud);
+		    foreach ($respuestasFoto as $key => $respuesta) 
+			{
+				$respaud = new stdClass();
+				$respaud->IdPreguntaFoto = $idPregaud;
+				$respaud->TextoResupestaFoto = $respuesta;
+				$respaud->TextoApolloRespuestaFoto = $textApoyoFoto[$key];
+				$respaud->OrdenRespuestaFoto = $key;
+				$ejercici_0->guardarFotoRespuesta($respaud);
+			}
+		}
 	}
 	//PReguntas de completar
 	else if($tipo_ejercicio == 1 || $tipo_ejercicio == 2)
