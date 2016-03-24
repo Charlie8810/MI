@@ -196,7 +196,7 @@ $(document).ready(function(){
                                     <b>Datos a Ingresar</b></h4>
 
                                 <!--Formulario de Registro de Usuarios-->
-                                <form action="GuardarUsuario.php" method="post" data-parsley-validate novalidate>
+                                <form name="form1" id="form1" action="/mi/mantenedores/GuardarUsuario.php" method="post" data-parsley-validate novalidate>
                                 <div class="form-group">
                                     <label for="rut" >RUT*</label>
                                     <input type="text" id="rut" name="rut" parsley-trigger="change" required placeholder="ej. 11.111.111-1"
@@ -323,8 +323,20 @@ $(document).ready(function(){
                                         class="form-control" id="celular">
                                 </div>
                                 <div class="form-group text-right m-b-0">
-                                    <button type="submit" id="btnGuardar" class="btn btn-primary waves-effect waves-light" name="action" value="Guardar">
+                                    <button type="submit" id="btnGuardar" class="btn btn-primary waves-effect waves-light" name="action" value="Guardar" onCilick ="ValidarFormulario(this.form.comuna)">
                                         Guardar
+                                        <script type="text/javascript">
+                                            $(document).ready(function(){
+                                                function validarformulario()
+                                                { 
+                                                 if (form1.comuna.selectedIndex==0) {
+                                                 alert("SELECIONE COMUNA");
+                                                 form1.comuna.select();
+                                                 return false;
+                                                 }
+                                            }
+                                        </script>
+
                                     </button>
                                     <a class="btn btn-default waves-effect waves-light m-l-5" href="ListadoPersonas.php">
                                             <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
