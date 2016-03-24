@@ -23,7 +23,7 @@ include("scripts/clases/class.data.persona.php");
 	<link href="../assets/jquery/jquery.bootgrid.css" rel="stylesheet" />
 	<script>
         var resizefunc = [];
-    </script>
+    </script>e
     <!-- jQuery  -->
     <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
@@ -44,12 +44,12 @@ include("scripts/clases/class.data.persona.php");
 			}).on("loaded.rs.jquery.bootgrid", function(){
 				/* Executes after data is loaded and rendered */
 				grid.find(".command-edit").on("click", function(e){
-					location.href="registroUsuarios_Persona.php?p=" + $(this).data("row-id");
+					location.href="MantenedorPersona.php?p=" + $(this).data("row-id");
 				}).end().find(".command-delete").on("click", function(e){
 					var idEliminar = $(this).data("row-id");
 					BootstrapDialog.confirm({
 						title: '<span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Confirmacion',
-						message: '¿En Realidad desea eliminar el Estado?',
+						message: '¿En Realidad desea eliminar la persona?',
 						draggable: true,
 						type: BootstrapDialog.TYPE_WARNING,
 						size: BootstrapDialog.SIZE_SMALL,
@@ -67,7 +67,7 @@ include("scripts/clases/class.data.persona.php");
 				
 				BootstrapDialog.show({
 					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Eliminado Correcto',
-					message: '<h5>Estado Eliminado correctamente!</h5>',
+					message: '<h5>Persona Eliminada correctamente!</h5>',
 					closable: true,
 					draggable: true,
 					buttons: [{
@@ -108,18 +108,18 @@ include("scripts/clases/class.data.persona.php");
                     <div class="row">
                         <div class="col-sm-12">
                             <h4 class="page-title">
-                                Listado de Estados</h4>
+                                Listado de Personas</h4>
                             <ol class="breadcrumb">
                                 <li><a href="/mi/mantenedores/panelControl.php">Inicio</a></li>
-                                <li class="active">Registro de Estado / Estados</li>
+                                <li class="active">Registro de Personas / Personas</li>
                             </ol>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card-box">
-								<a class="btn btn-primary waves-effect waves-light" href="MantenedorEstado.php">
-									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nuevo Estado
+								<a class="btn btn-primary waves-effect waves-light" href="MantenedorPersona.php">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Nueva Persona
 								</a>
 							
 								<table id="grid-basic" class="table table-condensed table-hover table-striped">
@@ -128,21 +128,36 @@ include("scripts/clases/class.data.persona.php");
 											<th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
 											<th data-column-id="id" data-type="numeric">ID</th>
 											<th data-column-id="nombre">Nombre</th>
-											<th data-column-id="descripcion">Descripcion</th>
+											<th data-column-id="apellidoM">Apellido Mat.</th>
+											<th data-column-id="apellidoP">Apellido Pat.</th>
+											<th data-column-id="rut">Rut</th>
+											<th data-column-id="email">Email</th>
+											<th
 										</tr>
 									</thead>
 									<tbody>
 									
-									<?php $data = new Estado(); 
+									<?php $data = new Persona(); 
 									
-									$listadoEstado = $data->listarEstado();
-									foreach($listadoEstado as $estado):
+									$listadoPersona = $data->listarPersonas();
+									foreach($listadoPersona as $persona):
 									?>
 										<tr>
 											<td></td>
-											<td><?php echo $estado->id_Idioma; ?></td>
-											<td><?php echo $estado->Nombre; ?></td>
-											<td><?php echo $estado->Descripcion; ?></td>
+											<td><?php echo $persona->IdPersona; ?></td>
+											<td><?php echo $persona->Nombres; ?></td>
+											<td><?php echo $persona->ApellidoM; ?></td>
+											<td><?php echo $persona->ApellidoP; ?></td>
+											<td><?php echo $persona->Rut; ?></td>
+											<td><?php echo $persona->Email; ?></td>
+											<!--<td><?php echo $persona->IdPerfil; ?></td>
+											<td><?php echo $persona->Direccion; ?></td>
+											<td><?php echo $persona->IdRegion; ?></td>
+											<td><?php echo $persona->IdComuna; ?></td>
+											<td><?php echo $persona->Telefono; ?></td>
+											<td><?php echo $persona->Celular; ?></td>
+											<td><?php echo $persona->IdEstado; ?></td>-->
+
 										</tr>
 									<?php endforeach;?>
 									</tbody>
