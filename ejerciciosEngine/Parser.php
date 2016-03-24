@@ -8,16 +8,17 @@ class Parser
 
 		$comment = false;
 		$out = '$x=array("preguntas"=>array( ';
-		$chson = str_replace(array("\r", "\n", "\t", "\v" ," "), "", $chson);
+		$chson = str_replace(array("\r", "\n", "\t", "\v"), "", $chson);
 		$arr = explode("}},",$chson);
 		
 		foreach($arr as $iN=>$val)
 		{
+			$val = trim($val);
+			
 			if(!strrpos($val, "}}"))
 			{
 				$val = $val."}}";
 			}
-			
 			
 			for ($i=0; $i<strlen($val); $i++)
 			{
@@ -48,7 +49,8 @@ class Parser
 			if($iN<(count($arr)-1)) $out.=", ";		
 		}
 		$out.="));";
-		eval(trim($out));
+		
+		eval($out);
 		return $x;
 	} 
 
@@ -57,15 +59,28 @@ class Parser
 	{
 		$html = "";
 		$listapreguntas = $this->chson_to_array($text);
-		foreach($listapreguntas as $p)
+		
+		//print_r($listapreguntas);
+		
+		
+		foreach($listapreguntas as $prgs)
 		{
-			foreach($p as $pregunta)
+			
+			foreach($prgs as $kp => $pregunta)
 			{
-				echo "<pre>";
-				print_r($pregunta["respuestas"]);
-				echo "</pre>";
+				
+				$html.='<div class="pregunta">
+				<p>'.$pregunta["pregunta"].'</p>';
+				foreach($pregunta["respuestas"] as $kr=>$resp)
+				{
+					$html_name = 'P'.$kp.'[]';
+					$html_id   = 'P'.$kp.'R'.$kr;
+					$html.='<input type="checkbox" name="'.$html_name.'" id="'.$html_id.'" value="'.$resp[0].'" correcta="'.$resp[1].'" /><label for="'.$html_id.'">'.$resp[0].'</label><br/>';
+				}
+				$html.='</div>';
 			}	
 		}
+		return $html;
 	}
 	
 	
