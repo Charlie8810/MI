@@ -36,8 +36,14 @@
 			#sortable3 li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 40px; }
 			#sortable3 li span { position: absolute; margin-left: -1.3em; }
 		  
+		  	#sortable5 { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+			#sortable5 li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 40px; }
+			#sortable5 li span { position: absolute; margin-left: -1.3em; }
 		  
-
+			#sortable6 { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+			#sortable6 li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.0em; height: 40px; }
+			#sortable6 li span { position: absolute; margin-left: -1.3em; }
+		  
 		  
   </style>
 	
@@ -212,8 +218,6 @@
 														$ex = new Ejercicios();
 														$ap = $ex->obtenerFotoPreguntaPorEjercicio($idEjercicio,true);
 														$ap2 = $ex->obtenerFotoPreguntaPorEjercicio($idEjercicio);
-														
-														print_r($ap);
 														
 													?>	
 													<div>

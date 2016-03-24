@@ -239,6 +239,9 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 											<option value="3">Términos Pareados</option>
 											<option value="4">Orden por Audio</option>
 											<option value="5">Orden Imagen</option>
+											<option value="6">Seleccion Multiple</option>
+											<option value="7">Arrastrar y colocar</option>
+											<option value="8">Sopa de Letras</option>
 										</select>
 									</div>
 									
@@ -366,7 +369,7 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 															</div>	
 														</div>
 														<?php foreach($audiopreg->Respuestas as $rsp): ?>
-														<div class="audio_clonar">
+														<div class="foto_clonar">
 															<div class="col-lg-6">
 																<input type="text" name="respuestas_imagen[]" class="respuestas_imagen" value="<?php echo $rsp->TextoResupestaFoto; ?>" /> 	
 															</div>
@@ -491,6 +494,10 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 											</div>
 										</div>	
 											
+											
+										<div id="dvPBSeleccionMultiple" style="display:none;">
+											
+										</div>	
 										
 										<?php } ?>
 										
