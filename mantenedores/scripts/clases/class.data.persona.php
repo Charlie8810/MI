@@ -83,6 +83,7 @@ class Persona extends MySQL
 			$persona->Email 	       	= $pers["Email"];
 			$persona->Region 			= $pers["IdRegion"];
 			$persona->Comuna 		    = $pers["IdComuna"];
+			$persona->Direccion 		= $pers["Direccion"];
 			$persona->Telefono 			= $pers["Telefono"];
 			$persona->Celular			= $pers["Celular"];
 			$persona->Estado 			= $pers["IdEstado"];

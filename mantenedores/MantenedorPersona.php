@@ -68,7 +68,7 @@
                 $("#apellidop").val('<?php echo $persona->ApellidoP; ?>');
                 $("#apellidom").val('<?php echo $persona->ApellidoM; ?>');
                 $("#email").val('<?php echo $persona->Email; ?>');
-                
+                $("#direccion").val('<?php echo $persona->Direccion; ?>');
                 $("#telefono").val('<?php echo $persona->Telefono; ?>');
                 $("#celular").val('<?php echo $persona->Celular; ?>');
                                         
@@ -86,6 +86,8 @@
 					$.getJSON("scripts/cargar-usuario-persona.php",{vrut:$(this).val()},function(json){
 						var p = json.persona;
 						
+						if(p.IdEstado > 0)
+						{
 						$("#nombres").val(p.Nombres);
 						$("#apellidop").val(p.ApellidoPaterno);
 						$("#apellidom").val(p.ApellidoMaterno);
@@ -97,7 +99,7 @@
 						$("#celular").val(p.Celular);
 						
 						$("#region").val(p.IdRegion).trigger("change", [p.IdComuna]);
-						
+						}
 						
 						
 						//$("#comuna").val(p.IdComuna);
@@ -134,6 +136,86 @@
 
 		
 $(document).ready(function(){ 
+
+$('#form1').submit(function(){
+		
+		if($("#region").val() == '' || $("#region").val() == '0' )
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
+					message: '<h5>Debe seleccionar una region</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
+		if($("#comuna").val() == '' ||$("#comuna").val() == '0')
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
+					message: '<h5>Debe seleccionar una comuna</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
+				if($("#idestado").val() == '' ||$("#idestado").val() == '0')
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
+					message: '<h5>Debe seleccionar un estado</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
+		if($("#idperfil").val() == '' ||$("#idperfil").val() == '0')
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
+					message: '<h5>Debe seleccionar un tipo persona </h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
+	})
 		
 	<?php if(isset($_SESSION["guardadookpersona"])){ ?>
 	    BootstrapDialog.show({
