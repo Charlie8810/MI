@@ -52,10 +52,10 @@
 			
 		$('#formempresas').submit(function(){
 		
-		if($("#region").val() == '')
+		if($("#region").val() == '' || $("#region").val() == '0' )
 		{
 			BootstrapDialog.show({
-					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Contraseñas no iguales',
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
 					message: '<h5>Debe seleccionar una region</h5>',
 					closable: true,
 					draggable: true,
@@ -71,11 +71,11 @@
 			return false;
 		}
 		
-	    if($("#comuna").val() == '')
+	    if($("#comuna").val() == '' ||$("#comuna").val() == '0')
 		{
 			BootstrapDialog.show({
-					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Contraseñas no iguales',
-					message: '<h5>Debe seleccionar una region</h5>',
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
+					message: '<h5>Debe seleccionar una comuna</h5>',
 					closable: true,
 					draggable: true,
 					buttons: [{
