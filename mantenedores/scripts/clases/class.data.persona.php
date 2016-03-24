@@ -1,6 +1,6 @@
 <?php
 
-class Estado extends MySQL
+class Persona extends MySQL
 {
 	
 	function eliminarPersona($IdPersona)
@@ -11,7 +11,7 @@ class Estado extends MySQL
 	
 	function listarPersona()
 	{
-		$sql = "SELECT * FROM estado ";
+		$sql = "SELECT * FROM persona";
 		$consulta = parent::consulta($sql);
 		$num_total_registros = parent::num_rows($consulta);
 		$lista = array();
@@ -21,20 +21,41 @@ class Estado extends MySQL
 			
 				$per = parent::fetch_assoc($consulta);	
 				$persona = new stdclass();
-				$persona->id_Idioma = $per["IdPersona"];
-				$persona->Nombre 	= $per["Nombres"];
-				$persona->ApMaterno = $per["ApellidoPaterno"];
-				$persona->ApPaterno = $per["ApellidoMAterno"];
+				$persona->IdPersona = $per["IdPersona"];
+				$persona->Nombres 	= $per["Nombres"];
+				$persona->ApellidoM = $per["ApellidoPaterno"];
+				$persona->ApellidoP = $per["ApellidoMAterno"];
 				$persona->Rut		= $per["Rut"];
 				$persona->Email		= $per["Email"];
-				$persona->IdPerfil 	= $per["IdPerfil"];
-				$persona->Direccion = $per["Direccion"];
-				$persona->IdRegion 	= $per["IdRegion"];
-				$persona->IdComuna	= $per["IdComuna"];
-				$persona->Telefono	= $per["Telefono"];
-				$persona->Celular 	= $per["Celular"];	
-				$persona->IdEstado 	= $per["IdEstado"];
-
+			
+				$lista[] = $persona;
+			}
+			return $lista;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function listarPersonas()
+	{
+		$sql = "select * from persona ";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		$lista = array();
+		if($num_total_registros>0)
+		{
+			while($per = parent::fetch_assoc($consulta)){
+			
+				$persona= new stdclass();
+				$persona->IdPersona      = $per["IdPersona"];
+				$persona->Nombres        = $per["Nombres"];
+				$persona->ApellidoP      = $per["ApellidoPaterno"];
+				$persona->ApellidoM      = $per["ApellidoMaterno"];
+				$persona->Rut		     = $per["Rut"];
+				$persona->Email		     = $per["Email"];
+			
 				$lista[] = $persona;
 			}
 			return $lista;
@@ -52,28 +73,29 @@ class Estado extends MySQL
 		$num_total_registros = parent::num_rows($consulta);
 		if($num_total_registros>0)
 		{
-			$per = parent::fetch_assoc($consulta);	
+			$pers = parent::fetch_assoc($consulta);	
 			$persona = new stdclass();
-			$persona->id_Idioma 	= $per["IdPersona"];
-			$persona->Nombre 	= $per["Nombres"];
-			$persona->ApMaterno 	= $per["ApellidoPaterno"];
-			$persona->ApPaterno 	= $per["ApellidoMAterno"];
-			$persona->Rut		= $per["Rut"];
-			$persona->Email		= $per["Email"];
-			$persona->IdPerfil 	= $per["IdPerfil"];
-			$persona->Direccion 	= $per["Direccion"];
-			$persona->IdRegion 	= $per["IdRegion"];
-			$persona->IdComuna	= $per["IdComuna"];
-			$persona->Telefono	= $per["Telefono"];
-			$persona->Celular 	= $per["Celular"];	
-			$persona->IdEstado 	= $per["IdEstado"];
+			$persona->IdPersona       	= $pers["IdPersona"];
+			$persona->Nombres 	        = $pers["Nombres"];
+			$persona->ApellidoP      	= $pers["ApellidoPaterno"];
+			$persona->ApellidoM        	= $pers["ApellidoMaterno"];
+			$persona->Rut	       		= $pers["Rut"];
+			$persona->Email 	       	= $pers["Email"];
+			$persona->Region 			= $pers["IdRegion"];
+			$persona->Comuna 		    = $pers["IdComuna"];
+			$persona->Telefono 			= $pers["Telefono"];
+			$persona->Celular			= $pers["Celular"];
+			$persona->Estado 			= $pers["IdEstado"];
+			$persona->Rut	       		= $pers["Rut"];
+			$persona->Nombres 	        = $pers["Nombres"];
 
+		
 			return $persona;
 		}
 		else
 		{
 			return false;
 		}
-	}
+	}	
 }
 ?>
