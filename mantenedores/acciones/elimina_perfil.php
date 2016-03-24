@@ -10,10 +10,11 @@ if($idPerfil)
 	$data->eliminarPerfil($idPerfil);
 	
 	$_SESSION["perfilEliminado"] = "1";
+
 }
 else
 {
-	$_SESSION["perfilEliminado"] = "0";
+	$_SESSION["perfilEliminado"] = "2";
 }
 
 header("Location: " . $_SERVER["HTTP_REFERER"]);

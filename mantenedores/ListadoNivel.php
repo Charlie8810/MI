@@ -137,6 +137,7 @@ include("scripts/clases/class.data.nivel.php");
 									<?php $data = new Nivel(); 
 									
 									$listadoNivel = $data->listarNivel();
+									if($listadoNivel >0)
 									foreach($listadoNivel as $niv):
 									?>
 										<tr>

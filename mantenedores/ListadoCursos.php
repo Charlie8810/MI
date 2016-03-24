@@ -42,12 +42,14 @@ include("scripts/clases/class.combos.php");
 								"<button type=\"button\" class=\"btn btn-xs btn-default command-show\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check-circle\"></span></button> " +
 								"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button> " ;*/
 								
-						return 	"<button type=\"button\" class=\"btn btn-xs btn-default command-show\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check-circle\"></span></button> ";	
+						return 	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " + 
+						        "<button type=\"button\" class=\"btn btn-xs btn-default command-show\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check-circle\"></span></button> "+
+								"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button> " ;							   
 					}
 				}
 			}).on("loaded.rs.jquery.bootgrid", function(){
 				grid.find(".command-edit").on("click", function(e){
-					location.href="GestorCursos.php?e=" + $(this).data("row-id");
+					location.href="MantenedorCursos.php?c=" + $(this).data("row-id");
 				}).end().find(".command-delete").on("click", function(e){
 					var idEliminar = $(this).data("row-id");
 					BootstrapDialog.confirm({
@@ -58,7 +60,7 @@ include("scripts/clases/class.combos.php");
 						size: BootstrapDialog.SIZE_SMALL,
 						callback: function(result){
 							if(result) {
-								location.href="acciones/elimina_curso.php?e=" + idEliminar;
+								location.href="acciones/elimina_curso.php?c=" + idEliminar;
 							}
 						}
 					});
@@ -143,6 +145,7 @@ include("scripts/clases/class.combos.php");
 									<?php $data = new Data(); 
 									
 									$listadoCursos = $data->listarCursosAll();
+									if($listadoCursos > 0)
 									foreach($listadoCursos as $curso):
 									?>
 										<tr>

@@ -63,7 +63,7 @@ include("scripts/clases/class.data.perfil.php");
 			});
 			
 			
-			<?php if(isset($_SESSION["perfilEliminado"])){ ?>
+			<?php if(isset($_SESSION["perfilEliminado"]) == '1'){ ?>
 				
 				BootstrapDialog.show({
 					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Eliminacion Correcta',
@@ -81,7 +81,23 @@ include("scripts/clases/class.data.perfil.php");
 				});
 			<?php unset($_SESSION["perfilEliminado"]); } ?>
 			
-			
+						<?php if(isset($_SESSION["perfilEliminado"]) == '2'){ ?>
+				
+				BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Proceso de Eliminacion',
+					message: '<h5>No se puede eliminar el perfil ya que existen relaciones vigentes!</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			<?php unset($_SESSION["perfilEliminado"]); } ?>
 		});
 	</script>
 	

@@ -56,6 +56,7 @@ $idIdioma = isset($_REQUEST["i"]) ? $_REQUEST["i"] : false;
 	$("#nombre").val('<?php echo $idioma->Nombre; ?>');
 	$("#descripcion").val('<?php echo $idioma->Descripcion; ?>');
 	$("#vigente").val('<?php echo $idioma->Vigente; ?>');
+	$("#id_Idioma").val('<?php echo $idioma->id_Idioma; ?>');
 				
 	<?php } ?>
 			
@@ -135,6 +136,7 @@ $idIdioma = isset($_REQUEST["i"]) ? $_REQUEST["i"] : false;
 									<a class="btn btn-default waves-effect waves-light m-l-5" href="ListadoIdioma.php">
 											<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
 								    </a>
+									<input type="hidden" name="id_Idioma" id="id_Idioma" value="" />
                                 </div>
                                 </form>
                             </div>

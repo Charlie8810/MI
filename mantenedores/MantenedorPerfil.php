@@ -56,6 +56,7 @@ $idPefil = isset($_REQUEST["p"]) ? $_REQUEST["p"] : false;
     $("#nombre").val('<?php echo $perfil->Nombre; ?>');
     $("#descripcion").val('<?php echo $perfil->Descripcion; ?>');
     $("#vigente").val('<?php echo $perfil->Vigente; ?>');
+	$("#idPerfil").val('<?php echo $perfil->IdPerfil; ?>');
                 
     <?php } ?>
             
@@ -129,6 +130,7 @@ $idPefil = isset($_REQUEST["p"]) ? $_REQUEST["p"] : false;
                                     <a class="btn btn-default waves-effect waves-light m-l-5" href="ListarPerfil.php">
                                             <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
                                     </a>
+									 <input type="hidden" name="idPerfil" id="idPerfil" value="" />
                                 </div>
                                 </form>
                             </div>

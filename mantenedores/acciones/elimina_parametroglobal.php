@@ -1,7 +1,7 @@
 <?php
 session_start(); 
 include("../scripts/clases/class.mysql.php");
-include("../scripts/clases/class.data.ParametrosGlobales.php");
+include("../scripts/clases/class.data.ParametroGlobal.php");
 $idParametro = isset($_REQUEST["p"]) ? $_REQUEST["p"] : false;
 
 if($idParametro)

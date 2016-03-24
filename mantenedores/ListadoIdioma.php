@@ -137,6 +137,7 @@ include("scripts/clases/class.data.idioma.php");
 									<?php $data = new Idioma(); 
 									
 									$listadoIdioma = $data->listarIdioma();
+									if($listadoIdioma >0)
 									foreach($listadoIdioma as $idioma):
 									?>
 										<tr>

@@ -36,9 +36,9 @@ class ParametroGlobal extends MySQL
 		}
 	 }	
 	
-	function EliminarParametro($codigoParametro)
+	function EliminarParametro($idParametro)
 	{
-		$sqlDelete = "delete from parametrosglobales where Codigo = " . $codigoParametro;
+		$sqlDelete = "delete from parametrosglobales where IdParametrosGlobales = " . $idParametro;
 		$stmt = parent::consulta($sqlDelete);
 	}
 	

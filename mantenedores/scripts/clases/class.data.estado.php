@@ -43,7 +43,7 @@ class Estado extends MySQL
 		{
 			$est = parent::fetch_assoc($consulta);	
 			$estado = new stdclass();
-			$estado->id_Idioma 		= $est["IdEstado"];
+			$estado->IdEstado 		= $est["IdEstado"];
 			$estado->Nombre 		= $est["Nombre"];
 			$estado->Descripcion 	= $est["Descripcion"];
 				

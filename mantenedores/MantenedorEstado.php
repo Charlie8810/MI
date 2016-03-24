@@ -55,6 +55,7 @@ $idEstado = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
     
     $("#nombre").val('<?php echo $estado->Nombre; ?>');
     $("#descripcion").val('<?php echo $estado->Descripcion; ?>');
+	$("#IdEstado").val('<?php echo $estado->IdEstado; ?>');
 
                 
     <?php } ?>
@@ -121,6 +122,8 @@ $idEstado = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
                                     <a class="btn btn-default waves-effect waves-light m-l-5" href="ListadoEstado.php">
                                             <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
                                     </a>
+									<input type="hidden" name="IdEstado" id="IdEstado" value="" />
+									
                                 </div>
                                 </form>
                             </div>

@@ -137,6 +137,7 @@ include("scripts/clases/class.data.ParametroGlobal.php");
 									<?php $data = new ParametroGlobal(); 
 									
 									$listadoParametros = $data->listarParametrosAll();
+									if($listadoParametros  > 0)
 									foreach($listadoParametros as $param):
 									?>
 										<tr>

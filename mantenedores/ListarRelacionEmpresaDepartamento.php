@@ -97,6 +97,7 @@ include("scripts/clases/class.data.relacionempresadepto.php");
 									<?php $data = new RelacionEmpresaDepartamento(); 
 									
 									$listadorelacion = $data->listarRelacionEmpresaDepartamento();
+									if($listadorelacion >0)
 									foreach($listadorelacion as $relacion):
 									?>
 										<tr>

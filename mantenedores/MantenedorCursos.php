@@ -1,5 +1,9 @@
 <?php
 	session_start();
+	include("scripts/clases/class.mysql.php");
+    include("scripts/clases/class.data.curso.php");
+
+    $idCurso = isset($_REQUEST["c"]) ? $_REQUEST["c"] : false;
 ?>
 
 
@@ -21,11 +25,71 @@
 	<link href="../assets/jquery/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
     <script src="../assets/jquery/bootstrap-dialog.min.js"></script>
 	
-	<script type="text/javascript">	
+	 <script>
+	$(document).ready(function(){ 
 	
-    $(document).ready(function(){ 
+	$('#formcurso').submit(function(){
 		
-	<?php if(isset($_SESSION["guardadookcursos"])){ ?>
+		if($("#empresa").val() == '0')
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
+					message: '<h5>Debe Seleccionar una Empresa</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
+		if($("#profesor").val() == '0')
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
+					message: '<h5>Debe Seleccionar un Profesor</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
+		if($("#idioma").val() == '0')
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
+					message: '<h5>Debe Seleccionar un Idioma</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
+		})
+	
+		<?php if(isset($_SESSION["guardadookcursos"])){ ?>
 	    BootstrapDialog.show({
 			title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Guardado Correcto',
 			message: '<h5>Cursos guardados correctamente!</h5>',
@@ -41,6 +105,23 @@
 					size: BootstrapDialog.SIZE_SMALL
 				});
 			<?php unset($_SESSION["guardadookcursos"]); } ?>
+			
+			
+        <?php  $data = new Curso(); 
+        if($idCurso){ 
+            $curso = $data->obtenerCurso($idCurso);
+         ?>
+    
+    $("#idCurso").val('<?php echo $curso->IdCurso; ?>');
+    $("#nombrecurso").val('<?php echo $curso->Nombre_Curso; ?>');
+	$("#profesor").val('<?php echo $curso->IdProfesor; ?>');
+	$("#idioma").val('<?php echo $curso->IdIdioma; ?>');
+    $("#empresa").val('<?php echo $curso->IdRelEmpresaDepto; ?>');
+	$("#vigente").val('<?php echo $curso->Vigente; ?>');
+	$("#anio").val('<?php echo $curso->AnoInicio; ?>');
+	
+                
+    <?php } ?>
 	});
 		
 		
@@ -80,7 +161,10 @@
                                 <h4 class="m-t-0 header-title">
                                     <b>Datos a Ingresar</b>
                                 </h4>
-                                <form action="GuardarCurso.php" data-parsley-validate novalidate method="post">
+                                <form id="formcurso" action="GuardarCurso.php" data-parsley-validate novalidate method="post">
+								 <script type="text/javascript">
+
+                                </script>
                                 <div class="form-group">
                                     <label for="nombrecurso">
                                         Nombre Curso</label>
@@ -104,12 +188,6 @@
 											});
 										});
 										
-										/*Cargar Nivel */
-										$.getJSON("scripts/cargar-nivel.php",function(json){
-											$.each(json.niveles,function(i,nivel){
-													$('#nivel').append("<option value=\"" + nivel.code + "\">" + nivel.name + "</option>")
-											});
-										});
 										
 										/*Cargar Idioma */
 										$.getJSON("scripts/cargar-idioma.php",function(json){
@@ -168,6 +246,10 @@
                                     <button class="btn btn-primary waves-effect waves-light" type="submit">
                                         Guardar
                                     </button>
+									<a class="btn btn-default waves-effect waves-light m-l-5" href="ListadoCursos.php">
+                                            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
+                                    </a>
+									<input type="hidden" name="idCurso" id="idCurso" value="" />
                                 </div>
                                 </form>
                             </div>

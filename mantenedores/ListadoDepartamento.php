@@ -49,7 +49,7 @@ include("scripts/clases/class.data.departamento.php");
 					var idEliminar = $(this).data("row-id");
 					BootstrapDialog.confirm({
 						title: '<span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Confirmacion',
-						message: '¿En Realidad desea eliminar el Departamento?',
+						message: '¿En Realidad desea eliminar el Departamento y sus relaciones?',
 						draggable: true,
 						type: BootstrapDialog.TYPE_WARNING,
 						size: BootstrapDialog.SIZE_SMALL,
@@ -136,6 +136,8 @@ include("scripts/clases/class.data.departamento.php");
 									<?php $data = new Departamento(); 
 									
 									$listadoDepartamento = $data->listarDepartamento();
+									
+									if($listadoDepartamento >0)
 									foreach($listadoDepartamento as $departamento):
 									?>
 										<tr>

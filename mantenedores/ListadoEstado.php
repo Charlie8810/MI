@@ -136,6 +136,7 @@ include("scripts/clases/class.data.estado.php");
 									<?php $data = new Estado(); 
 									
 									$listadoEstado = $data->listarEstado();
+									if($listadoEstado >0)
 									foreach($listadoEstado as $estado):
 									?>
 										<tr>
