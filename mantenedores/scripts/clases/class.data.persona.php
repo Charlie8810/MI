@@ -91,8 +91,6 @@ class Persona extends MySQL
 			$persona->Telefono 			= $pers["Telefono"];
 			$persona->Celular			= $pers["Celular"];
 			$persona->Estado 			= $pers["IdEstado"];
-			$persona->Rut	       		= $pers["Rut"];
-			$persona->Nombres 	        = $pers["Nombres"];
 
 		
 			return $persona;
