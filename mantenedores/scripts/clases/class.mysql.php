@@ -8,7 +8,7 @@ class MySQL
 	{
   		$this->conexion = (mysql_connect('190.107.177.242', 'cin1770_jonathan', 'realmadrid2013')) or die(mysql_error());
   		//$this->conexion = (mysql_connect('localhost', 'root', '')) or die(mysql_error());
-  		mysql_select_db("cin1770_sca",$this->conexion) or die(mysql_error());
+  		mysql_select_db("cin1770_miQA",$this->conexion) or die(mysql_error());
   	}
   }
 

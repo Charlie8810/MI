@@ -21,6 +21,7 @@ include("scripts/clases/class.data.persona.php");
     <link href="../assets/css/pages.css" rel="stylesheet" type="text/css" />
     <link href="../assets/css/responsive.css" rel="stylesheet" type="text/css" />
 	<link href="../assets/jquery/jquery.bootgrid.css" rel="stylesheet" />
+	
 	<script>
         var resizefunc = [];
     </script>e
@@ -90,12 +91,10 @@ include("scripts/clases/class.data.persona.php");
     <!-- Begin page -->
     <div id="wrapper">
         <!-- Top Bar Start -->
-        <?php include("../matrices/topbaradministrador.php");?>
+       <?php include("../matrices/topbaradministrador.php");?>
         <!-- Top Bar End -->
-        <!-- ========== Left Sidebar Start ========== -->
-
+        <!-- ========== Left Sidebar Start ========== -->  
         <?php include("../matrices/left-side-menuadministrador.php");?>
-
         <!-- Left Sidebar End -->
         <!-- ============================================================== -->
         <!-- Start right Content here -->
@@ -127,9 +126,10 @@ include("scripts/clases/class.data.persona.php");
 										<tr>
 											<th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
 											<th data-column-id="id" data-type="numeric">ID</th>
+											<th data-column-id="tipousuario">Tipo Usuario</th>
 											<th data-column-id="nombre">Nombre</th>
-											<th data-column-id="apellidoM">Apellido Mat.</th>
 											<th data-column-id="apellidoP">Apellido Pat.</th>
+											<th data-column-id="apellidoM">Apellido Mat.</th>
 											<th data-column-id="rut">Rut</th>
 											<th data-column-id="email">Email</th>
 											<th
@@ -140,11 +140,13 @@ include("scripts/clases/class.data.persona.php");
 									<?php $data = new Persona(); 
 									
 									$listadoPersona = $data->listarPersonas();
+									if($listadoPersona >0)
 									foreach($listadoPersona as $persona):
 									?>
 										<tr>
 											<td></td>
 											<td><?php echo $persona->IdPersona; ?></td>
+											<td><?php echo $persona->tipousuario; ?></td>
 											<td><?php echo $persona->Nombres; ?></td>
 											<td><?php echo $persona->ApellidoM; ?></td>
 											<td><?php echo $persona->ApellidoP; ?></td>
@@ -157,6 +159,7 @@ include("scripts/clases/class.data.persona.php");
 											<td><?php echo $persona->Telefono; ?></td>
 											<td><?php echo $persona->Celular; ?></td>
 											<td><?php echo $persona->IdEstado; ?></td>-->
+											    
 
 										</tr>
 									<?php endforeach;?>

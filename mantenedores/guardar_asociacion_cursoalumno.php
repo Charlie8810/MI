@@ -7,14 +7,17 @@
 	
 	$idCurso = $_POST["idCurso"];
 	$alumnos = $_POST["slEnrrolados"];
+	$nivel = $_POST["nivel"];
 	
 	
-	$data->eliminarAsociacionCursoAlumno($idCurso);
+	
+	$data->eliminarAsociacionCursoAlumno($idCurso,$nivel);
 	
 	foreach ($alumnos as $key => $value) 
 	{
 		$relacion = new stdClass();
 		$relacion->IdCurso 		= $idCurso;
+		$relacion->nivel 		= $nivel;
 		$relacion->IdPersona 	= $value;
 		$data->guardarAsociacionCursoAlumno($relacion);
 	}

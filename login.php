@@ -51,7 +51,7 @@
 				echo  '<div class="alert alert-danger alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                             <strong>Error</strong>
-							Debe ingresar un usuario y contraseña validos!!
+							You must enter a valid username and password !!
 						</div>';
 				unset($_SESSION["error_login"]);
 			
@@ -93,11 +93,11 @@
                     </div>
                 </div>
 
-                <div class="form-group m-t-30 m-b-0">
+                <!--<div class="form-group m-t-30 m-b-0">
                     <div class="col-sm-12">
                         <a href="resetPassword.php" class="text-dark"><i class="fa fa-lock m-r-5"></i> Did you forget your password?</a>
                     </div>
-                </div>
+                </div>-->
                 
             </form> 
             <script>

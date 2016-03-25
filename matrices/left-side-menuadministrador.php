@@ -12,17 +12,18 @@
                     <ul>
                         <li class="has_sub"><a href="ListadoPersonas.php" class="waves-effect"><span>Person</span> </a></li>
 						<li class="has_sub"><a href="ListadoEmpresa.php" class="waves-effect"><span>Company</span> </a></li>
+						<li class="has_sub"><a href="ListadoDepartamento.php" class="waves-effect"><span>Departamento</span> </a></li>						
+						<li class="has_sub"><a href="ListarRelacionEmpresaDepartamento.php" class="waves-effect"><span>Rol Empresa Departamento Persona</span> </a></li>
 						<li class="has_sub"><a href="ListadoParametroGlobal.php" class="waves-effect"><span>Parameter Glogal</span> </a></li>
-						<li class="has_sub"><a href="ListadoNivel.php" class="waves-effect"><span>Nivel</span> </a></li>
+						<li class="has_sub"><a href="ListadoNivel.php" class="waves-effect"><span>Level</span> </a></li>
 						<li class="has_sub"><a href="ListadoIdioma.php" class="waves-effect"><span>Idioma</span> </a></li>
 						<li class="has_sub"><a href="ListadoEstado.php" class="waves-effect"><span>State</span> </a></li>
 						<li class="has_sub"><a href="ListarPerfil.php" class="waves-effect"><span>Profile</span> </a></li>
 						<li class="has_sub"><a href="ListadoUsuario.php" class="waves-effect"><span>User</span> </a></li>
 						<li class="has_sub"><a href="ListadoCursos.php" class="waves-effect"><span>Course</span> </a></li>
 						<li class="has_sub"><a href="ListadoEjercicios.php" class="waves-effect"><span>Exercise</span> </a></li>
-						<li class="has_sub"><a href="ListadoEjercicios.php" class="waves-effect"><span>Exercise</span> </a></li>
 						<li class="has_sub"><a href="ListadoFases.php" class="waves-effect"><span>Fases</span> </a></li>
-						<li class="has_sub"><a href="ListarRelacionEmpresaDepartamento.php" class="waves-effect"><span>Rel Empresa Departamento Persona</span> </a></li>
+						
 						
 						
                     </ul>
@@ -30,7 +31,7 @@
 				
 				
 				
-                 <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="ti-user">
+                 <!--<li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="ti-user">
                 </i><span>Users</span></a>
                     <ul>
                         <li class="has_sub"><a href="/mi/mantenedores/registroUsuarios.php" class="waves-effect"><span>New</span> </a>
@@ -60,7 +61,7 @@
                                 <li><a href="javascript:void(0);"><span>Manage Levels</span></a></li>
                             </ul>
                         </li>
-                        <!--<li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>Portugués</span> </a>
+                        <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><span>Portugués</span> </a>
                             <ul style="">
                                 <li><a href="javascript:void(0);"><span>Particular</span></a></li>
                                 <li><a href="javascript:void(0);"><span>Grupo</span></a></li>
@@ -91,7 +92,7 @@
                                 <li><a href="javascript:void(0);"><span>Nivel</span></a></li>
                                 <li><a href="javascript:void(0);"><span>Empresa</span></a></li>
                             </ul>
-                        </li>-->
+                        </li>
                     </ul>
                 </li>
 
@@ -126,7 +127,7 @@
                             </ul>
                         </li>
                     </ul>
-                </li>
+                </li>-->
 
 
                 <!--<li class="text-muted menu-title">Extra</li>

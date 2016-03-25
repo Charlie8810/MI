@@ -3,6 +3,7 @@
 	include("scripts/clases/class.mysql.php");
 	include("scripts/clases/class.data.php");
 	include("scripts/clases/class.combos.php");
+	include("scripts/clases/class.data.curso.php");
 		
 	$idCurso = isset($_REQUEST["c"]) ? $_REQUEST["c"] : false;	
 	$data = new Data();	
@@ -32,7 +33,28 @@
 	
     $(document).ready(function(){ 
     	
-    	
+    	$('#frmasoc').submit(function(){
+		
+		if($("#nivel").val() ==0)
+		{
+			BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
+					message: '<h5>Debe seleccionar un nivel</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+							dialogItself.close();
+						}
+					}],
+					type: BootstrapDialog.TYPE_WARNING,
+					size: BootstrapDialog.SIZE_SMALL
+				});
+			return false;
+		}
+		
+	})
     	/*Javascript aca*/
     	
     	$("#btn_enrrolar").click(function(){
@@ -49,6 +71,16 @@
     		$("#frmasoc").submit();
     	});
     	
+		
+		    <?php 
+				  $data = new Curso(); 
+				if($idCurso){ 
+					$curso = $data->obtenerCurso($idCurso);
+			?>
+			
+			$("#nombreRelacion").html('<?php echo $curso->Nombre_Curso  ?>');
+						
+			<?php } ?>
     	
     	
 		
@@ -98,22 +130,45 @@
                     <!-- Page-Title -->
                     <div class="row">
                         <div class="col-sm-12">
-                            <h4 class="page-title">Mantenedor de Cursos</h4>
+                            <h4 class="page-title">Mantenedor Relacion Cursos nivel Persona</h4>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card-box" style="height: 450px;">
                                 <h4 class="m-t-0 header-title">
-                                    <b>Enrrolamiento de Alumnos Curso: Contigo aprendo ingles, Nivel 1</b>
+                                    <b id="nombreRelacion" name="nombreRelacion"></b>
                                 </h4>
                                 <form id="frmasoc" action="guardar_asociacion_cursoalumno.php" data-parsley-validate novalidate method="post">
-                                			
+                                		
+									<script type="text/javascript">
+                                    $(document).ready(function(){
+                                        
+										/*Cargar Niveles */
+										$.getJSON("scripts/cargar-nivel.php",function(json){
+											$.each(json.niveles,function(i,nivel){
+													$('#nivel').append("<option value=\"" + nivel.code + "\">" + nivel.name + "</option>")
+											});
+										});
+									});
+
+                                </script>
+
+										
+								<div class="form-group">
+                                    <label for="nivel">
+                                        Nivel*</label>
+                                    <select class="selectpicker  form-control" data-style="btn-white" id="nivel" name="nivel">
+                                        <option value="0">- - Seleccione - - </option>
+                                    </select>
+                                </div>			
+											
                                 <div class="col-lg-5">
                                 	<div class="form-group">
                                     	<label for="nivel">Alumnos Enrrolados</label>
                                			<select id="slEnrrolados" name="slEnrrolados[]" multiple="multiple" size="15" class="selectpicker  form-control" data-style="btn-white">
-                               				<?php foreach($data->listarAlumnosEnrrolados($idCurso) as $enrrolados):?>
+                               				<?php $data = new Data();  
+											foreach($data->listarAlumnosEnrrolados($idCurso) as $enrrolados):?>
                                					<option value="<?php echo $enrrolados->IdPersona;?>"><?php echo $enrrolados->Rut.", ".$enrrolados->NombreCompleto;?></option>
                                				<?php endforeach;?>
                                			</select>
@@ -135,7 +190,8 @@
                                 	<div class="form-group">
                                     	<label for="nivel">Alumnos Disponibles</label>
                                			<select id="slDesEnrrolados" multiple="multiple" size="15" class="selectpicker  form-control" data-style="btn-white">
-                               				<?php foreach($data->listarAlumnosNoEnrrolados($idCurso) as $noEnrrolados):?>
+                               				<?php  $data = new Data(); 
+											foreach($data->listarAlumnosNoEnrrolados($idCurso) as $noEnrrolados):?>
                                					<option value="<?php echo $noEnrrolados->IdPersona;?>"><?php echo $noEnrrolados->Rut.", ".$noEnrrolados->NombreCompleto;?></option>
                                				<?php endforeach;?>
                                			</select>

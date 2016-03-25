@@ -6,14 +6,11 @@
 	
 	if($user == 1)
 	{
-		header("location: ../registroUsuarios_Persona.php");
+		header("location: ../ListadoPersonas.php");
 	}
 	else if ($user == 2)
 	{
-		header("location: ../registroUsuarios_Empresa.php");
-	}else
-	{
-		header("location: ../registroUsuarios.php");
+		header("location: ../ListadoEmpresa.php");
 	}
 
 

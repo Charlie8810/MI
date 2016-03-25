@@ -40,7 +40,10 @@ class Persona extends MySQL
 	
 	function listarPersonas()
 	{
-		$sql = "select * from persona ";
+		$sql = "select persona.*,
+			   perfil.Nombre as tipousuario
+			   from persona
+			   inner join perfil on perfil.IdPerfil = persona.IdPerfil";
 		$consulta = parent::consulta($sql);
 		$num_total_registros = parent::num_rows($consulta);
 		$lista = array();
@@ -55,6 +58,7 @@ class Persona extends MySQL
 				$persona->ApellidoM      = $per["ApellidoMaterno"];
 				$persona->Rut		     = $per["Rut"];
 				$persona->Email		     = $per["Email"];
+				$persona->tipousuario    = $per["tipousuario"];
 			
 				$lista[] = $persona;
 			}

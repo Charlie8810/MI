@@ -426,7 +426,7 @@ class Data extends MySQL
 			select * 
 			from persona p 
 			where p.IdPerfil = 3
-			and p.IdPersona in (select IdPersona from relacioncursopersona  where relacioncursopersona.Vigente = 1 and relacioncursopersona.IdCurso = ".$idCurso.");";
+			and p.IdPersona in (select IdPersona from relacioncursopersona  where relacioncursopersona.Vigente = 1 and relacioncursopersona.IdCurso = ".$idCurso." );";
 		$consulta = parent::consulta($sql);
 		$num_total_registros = parent::num_rows($consulta);
 		$lista = array();
@@ -450,9 +450,9 @@ class Data extends MySQL
 		
 	}
 	
-	function eliminarAsociacionCursoAlumno($idCurso)
+	function eliminarAsociacionCursoAlumno($idCurso,$idNivel)
 	{
-		$sqlDelete = "UPDATE relacioncursopersona SET Vigente=0  WHERE IdCurso=".$idCurso.";";
+		$sqlDelete = "UPDATE relacioncursopersona SET Vigente=0  WHERE IdCurso=".$idCurso." AND IdCurso=".$idNivel.";";
 		$stmt = parent::consulta($sqlDelete);
 	}
 	
@@ -462,6 +462,7 @@ class Data extends MySQL
 			     $sql ="  SELECT *
 				  FROM	relacioncursopersona
 				  WHERE	relacioncursopersona.IdCurso = $entrada->IdCurso
+				  AND	relacioncursopersona.IDNivel = $entrada->nivel
                   AND	relacioncursopersona.IdPersona = $entrada->IdPersona;";
 
 		$consulta = parent::consulta($sql);
@@ -469,12 +470,12 @@ class Data extends MySQL
 
         if($num_total_registros>0)
 		{
-			$sqlupdate = "UPDATE relacioncursopersona SET Vigente=1  WHERE IdCurso=".$entrada->IdCurso." AND IdPersona=".$entrada->IdPersona.";";
+			$sqlupdate = "UPDATE relacioncursopersona SET Vigente=1  WHERE IdCurso=".$entrada->IdCurso." AND IdPersona=".$entrada->IdPersona." AND IdPersona=".$entrada->nivel.";";
 		    $stmt1 = parent::consulta($sqlupdate);
 		}
         else
 		{
-			$sqlInsert = "insert into relacioncursopersona(IdCurso, IdPersona, Vigente) values ($entrada->IdCurso, $entrada->IdPersona,'1');";
+			$sqlInsert = "insert into relacioncursopersona(IdCurso, IdPersona, Vigente, IDNivel) values ($entrada->IdCurso, $entrada->IdPersona,'1',$entrada->nivel);";
 		    $stmt = parent::consulta($sqlInsert);
 		}	
 		

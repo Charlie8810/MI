@@ -136,6 +136,7 @@ include("scripts/clases/class.data.usuario.php");
 									<?php $data = new Usuario(); 
 									
 									$listarUsuarios = $data->listarUsuario();
+									if($listarUsuarios)
 									foreach($listarUsuarios as $usu):
 									?>
 										<tr>

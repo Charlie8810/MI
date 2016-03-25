@@ -7,7 +7,7 @@
                 <li class="has_sub"><a href="/mi/Nivel_1.php" class="waves-effect"><i class="ti-home"></i><span>Home
                 </span></a></li>
 				
-				<li class="has_sub"><a href="/mi/Nivel_1.php" class="waves-effect"><i class="ti-user"></i><span>User Profile
+				<li class="has_sub"><a href="/mi/mantenedores/MantenedorPersonaBasico.php" class="waves-effect"><i class="ti-user"></i><span>User Profile
                 </span></a></li>
                     
             </ul>

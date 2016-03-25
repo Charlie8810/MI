@@ -153,6 +153,7 @@ include("scripts/clases/class.data.perfil.php");
 									<?php $data = new Perfil(); 
 									
 									$listadoPerfil = $data->listarPerfil();
+									if($listadoPerfil>0)
 									foreach($listadoPerfil as $perfil):
 									?>
 										<tr>
