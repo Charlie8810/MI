@@ -39,7 +39,7 @@ if(!isset($_SESSION['userid']))
         if(verificar_login($_POST['user'],$_POST['password'],$result) == 1)
         {
             $_SESSION['idPersona'] = $result->idPersona;
-
+			$_SESSION['datosusuario']	= $result;
 
 
             $res = "SELECT perfil.Nombre FROM usuario
@@ -60,11 +60,11 @@ if(!isset($_SESSION['userid']))
             }
             else if($rows['Nombre'] == 'Alumno' || $rows['Nombre'] == 'Profesor')
             {
-                header("location: ../Nivel_1.php");
+                header("location: ../bandejaAlumno.php");
             }
             else
             {
-                header("location: Nivel_1.php");
+                header("location: bandejaAlumno.php");
             }            
         }
         else

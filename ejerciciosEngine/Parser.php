@@ -60,8 +60,6 @@ class Parser
 		$html = "";
 		$listapreguntas = $this->chson_to_array($text);
 		
-		//print_r($listapreguntas);
-		
 		
 		foreach($listapreguntas as $prgs)
 		{
@@ -84,14 +82,103 @@ class Parser
 	}
 	
 	
-	public function parse_dragndrop()
+	public function parse_dragndrop($text)
 	{
+		$html = '';
+		$listapreguntas = $this->chson_to_array($text);
+		
+	$html.=	'<div class="sideBySide">
+		<div class="left">
+			<p>Respuestas:</p>
+			<ul class="source connected">';
+			
+			foreach($listapreguntas as $prgs)
+			{
+				foreach($prgs as $kp => $pregunta)
+				{
+					foreach($pregunta["respuestas"] as $kr=>$resp)
+					{
+						$html_class = 'P'.$kp;
+						$html.='<li draggable="true" class="'.$html_class.'">'.$resp[0].'</li>';
+					}
+				}
+			}
+			
+		$html.='</ul>
+		</div>';
+	
+			foreach($listapreguntas as $prgs)
+			{
+				foreach($prgs as $kp => $pregunta)
+				{
+					
+					$html_class = 'P'.$kp;
+					$html.='<div class="left '.$html_class.'">
+									<p>'.$pregunta["pregunta"].':</p>
+									<ul class="target connected '.$html_class.'" pregunta="'.$html_class.'">
+										
+									</ul>
+							</div>';
+					
+				}
+			}
+		
+		
+	$html.='</div>
+	
+	<script type="text/javascript">
+      $(function () {
+        $(".source, .target").sortable({
+		   connectWith: ".connected",
+		   placeholder: "sortable-placeholder"
+        });
+      });
+    </script>
+	
+	';
+	
+		return $html;
+	}
+	
+	public function parse_sopaletras($texto)
+	{
+		
+		$html = '<div id="puzzle"></div>
+		<div id="words"></div>
+		<!--div><button id="solve">Solve Puzzle</button></div-->';
+		
+		
+		$html .= '<script type="text/javascript">
+		
+				var words = '.str_replace(array("{","}"),array("[","]"),$texto).';
+				
+			 // start a word find game
+			  var gamePuzzle = wordfindgame.create(words, "#puzzle", "#words");
+
+			  /*$("#solve").click( function() {
+				wordfindgame.solve(gamePuzzle, words);
+			  });*/
+
+			  // create just a puzzle, without filling in the blanks and print to console
+			  var puzzle = wordfind.newPuzzle(
+				words, 
+				{height: 18, width:18, fillBlanks: false}
+			  );
+			  wordfind.print(puzzle);
+			
+		</script>';
+		
+		return $html;
+	}
+	
+	public function parse_select($text)
+	{
+		$trozoHtml = "<select class=\"pregunta_multiple\">
+							<option>-- Seleccione --</option>";
+		
+		
 		
 	}
 	
-	public function parse_sopaletras()
-	{
-		
-	}
 	
 } 

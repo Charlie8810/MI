@@ -5,6 +5,8 @@ session_start();
 include("../scripts/clases/class.mysql.php");
 include("../scripts/clases/class.data.php");
 include("../scripts/clases/class.data.Ejercicios.php");
+include("../../ejerciciosEngine/Parser.php");
+
 
 //Parametros
 $curso = isset($_POST["curso"]) ? $_POST["curso"] : false;
@@ -20,8 +22,8 @@ $terminospareadosIzquierda = isset($_POST["izquierda"]) ? $_POST["izquierda"] : 
 $terminospareadosDerecha = isset($_POST["derecha"]) ? $_POST["derecha"] : false;
 $idEjercicio = isset($_REQUEST["IdEjercicio"]) ? $_REQUEST["IdEjercicio"] : false;
 
-
-if($curso != false && $fase != false && $tipo_ejercicio != false)
+//$curso != false &&
+if( $fase != false && $tipo_ejercicio != false)
 {
 	
 	$data = new Data();
@@ -31,6 +33,9 @@ if($curso != false && $fase != false && $tipo_ejercicio != false)
 	$ejercicio->IdFase = $fase;
 	$ejercicio->IdTipo = $tipo_ejercicio;
 	$ejercicio->Nombre = $nombre_ejercicio;
+	
+	//print_r($ejercicio);
+	//die;
 	$idEjercicio = $data->guardarEjercicio($ejercicio);
 	
 	//Terminos pareados
@@ -121,7 +126,7 @@ if($curso != false && $fase != false && $tipo_ejercicio != false)
 		{
 			$imprimir = $grupopregunta;
 			$encontradas = array();		
-			$res = preg_match_all("#@@([\w@,+&.' ]+);#is", $grupopregunta, $encontradas);
+			$res = preg_match_all("#{\"([\w@,+&.' ]+)\"}#is", $grupopregunta, $encontradas);
 			if($res > 0)
 			{	
 				foreach($encontradas[1] as $kp=>$pregunta)
@@ -146,7 +151,7 @@ if($curso != false && $fase != false && $tipo_ejercicio != false)
 					else // respuesta multiple
 					{
 						$trozoHtml = "<select class=\"pregunta_multiple\"><option>-- Seleccione --</option>";
-						$respuestas = explode(",", $pregunta);
+						$respuestas = explode("@,", $pregunta);
 						foreach($respuestas as $ki=>$respuesta)
 						{
 							$escorrecta = preg_match("/^\+\+/", $respuesta);					
@@ -170,6 +175,64 @@ if($curso != false && $fase != false && $tipo_ejercicio != false)
 				
 				$idGrupoPregunta = $data->guardarGrupoPreguntas($grupo);
 			}
+		}
+	}
+	else if($tipo_ejercicio == 6)
+	{
+		if($idEjercicio)
+		{
+			$data->eliminarGrupoPreguntasPorEjercicio($idEjercicio);
+		}	
+		foreach($grupopreguntas as $kg=>$grupopregunta)
+		{
+			$parser = new Parser();
+			$html = $parser->parse_checkbox($grupopregunta);
+			
+			$grupo = new stdClass();
+			$grupo->IdEjercicio = $idEjercicio;
+			$grupo->Texto = mysql_real_escape_string($grupopregunta);
+			$grupo->Html = mysql_real_escape_string($html);
+			
+			$idGrupoPregunta = $data->guardarGrupoPreguntas($grupo);
+		}
+	}
+	else if($tipo_ejercicio == 7)
+	{
+		if($idEjercicio)
+		{
+			$data->eliminarGrupoPreguntasPorEjercicio($idEjercicio);
+		}	
+		foreach($grupopreguntas as $kg=>$grupopregunta)
+		{
+			$parser = new Parser();
+			$html = $parser->parse_dragndrop($grupopregunta);
+			
+			$grupo = new stdClass();
+			$grupo->IdEjercicio = $idEjercicio;
+			$grupo->Texto = mysql_real_escape_string($grupopregunta);
+			$grupo->Html = mysql_real_escape_string($html);
+			
+			$idGrupoPregunta = $data->guardarGrupoPreguntas($grupo);
+		}
+	}
+	
+	else if($tipo_ejercicio == 8)
+	{
+		if($idEjercicio)
+		{
+			$data->eliminarGrupoPreguntasPorEjercicio($idEjercicio);
+		}	
+		foreach($grupopreguntas as $kg=>$grupopregunta)
+		{
+			$parser = new Parser();
+			$html = $parser->parse_sopaletras($grupopregunta);
+			
+			$grupo = new stdClass();
+			$grupo->IdEjercicio = $idEjercicio;
+			$grupo->Texto = mysql_real_escape_string($grupopregunta);
+			$grupo->Html = mysql_real_escape_string($html);
+			
+			$idGrupoPregunta = $data->guardarGrupoPreguntas($grupo);
 		}
 	}
 

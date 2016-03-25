@@ -3,7 +3,9 @@ session_start();
 include("scripts/clases/class.mysql.php");
 include("scripts/clases/class.data.php");
 include("scripts/clases/class.combos.php");
+include("scripts/clases/class.data.fases.php");
 include("scripts/clases/class.data.Ejercicios.php");
+
 $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 ?>
 <!DOCTYPE html>
@@ -73,6 +75,7 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 					$("#dvPB1").fadeOut("fast");
 					$("#dvPBAudio").fadeOut("fast");
 					$("#dvPBFoto").fadeOut("fast");
+					$("#btnAgregar").fadeIn("fast");
 					
 				}
 				else if($(this).val() == "3")
@@ -80,7 +83,8 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 					$("#dvP1").fadeOut("fast");
 					$("#dvPB1").fadeIn("fast");
 					$("#dvPBAudio").fadeOut("fast");
-					$("#dvPBFoto").fadeIn("fast");
+					$("#dvPBFoto").fadeOut("fast");
+					$("#btnAgregar").fadeIn("fast");
 				}
 				else if($(this).val() == "4")
 				{
@@ -88,6 +92,7 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 					$("#dvPB1").fadeOut("fast");
 					$("#dvPBAudio").fadeIn("fast");
 					$("#dvPBFoto").fadeOut("fast");
+					$("#btnAgregar").fadeIn("fast");
 				}
 				else if($(this).val() == "5")
 				{
@@ -95,6 +100,15 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 					$("#dvPB1").fadeOut("fast");
 					$("#dvPBAudio").fadeOut("fast");
 					$("#dvPBFoto").fadeIn("fast");
+					$("#btnAgregar").fadeIn("fast");
+				}
+				else if($(this).val() == "6" || $(this).val() == "7" || $(this).val() == "8")
+				{
+					$("#dvP1").fadeIn("fast");
+					$("#dvPB1").fadeOut("fast");
+					$("#dvPBAudio").fadeOut("fast");
+					$("#dvPBFoto").fadeOut("fast");
+					$("#btnAgregar").fadeOut("fast");
 				}
 				
 			});
@@ -194,7 +208,7 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 										<input type="text" name="nombre_ejercicio" id="nombre_ejercicio" class="input  form-control" />
 									</div>
 		
-									<div class="form-group">
+									<div class="form-group" style="display:none;">
 										<label for="curso">
 											Curso*</label>
 										<select class="selectpicker  form-control" data-style="btn-white" id="curso" name="curso">
@@ -215,16 +229,14 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 											Fase*</label>
 										<select class="selectpicker  form-control" data-style="btn-white" id="fase" name="fase">
 											<option>- - Seleccione - - </option>
-											<option value="1">Fase 1</option>
-											<option value="2">Fase 2</option>
-											<option value="3">Fase 3</option>
-											<option value="4">Fase 4</option>
-											<option value="5">Fase 5</option>
-											<option value="6">Fase 6</option>
-											<option value="7">Fase 7</option>
-											<option value="8">Fase 8</option>
-											<option value="9">Fase 9</option>
-											<option value="10">Fase 10</option>
+											<?php 
+											$fase = new Fases();
+											$fases = $fase->listarFases();
+											foreach($fases as $fa)
+											{
+												echo '<option value="'.$fa->Id_Fase.'">'.$fa->Nombre.'</option>';
+											}
+										 ?>
 											
 										</select>
 									</div>

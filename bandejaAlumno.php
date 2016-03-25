@@ -1,3 +1,17 @@
+<?php 
+session_start();
+include("seguridad.php");
+
+include("mantenedores/scripts/clases/class.mysql.php");
+include("mantenedores/scripts/clases/class.data.bandejaAlumno.php");
+$datosAlumno = $_SESSION['datosusuario']; 
+$bandeja = new BandejaAlumno();
+$cursos = $bandeja->listarCursosAlumno($datosAlumno->Login);
+
+
+	
+?>
+
 <!DOCTYPE html>
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
@@ -43,29 +57,24 @@
                     <!-- Page-Title -->
                     <div class="row">
                         <div class="col-sm-12">
-                            <h4 class="page-title">Inicio Alumno</h4>
+                            <h3 class="page-title">Mis Cursos</h3>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
+                        	<?php 
+						
+							
+							foreach($cursos as $curso):?>
                         	
-                        	<h5>Ingles basico I</h5>
+							<?php foreach($curso->Niveles as $nivel):?>
+							<h4 class="page-title"><?php echo $curso->Nombre_Curso ." - " . $nivel->Nombre_nivel;?></h4>
                         	
-                        	<h6>Nivel 1</h6>
                         	
                             <div class="panel-group" id="accordion-test-2">
 								
 								<?php 
-										 
-										 //imports
-											include("mantenedores/scripts/clases/class.mysql.php");
-											include("mantenedores/scripts/clases/class.data.php");
-
-											$data = new Data();
-											$fases = $data->listarFases();
-
-								
-								foreach($fases as $fa)
+								foreach($nivel->Fases as $fa)
 								{
 										?>
 								
@@ -73,19 +82,18 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion-test-2" href="#collapseOne-2<?php echo $fa->IdFase;?>" aria-expanded="false"
-                                                class="collapsed">Phase <?php echo $fa->IdFase;?></a>
+                                            <a data-toggle="collapse" data-parent="#accordion-test-2" href="#collapseOne-2<?php echo $fa->Id_fase;?>" aria-expanded="false"
+                                                class="collapsed"><?php echo $fa->Nombre_fase;?></a>
                                         </h4>
                                     </div>
                                     
-                                    <div id="collapseOne-2<?php echo $fa->IdFase;?>" class="panel-collapse collapse">
+                                    <div id="collapseOne-2<?php echo $fa->Id_fase;?>" class="panel-collapse collapse">
                                         <div class="panel-body">
                                             <ul>
 												<?php 
-												$ejercicios =  $data->listarEjercicios($fa->IdCurso, $fa->IdFase);
-												foreach($ejercicios as $ej){
+												foreach($fa->Ejercicios as $ej){
 												?>
-												<li><a href="mantenedores/RecibeEjercicios.php?ejercicio=<?php echo $ej->IdEjercicio; ?>"> <?php echo $ej->Nombre; ?></a></li>    
+												<li><a href="mantenedores/RecibeEjercicios.php?ejercicio=<?php echo $ej->Id_ejercicio; ?>"> <?php echo $ej->Nombre; ?></a></li>    
 												<?php } ?>
 											</ul>
                                         </div>
@@ -95,6 +103,10 @@
 							<?php } ?>
 								
                             </div>
+							<?php endforeach;?>
+							
+							
+							<?php endforeach;?>
                         </div>
                     </div>
                     <!-- end row -->
