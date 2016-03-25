@@ -480,6 +480,42 @@ class Data extends MySQL
 		}	
 		
 	}
+	
+	
+	function listarTiposEjercicios()
+	{
+		$sql = "
+			select * 
+			from tipo_pregunta";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		$lista = array();
+		if($num_total_registros>0)
+		{
+			while($gr = parent::fetch_assoc($consulta))
+			{
+			
+				$alumno = new stdclass();
+				$alumno->IdTipoEjercicio 			= $gr["IdTipoEjercicio"];
+				$alumno->Nombre	= $gr["Nombre"];
+				$lista[] = $alumno;
+			}
+			return $lista;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	
+	function actualizarTiposEjercicios($entrada)
+	{
+
+		$sqlupdate = "UPDATE tipo_pregunta SET Nombre = '".$entrada->Nombre."'  WHERE IdTipoEjercicio = ".$entrada->IdTipoEjercicio.";";
+		$stmt1 = parent::consulta($sqlupdate);
+
+	}
 		
 	
 }
