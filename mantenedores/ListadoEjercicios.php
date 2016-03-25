@@ -142,6 +142,7 @@ include("scripts/clases/class.combos.php");
 									<?php $data = new Data(); 
 									
 									$listadoEjercicios = $data->listarEjerciciosAll();
+									if($listadoEjercicios)
 									foreach($listadoEjercicios as $ejercicio):
 									?>
 										<tr>
