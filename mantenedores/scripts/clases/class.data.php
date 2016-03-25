@@ -450,9 +450,96 @@ class Data extends MySQL
 		
 	}
 	
+	function listarNivelEnrrolados($idCurso)
+	{
+		$sql = "
+			select * 
+			from  nivel n 
+			where n.Vigente = 1
+			and   n.Id_Nivel in (select relacionnivelcurso.IdNivel from relacionnivelcurso  where relacionnivelcurso.Vigente =1 and  relacionnivelcurso.IdCurso= ".$idCurso." );";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		$lista = array();
+		if($num_total_registros>0)
+		{
+			while($gr = parent::fetch_assoc($consulta))
+			{
+			
+				$nivel = new stdclass();
+				$nivel->Id_Nivel 			= $gr["Id_Nivel"];
+				$nivel->Nombre 	        = $gr["Nombre"];
+				$lista[] = $nivel;
+			}
+			return $lista;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+		function listarNivelnoEnrrolados($idCurso)
+	{
+		$sql = "
+			select * 
+			from nivel n 
+			where n.Vigente = 1
+			and   n.Id_Nivel not in (select relacionnivelcurso.IdNivel from relacionnivelcurso  where relacionnivelcurso.Vigente =1 and  relacionnivelcurso.IdCurso= ".$idCurso." );";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		$lista = array();
+		if($num_total_registros>0)
+		{
+			while($gr = parent::fetch_assoc($consulta))
+			{
+			
+				$nivel = new stdclass();
+				$nivel->Id_Nivel 			= $gr["Id_Nivel"];
+				$nivel->Nombre 	        = $gr["Nombre"];
+				$lista[] = $nivel;
+			}
+			return $lista;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function guardarAsociacionCursoNivel($entrada)
+	{
+		
+			     $sql ="  SELECT *
+				  FROM	relacionnivelcurso
+				  WHERE	relacionnivelcurso.IdCurso = $entrada->IdCurso
+                  AND	relacionnivelcurso.IdNivel = $entrada->IdNivel;";
+
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+
+        if($num_total_registros>0)
+		{
+			$sqlupdate = "UPDATE relacionnivelcurso SET Vigente=1  WHERE IdCurso=".$entrada->IdCurso." AND IdNivel=".$entrada->IdNivel.";";
+		    $stmt1 = parent::consulta($sqlupdate);
+		}
+        else
+		{
+			$sqlInsert = "insert into relacionnivelcurso(IdCurso, IdNivel, Vigente) values ($entrada->IdCurso, $entrada->IdNivel,'1');";
+		    $stmt = parent::consulta($sqlInsert);
+		}	
+		
+	}
+	
+	
+		function eliminarAsociacionNivelCurso($idCurso,$idNivel)
+	{
+		$sqlDelete = "UPDATE relacionnivelcurso SET Vigente=0  WHERE IdCurso=".$idCurso.";";
+		$stmt = parent::consulta($sqlDelete);
+	}
+	
 	function eliminarAsociacionCursoAlumno($idCurso,$idNivel)
 	{
-		$sqlDelete = "UPDATE relacioncursopersona SET Vigente=0  WHERE IdCurso=".$idCurso." AND IdCurso=".$idNivel.";";
+		$sqlDelete = "UPDATE relacioncursopersona SET Vigente=0  WHERE IdCurso=".$idCurso." AND IDNivel=".$idNivel.";";
 		$stmt = parent::consulta($sqlDelete);
 	}
 	
@@ -480,6 +567,8 @@ class Data extends MySQL
 		}	
 		
 	}
+	
+    
 	
 	
 	function listarTiposEjercicios()

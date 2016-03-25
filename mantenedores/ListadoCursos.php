@@ -44,6 +44,7 @@ include("scripts/clases/class.combos.php");
 								
 						return 	"<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " + 
 						        "<button type=\"button\" class=\"btn btn-xs btn-default command-show\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check-circle\"></span></button> "+
+								"<button type=\"button\" class=\"btn btn-xs btn-default command-show2\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-check-circle\"></span></button> "+
 								"<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button> " ;							   
 					}
 				}
@@ -66,6 +67,8 @@ include("scripts/clases/class.combos.php");
 					});
 				}).end().find(".command-show").on("click", function(e){
 					location.href="GestorAsociacion_CursoAlumno.php?c=" + $(this).data("row-id");
+				}).end().find(".command-show2").on("click", function(e){
+					location.href="GestorAsociacion_CursoNivel.php?c=" + $(this).data("row-id");
 				});
 			});
 			
