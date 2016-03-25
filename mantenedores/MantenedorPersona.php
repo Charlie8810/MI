@@ -4,27 +4,11 @@
     include("scripts/clases/class.data.persona.php");
 
     $idPersona = isset($_REQUEST["p"]) ? $_REQUEST["p"] : false;
-    /* verificar si sirve*/
-    require "../matrices/conexionsql.php";
-    if (isset($_GET['rut'])) {
-        $sql = "SELECT Rut FROM persona where Rut like '".$_GET['rut']."';";
-        $rec = mysql_query($sql);
-        $count = 0;
-        while($row = mysql_fetch_object($rec)){
-            $count++;
-            $result = $row;
-            print_r((array) $result);
-        }
-    }
-    /*$sql = "SELECT Rut FROM Persona where Rut like '".$_GET['rut']."';";
-    //$sql->bindParam(":Rut", $_GET['rut']);
-        $rec = mysql_query($sql);
-        $count = 0;
-        while($row = mysql_fetch_object($rec)){
-            $count++;
-            $result = $row;
-            print_r((array) $result);
-        }*/
+  
+	$data = new Persona(); 
+	if($idPersona) 
+		$persona = $data->obtenerPersona($idPersona);
+									
         
    
 ?>
@@ -58,27 +42,73 @@
 		
 		$(document).ready(function(){
 			
-            <?php 
-                    $data = new Persona(); 
-                    if($idPersona){ 
-                        $persona = $data->obtenerPersona($idPersona);
-            ?>
-                $("#rut").val('<?php echo $persona->Rut; ?>');
-                $("#nombres").val('<?php echo $persona->Nombres; ?>');
-                $("#apellidop").val('<?php echo $persona->ApellidoP; ?>');
-                $("#apellidom").val('<?php echo $persona->ApellidoM; ?>');
-                $("#email").val('<?php echo $persona->Email; ?>');
-                $("#direccion").val('<?php echo $persona->Direccion; ?>');
-                $("#telefono").val('<?php echo $persona->Telefono; ?>');
-                $("#celular").val('<?php echo $persona->Celular; ?>');
-                                        
-                $("#region").val(p.IdRegion).trigger("change", [p.IdComuna]);
+			/*Cargar Regiones */
+			$.getJSON("scripts/cargar-regiones.php",function(json){
+				$.each(json.regiones,function(i,region){
+						$('#region').append("<option value=\"" + region.code + "\">" + region.name + "</option>")
+				});
+			});
+			
+			/*Cargar comunas de region seleccionada*/
+			$("#region").change(function(event, idComuna){
+				
+				console.log($(this).val());
+				
+				/*Limpio el html que esta dentro del select*/
+				$('#comuna').html("");
+				$('#comuna').append("<option value=\"\"> --Seleccione-- </option>")											
+				$.getJSON("scripts/dependencia-comuna.php",{code:$(this).val()},function(json){
+					$.each(json.comunas,function(i,comuna){
+						if(typeof idComuna != "undefined")	
+						{
+							var selected = (idComuna == comuna.code) ? "selected=\"selected\"" : "";
+							$('#comuna').append("<option value=\"" + comuna.code + "\" "+selected+">" + comuna.name + "</option>");
+						}
+						else
+						{
+							$('#comuna').append("<option value=\"" + comuna.code + "\">" + comuna.name + "</option>");
+						}
+					});
+				});
+			});
+			
+			/*Cargar Perfiles */
+			$.getJSON("scripts/cargar-perfiles.php",function(json){
+				$.each(json.perfiles,function(i,perfil){
+						$('#idperfil').append("<option value=\"" + perfil.code + "\">" + perfil.name + "</option>")
+				});
+			});
+			
+			/*Cargar Estados */
+			$.getJSON("scripts/cargar-estados.php",function(json){
+				$.each(json.estados,function(i,estado){
+						$('#idestado').append("<option value=\"" + estado.code + "\">" + estado.name + "</option>")
+				});
+			});
+			
+			$.getJSON("scripts/cargar-usuario-persona.php",{vrut:'<?php echo $persona->Rut; ?>'},function(json){
+				var p = json.persona;
+				
+				if(p.IdEstado > 0)
+				{
+					$("#rut").val(p.Rut);	
+					$("#nombres").val(p.Nombres);
+					$("#apellidop").val(p.ApellidoPaterno);
+					$("#apellidom").val(p.ApellidoMaterno);
+					$("#email").val(p.Email);
+					$("#idperfil").val(p.IdPerfil);
+					$("#idEstado").val(p.IdEstado);
+					$("#direccion").val(p.Direccion);
+					$("#telefono").val(p.Telefono);
+					$("#celular").val(p.Celular);
+					
+					$("#region").val(p.IdRegion).trigger("change", [p.IdComuna]);
+				}
+				//$("#comuna").val(p.IdComuna);
+				
 
-                        
-                            
-            <?php } ?>
-            
-
+			});
+          
 			$("#rut").Rut();
 			$("#rut").blur(function(){
 				
@@ -102,7 +132,7 @@
 						}
 						
 						
-						//$("#comuna").val(p.IdComuna);
+						
 						
 
 					});
@@ -131,6 +161,8 @@
 				}
 			
             });
+			
+
 
 		});
 
@@ -330,54 +362,7 @@ $('#form1').submit(function(){
                                     <input type="text" name="direccion" parsley-trigger="change" placeholder="Ingresar Dirección"
                                         class="form-control" id="direccion">
                                 </div>
-                                <script type="text/javascript">
-                                    $(document).ready(function(){
-                                        
-										/*Cargar Regiones */
-										$.getJSON("scripts/cargar-regiones.php",function(json){
-											$.each(json.regiones,function(i,region){
-													$('#region').append("<option value=\"" + region.code + "\">" + region.name + "</option>")
-											});
-										});
-										
-										/*Cargar comunas de region seleccionada*/
-                                        $("#region").change(function(event, idComuna){
-											/*Limpio el html que esta dentro del select*/
-											$('#comuna').html("");
-											$('#comuna').append("<option value=\"\"> --Seleccione-- </option>")											
-											$.getJSON("scripts/dependencia-comuna.php",{code:$(this).val()},function(json){
-												$.each(json.comunas,function(i,comuna){
-													if(typeof idComuna != "undefined")	
-													{
-														var selected = (idComuna == comuna.code) ? "selected=\"selected\"" : "";
-														$('#comuna').append("<option value=\"" + comuna.code + "\" "+selected+">" + comuna.name + "</option>");
-													}
-													else
-													{
-														$('#comuna').append("<option value=\"" + comuna.code + "\">" + comuna.name + "</option>");
-													}
-												});
-											});
-										});
-										
-										/*Cargar Perfiles */
-										$.getJSON("scripts/cargar-perfiles.php",function(json){
-											$.each(json.perfiles,function(i,perfil){
-													$('#idperfil').append("<option value=\"" + perfil.code + "\">" + perfil.name + "</option>")
-											});
-										});
-										
-										/*Cargar Estados */
-										$.getJSON("scripts/cargar-estados.php",function(json){
-											$.each(json.estados,function(i,estado){
-													$('#idestado').append("<option value=\"" + estado.code + "\">" + estado.name + "</option>")
-											});
-										});
-										
-                                        
-                                    });
 
-                                </script>
                                 <div class="form-group">
                                     <label for="userName">
                                         Región*</label>
@@ -416,7 +401,9 @@ $('#form1').submit(function(){
                                                  form1.comuna.select();
                                                  return false;
                                                  }
-                                            }
+												}
+												
+											});
                                         </script>
 
                                     </button>
