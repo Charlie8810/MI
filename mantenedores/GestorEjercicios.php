@@ -246,14 +246,10 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 											Tipo*</label>
 										<select class="selectpicker  form-control" data-style="btn-white" id="tipo_ejercicio" name="tipo_ejercicio">
 											<option>- - Seleccione - - </option>
-											<option value="1">Completar</option>
-											<option value="2">Seleccion</option>
-											<option value="3">Términos Pareados</option>
-											<option value="4">Orden por Audio</option>
-											<option value="5">Orden Imagen</option>
-											<option value="6">Seleccion Multiple</option>
-											<option value="7">Arrastrar y colocar</option>
-											<option value="8">Sopa de Letras</option>
+											<?php foreach($data->listarTiposEjercicios() as $tpe):?>
+											<option value="<?php echo $tpe->IdTipoEjercicio; ?>"><?php echo $tpe->Nombre; ?></option>
+											<?php endforeach;?>
+
 										</select>
 									</div>
 									
