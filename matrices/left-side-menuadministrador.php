@@ -22,6 +22,7 @@
 						<li class="has_sub"><a href="ListadoUsuario.php" class="waves-effect"><span>User</span> </a></li>
 						<li class="has_sub"><a href="ListadoCursos.php" class="waves-effect"><span>Course</span> </a></li>
 						<li class="has_sub"><a href="ListadoEjercicios.php" class="waves-effect"><span>Exercise</span> </a></li>
+						<li class="has_sub"><a href="ListadoTipoEjercicio.php" class="waves-effect"><span>Tipo Exercise</span> </a></li>
 						<li class="has_sub"><a href="ListadoFases.php" class="waves-effect"><span>Fases</span> </a></li>
 						
 						
