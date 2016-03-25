@@ -189,7 +189,7 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
                                 Gestor de Ejercicios</h4>
                             <ol class="breadcrumb">
                                 <li><a href="/mi/mantenedores/panelControl.php">Inicio</a></li>
-                                <li class="active">Registro de Cursos / Ejercicios</li>
+                                <li class="active"> Ejercicios</li>
                             </ol>
 							
                         </div>
@@ -271,7 +271,7 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 											<div id="dvPB1">
 												<div class="form-group">
 													<label for="P1">
-														Termino paredo*</label>
+														Termino pareado*</label>
 													<pre>
 														<input type="text" style="width:45%;" name="izquierda[]" id="PI1" class="input" value="<?php echo $terminopareado->TextoIzquierda; ?>" /> ::: <input type="text" style="width:45%;" name="derecha[]" id="PD1" class="input" value="<?php echo $terminopareado->TextoDerecha; ?>" />
 													</pre>
@@ -521,6 +521,9 @@ $idEjercicio = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;
 										</button>
 										<a class="btn btn-primary waves-effect waves-light" href="ListadoEjercicios.php">
 											<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
+										</a>
+										<a class="btn btn-primary waves-effect waves-light" href="referenciaejercicios.php" target="_blank">
+											<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> ?
 										</a>
 										<input type="hidden" name="IdEjercicio" value="<?php echo $idEjercicio; ?>" />
 									</div>
