@@ -41,7 +41,7 @@ class Persona extends MySQL
 	function listarPersonas()
 	{
 		$sql = "select persona.*,
-			   perfil.Nombre as tipousuario
+			    perfil.Nombre as tipousuario
 			   from persona
 			   inner join perfil on perfil.IdPerfil = persona.IdPerfil";
 		$consulta = parent::consulta($sql);
@@ -100,5 +100,40 @@ class Persona extends MySQL
 			return false;
 		}
 	}	
+	public function obtenerAlumno($login_alumno)
+	{
+		$sql = "
+		SELECT *
+		from  persona
+		inner join usuario on usuario.idPersona = persona.IdPersona
+		where usuario.Login = '".$login_alumno."';";
+		
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$pers = parent::fetch_assoc($consulta);	
+			$persona = new stdclass();
+			$persona->IdPersona       	= $pers["IdPersona"];
+			$persona->Nombres 	        = $pers["Nombres"];
+			$persona->ApellidoP      	= $pers["ApellidoPaterno"];
+			$persona->ApellidoM        	= $pers["ApellidoMaterno"];
+			$persona->Rut	       		= $pers["Rut"];
+			$persona->Email 	       	= $pers["Email"];
+			$persona->Region 			= $pers["IdRegion"];
+			$persona->Comuna 		    = $pers["IdComuna"];
+			$persona->Direccion 		= $pers["Direccion"];
+			$persona->Telefono 			= $pers["Telefono"];
+			$persona->Celular			= $pers["Celular"];
+			$persona->Estado 			= $pers["IdEstado"];
+
+		
+			return $persona;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
 ?>
