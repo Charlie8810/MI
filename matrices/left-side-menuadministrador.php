@@ -12,9 +12,8 @@
                     <ul>
                         <li class="has_sub"><a href="ListadoPersonas.php" class="waves-effect"><span>Person</span> </a></li>
 						<li class="has_sub"><a href="ListadoEmpresa.php" class="waves-effect"><span>Company</span> </a></li>
-						<li class="has_sub"><a href="ListadoDepartamento.php" class="waves-effect"><span>Departamento</span> </a></li>						
-						<li class="has_sub"><a href="ListarRelacionEmpresaDepartamento.php" class="waves-effect"><span>Rol Empresa Departamento Persona</span> </a></li>
-						<li class="has_sub"><a href="ListadoParametroGlobal.php" class="waves-effect"><span>Parameter Glogal</span> </a></li>
+						<!-- <li class="has_sub"><a href="ListadoDepartamento.php" class="waves-effect"><span>Departamento</span> </a></li>			-->			
+						<!-- <li class="has_sub"><a href="ListarRelacionEmpresaDepartamento.php" class="waves-effect"><span>Rol Empresa Departamento Persona</span> </a></li> -->
 						<li class="has_sub"><a href="ListadoNivel.php" class="waves-effect"><span>Level</span> </a></li>
 						<li class="has_sub"><a href="ListadoIdioma.php" class="waves-effect"><span>Idioma</span> </a></li>
 						<li class="has_sub"><a href="ListadoEstado.php" class="waves-effect"><span>State</span> </a></li>

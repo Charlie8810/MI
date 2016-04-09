@@ -63,7 +63,7 @@ include("scripts/clases/class.data.empresa.php");
 						}
 					});
 				}).end().find(".command-show").on("click", function(e){
-					location.href="GestorAsociacion_EmpresaDepartamento.php?e=" + $(this).data("row-id");
+					location.href="GestorAsociacion_EmpresaPersona.php?e=" + $(this).data("row-id");
 				});
 			});
 			

@@ -140,7 +140,7 @@ include("scripts/clases/class.combos.php");
 											<th data-column-id="nombre">Nombre</th>
 											<th data-column-id="profesor">Profesor</th>
 											<th data-column-id="idioma">Idioma</th>
-											<th data-column-id="empresa">Departamento</th>
+											<th data-column-id="empresa">Empresa</th>
 										</tr>
 									</thead>
 									<tbody>

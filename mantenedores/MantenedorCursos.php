@@ -116,7 +116,7 @@
     $("#nombrecurso").val('<?php echo $curso->Nombre_Curso; ?>');
 	$("#profesor").val('<?php echo $curso->IdProfesor; ?>');
 	$("#idioma").val('<?php echo $curso->IdIdioma; ?>');
-    $("#empresa").val('<?php echo $curso->IdRelEmpresaDepto; ?>');
+    $("#empresa").val('<?php echo $curso->IdRelEmpresa; ?>');
 	$("#vigente").val('<?php echo $curso->Vigente; ?>');
 	$("#anio").val('<?php echo $curso->AnoInicio; ?>');
 	
@@ -175,9 +175,9 @@
                                     $(document).ready(function(){
                                         									
 										/*Cargar empresas */
-										$.getJSON("scripts/cargar-relempresasdepartamento.php",function(json){
-											$.each(json.relaciones,function(i,relacionesdepto){
-													$('#empresa').append("<option value=\"" + relacionesdepto.code + "\">" + relacionesdepto.name + "</option>")
+										$.getJSON("scripts/cargar-empresas.php",function(json){
+											$.each(json.empresas,function(i,empresas){
+													$('#empresa').append("<option value=\"" + empresas.code + "\">" + empresas.name + "</option>")
 											});
 										});
 										
@@ -220,7 +220,7 @@
 								
                                 <div class="form-group">
                                     <label for="empresa">
-                                        Empresa - Departamento</label>
+                                        Empresa</label>
                                     <select name="empresa" id="empresa" class="selectpicker  form-control" data-style="btn-white">
                                         <option value="0" >- - Seleccione - - </option>
                                     </select>

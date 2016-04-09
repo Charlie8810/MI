@@ -7,7 +7,6 @@
 	
 	$idCurso = $_POST["idCurso"];
 	$alumnos = $_POST["slEnrrolados"];
-	$nivel = $_POST["nivel"];
 	
 	
 	

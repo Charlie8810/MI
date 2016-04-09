@@ -24,7 +24,7 @@ class Curso extends MySQL
 				$cursa->Nombre_Curso 	  = $cur["Nombre_Curso"];
 				$cursa->IdProfesor        = $cur["IdProfesor"];
 				$cursa->IdIdioma          = $cur["IdIdioma"];
-				$cursa->IdRelEmpresaDepto = $cur["IdRelEmpresaDepto"];
+				$cursa->IdRelEmpresa      = $cur["IdRelEmpresa"];
 				$cursa->Vigente 	      = $cur["Vigente"];
 				$cursa->AnoInicio         = $cur["AnoInicio"];
 				$lista[] = $cursa;
@@ -50,7 +50,7 @@ class Curso extends MySQL
 				$cursa->Nombre_Curso 	  = $cur["Nombre_Curso"];
 				$cursa->IdProfesor        = $cur["IdProfesor"];
 				$cursa->IdIdioma          = $cur["IdIdioma"];
-				$cursa->IdRelEmpresaDepto = $cur["IdRelEmpresaDepto"];
+				$cursa->IdRelEmpresa = $cur["IdRelEmpresa"];
 				$cursa->Vigente 	      = $cur["Vigente"];
 				$cursa->AnoInicio         = $cur["AnoInicio"];
 		
@@ -61,5 +61,28 @@ class Curso extends MySQL
 			return false;
 		}
 	}
+	
+    function obtenerEmpresadeCurso($IdCurso)
+	{
+		$sql = "select concat('Empresa - ', empresa.RazonSocial)  as NombreEmpresa
+				FROM cursos,empresa
+				where cursos.IdRelEmpresa = empresa.IdEmpresa
+				and cursos.IdCurso = ".$IdCurso.";";
+		$consulta = parent::consulta($sql);
+		$num_total_registros = parent::num_rows($consulta);
+		if($num_total_registros>0)
+		{
+			$cur = parent::fetch_assoc($consulta);	
+				$cursa = new stdclass();
+				$cursa->NombreEmpresa           = $cur["NombreEmpresa"];
+		
+			return $cursa;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 }
 ?>

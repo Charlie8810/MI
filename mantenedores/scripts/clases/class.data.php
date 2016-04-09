@@ -48,9 +48,6 @@ class Data extends MySQL
 			$empresa->IdEmpresa 		= $em["IdEmpresa"];
 			$empresa->Rut 			    = $em["Rut"];
 			$empresa->RazonSocial 	    = $em["RazonSocial"];
-			$empresa->Direccion 	    = $em["Direccion"];
-			$empresa->IdRegion 		    = $em["IdRegion"];
-			$empresa->IdComuna 			= $em["IdComuna"];
 			$empresa->NombreContacto 	= $em["NombreContacto"];	
 			$empresa->EmailContacto 	= $em["EmailContacto"];	
 			$empresa->TelefonoContacto 	= $em["TelefonoContacto"];				
@@ -353,15 +350,13 @@ class Data extends MySQL
 			cursos.IdCurso,
 			cursos.Nombre_Curso,
 			CONCAT(persona.Nombres,' ',persona.ApellidoPaterno,' ', persona.ApellidoMaterno) as Profesor,
-			CONCAT(empresa.RazonSocial,' - ',departamento.Nombre) as Empresa,
+			empresa.RazonSocial as Empresa,
 			idioma.Nombre as idioma
 
 
 			from cursos
 			inner join persona on persona.IdPersona = cursos.IdProfesor
-			inner join relacionempresadepto on relacionempresadepto.IdRelacionEmpresaDepto = cursos.IdRelEmpresaDepto
-			inner join departamento on departamento.IdDepartamento = relacionempresadepto.IdDepartamento
-			inner join empresa on empresa.IdEmpresa = relacionempresadepto.IdEmpresa
+			inner join empresa on empresa.IdEmpresa = cursos.IdRelEmpresa
 			inner join idioma on idioma.id_Idioma = cursos.IdIdioma";
 		$consulta = parent::consulta($sql);
 		$num_total_registros = parent::num_rows($consulta);
@@ -393,10 +388,19 @@ class Data extends MySQL
 	function listarAlumnosNoEnrrolados($idCurso)
 	{
 		$sql = "
-			select * 
-			from persona p
-            where p.IdPerfil = 3			
-			and p.IdPersona not in (select IdPersona from relacioncursopersona  where relacioncursopersona.Vigente = 1 and relacioncursopersona.IdCurso = ".$idCurso.");";
+		
+					select p.* 
+					from cursos  as c
+					inner join empresa as e on e.IdEmpresa = c.IdRelEmpresa
+					inner join relacionempresapersona as rel on rel.IdEmpresa = c.IdRelEmpresa
+					inner join persona as p on p.IdPersona = rel.IDPersona
+					where p.IdPerfil = 3			
+					and c.IdCurso = ".$idCurso."
+					and p.IdPersona not in 
+					(select IdPersona from relacioncursopersona 
+					where relacioncursopersona.Vigente = 1 
+					and relacioncursopersona.IdCurso = ".$idCurso.");";
+					
 		$consulta = parent::consulta($sql);
 		$num_total_registros = parent::num_rows($consulta);
 		$lista = array();
@@ -537,9 +541,9 @@ class Data extends MySQL
 		$stmt = parent::consulta($sqlDelete);
 	}
 	
-	function eliminarAsociacionCursoAlumno($idCurso,$idNivel)
+	function eliminarAsociacionCursoAlumno($idCurso)
 	{
-		$sqlDelete = "UPDATE relacioncursopersona SET Vigente=0  WHERE IdCurso=".$idCurso." AND IDNivel=".$idNivel.";";
+		$sqlDelete = "UPDATE relacioncursopersona SET Vigente=0  WHERE IdCurso=".$idCurso." ;";
 		$stmt = parent::consulta($sqlDelete);
 	}
 	
@@ -549,7 +553,6 @@ class Data extends MySQL
 			     $sql ="  SELECT *
 				  FROM	relacioncursopersona
 				  WHERE	relacioncursopersona.IdCurso = $entrada->IdCurso
-				  AND	relacioncursopersona.IDNivel = $entrada->nivel
                   AND	relacioncursopersona.IdPersona = $entrada->IdPersona;";
 
 		$consulta = parent::consulta($sql);
@@ -557,12 +560,12 @@ class Data extends MySQL
 
         if($num_total_registros>0)
 		{
-			$sqlupdate = "UPDATE relacioncursopersona SET Vigente=1  WHERE IdCurso=".$entrada->IdCurso." AND IdPersona=".$entrada->IdPersona." AND IdPersona=".$entrada->nivel.";";
+			$sqlupdate = "UPDATE relacioncursopersona SET Vigente=1  WHERE IdCurso=".$entrada->IdCurso." AND IdPersona=".$entrada->IdPersona." ;";
 		    $stmt1 = parent::consulta($sqlupdate);
 		}
         else
 		{
-			$sqlInsert = "insert into relacioncursopersona(IdCurso, IdPersona, Vigente, IDNivel) values ($entrada->IdCurso, $entrada->IdPersona,'1',$entrada->nivel);";
+			$sqlInsert = "insert into relacioncursopersona(IdCurso, IdPersona, Vigente) values ($entrada->IdCurso, $entrada->IdPersona,'1');";
 		    $stmt = parent::consulta($sqlInsert);
 		}	
 		

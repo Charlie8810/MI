@@ -52,43 +52,43 @@
 			
 		$('#formempresas').submit(function(){
 		
-		if($("#region").val() == '' || $("#region").val() == '0' )
-		{
-			BootstrapDialog.show({
-					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
-					message: '<h5>Debe seleccionar una region</h5>',
-					closable: true,
-					draggable: true,
-					buttons: [{
-						label: 'Ok',
-						action: function(dialogItself){
-							dialogItself.close();
-						}
-					}],
-					type: BootstrapDialog.TYPE_WARNING,
-					size: BootstrapDialog.SIZE_SMALL
-				});
-			return false;
-		}
+	//	if($("#region").val() == '' || $("#region").val() == '0' )
+	//	{
+	//		BootstrapDialog.show({
+	//				title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
+	//				message: '<h5>Debe seleccionar una region</h5>',
+	//				closable: true,
+	//				draggable: true,
+	//				buttons: [{
+	//					label: 'Ok',
+	//					action: function(dialogItself){
+	//						dialogItself.close();
+	//					}
+	//				}],
+	//				type: BootstrapDialog.TYPE_WARNING,
+	//				size: BootstrapDialog.SIZE_SMALL
+	//			});
+	//		return false;
+	//	}
 		
-	    if($("#comuna").val() == '' ||$("#comuna").val() == '0')
-		{
-			BootstrapDialog.show({
-					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
-					message: '<h5>Debe seleccionar una comuna</h5>',
-					closable: true,
-					draggable: true,
-					buttons: [{
-						label: 'Ok',
-						action: function(dialogItself){
-							dialogItself.close();
-						}
-					}],
-					type: BootstrapDialog.TYPE_WARNING,
-					size: BootstrapDialog.SIZE_SMALL
-				});
-			return false;
-		}
+	 //   if($("#comuna").val() == '' ||$("#comuna").val() == '0')
+	//	{
+	//		BootstrapDialog.show({
+	//				title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
+	//			message: '<h5>Debe seleccionar una comuna</h5>',
+	//				closable: true,
+	//				draggable: true,
+	//				buttons: [{
+	//					label: 'Ok',
+	//					action: function(dialogItself){
+	//						dialogItself.close();
+	//					}
+	//				}],
+	//				type: BootstrapDialog.TYPE_WARNING,
+	//				size: BootstrapDialog.SIZE_SMALL
+	//			});
+	//		return false;
+	//	} -->
 		
 	})
 			
@@ -103,12 +103,9 @@
 						var e = json.empresa;
 						
 						$("#razonsocial").val(e.RazonSocial);
-						$("#direccion").val(e.Direccion);
-						$("#comuna").val(e.IdComuna);
 						$("#nombrecontacto").val(e.NombreContacto);
 						$("#emailcontacto").val(e.EmailContacto);
-						$("#telefono").val(e.TelefonoContacto);
-						$("#region").val(e.IdRegion).trigger("change", [e.IdComuna]);						
+						$("#telefono").val(e.TelefonoContacto);					
 
 					});
 					if($(this).hasClass("parsley-error")){
@@ -159,31 +156,31 @@ $(document).ready(function(){
 			
 			
 			/*Cargar Regiones */
-				$.getJSON("scripts/cargar-regiones.php",function(json){
-				$.each(json.regiones,function(i,region){
-						$('#region').append("<option value=\"" + region.code + "\">" + region.name + "</option>")
-				});
-				});
-
-				/*Cargar comunas de region seleccionada*/
-				$("#region").change(function(event, idComuna){
-				/*Limpio el html que esta dentro del select*/
-				$('#comuna').html("");
-				$('#comuna').append("<option value=\"\"> --Seleccione-- </option>")											
-				$.getJSON("scripts/dependencia-comuna.php",{code:$(this).val()},function(json){
-					$.each(json.comunas,function(i,comuna){
-						if(typeof idComuna != "undefined")	
-						{
-							var selected = (idComuna == comuna.code) ? "selected=\"selected\"" : "";
-							$('#comuna').append("<option value=\"" + comuna.code + "\" "+selected+">" + comuna.name + "</option>");
-						}
-						else
-						{
-							$('#comuna').append("<option value=\"" + comuna.code + "\">" + comuna.name + "</option>");
-						}
-					});
-				});
-				});	
+			//	$.getJSON("scripts/cargar-regiones.php",function(json){
+			//	$.each(json.regiones,function(i,region){
+			//			$('#region').append("<option value=\"" + region.code + "\">" + region.name + "</option>")
+			//	});
+			//	});
+			//
+			//	/*Cargar comunas de region seleccionada*/
+			//	$("#region").change(function(event, idComuna){
+			//	/*Limpio el html que esta dentro del select*/
+			//	$('#comuna').html("");
+			//	$('#comuna').append("<option value=\"\"> --Seleccione-- </option>")											
+			//	$.getJSON("scripts/dependencia-comuna.php",{code:$(this).val()},function(json){
+			//		$.each(json.comunas,function(i,comuna){
+			//			if(typeof idComuna != "undefined")	
+			//			{
+			//				var selected = (idComuna == comuna.code) ? "selected=\"selected\"" : "";
+			//				$('#comuna').append("<option value=\"" + comuna.code + "\" "+selected+">" + comuna.name + "</option>");
+			//			}
+			//			else
+			//			{
+			//				$('#comuna').append("<option value=\"" + comuna.code + "\">" + comuna.name + "</option>");
+			//			}
+			//		});
+			//	});
+			//	});	
 
 			
 			
@@ -197,25 +194,18 @@ $(document).ready(function(){
 				
 				$("#rut").val('<?php echo $empresa->Rut; ?>');
 				$("#razonsocial").val('<?php echo $empresa->RazonSocial; ?>');
-				$("#direccion").val('<?php echo $empresa->Direccion; ?>');
+				//$("#direccion").val('<?php echo $empresa->Direccion; ?>');
 				
 				$("#nombrecontacto").val('<?php echo $empresa->NombreContacto; ?>');
 				$("#emailcontacto").val('<?php echo $empresa->EmailContacto; ?>');
 				$("#telefono").val('<?php echo $empresa->TelefonoContacto; ?>');
+				$("#idEmpresa").val('<?php echo $empresa->IdEmpresa; ?>');
 				
 				
-				$("#region").val('<?php echo $empresa->IdRegion; ?>').trigger("change", ['<?php echo $empresa->IdComuna; ?>']);
+		//		$("#region").val('<?php echo $empresa->IdRegion; ?>').trigger("change", ['<?php echo $empresa->IdComuna; ?>']);
 
-				
-				
-							
+		
 				<?php } ?>
-				
-				
-				
-			
-			
-			
 	});
 		
 		
@@ -263,7 +253,7 @@ $(document).ready(function(){
 								<div class="form-group">
                                     <label for="rut">
                                         RUT*</label>
-                                    <input type="text" name="rut" parsley-trigger="change" required 
+                                    <input type="text" name="rut" parsley-trigger="change" 
                                         class="form-control" id="rut" placeholder="ej. 11.111.111-1">
                                 </div>
                                 <div class="form-group">
@@ -272,7 +262,7 @@ $(document).ready(function(){
                                     <input type="text" name="razonsocial" parsley-trigger="change" required placeholder="Ingresar Nombre / Razón Social"
                                         class="form-control" id="razonsocial">
                                 </div>
-                                <div class="form-group">
+                              <!--  <div class="form-group">
                                     <label for="direccion">
                                         Dirección*</label>
                                     <input type="text" name="direccion" parsley-trigger="change" required placeholder="Ingresar Dirección"
@@ -298,25 +288,25 @@ $(document).ready(function(){
                                         Comuna*</label>
                                     <select class="selectpicker  form-control" data-style="btn-white"  id="comuna" name="comuna">
                                     </select>
-                                </div>
+                                </div> -->
 
 
                                 <div class="form-group">
                                     <label for="nombrecontacto">
                                         Nombre de Contacto*</label>
-                                    <input type="text" name="nombrecontacto" parsley-trigger="change" required placeholder="Ingresar Nombre de Contacto"
+                                    <input type="text" name="nombrecontacto" parsley-trigger="change"  placeholder="Ingresar Nombre de Contacto"
                                         class="form-control" id="nombrecontacto">
                                 </div>
                                 <div class="form-group">
                                     <label for="emailcontacto">
                                         Email de Contacto*</label>
-                                    <input type="email" name="emailcontacto" parsley-trigger="change" required placeholder="Ingresar Email  de Contacto"
+                                    <input type="email" name="emailcontacto" parsley-trigger="change"  placeholder="Ingresar Email  de Contacto"
                                         class="form-control" id="emailcontacto">
                                 </div>
                                 <div class="form-group">
                                     <label for="telefono">
                                         Teléfono de Contacto*</label>
-                                    <input type="text" name="telefono" parsley-trigger="change" required placeholder="Ingresar Teléfono  de Contacto"
+                                    <input type="text" name="telefono" parsley-trigger="change"  placeholder="Ingresar Teléfono  de Contacto"
                                         class="form-control" id="telefono">
                                 </div>
                                 <div class="form-group text-right m-b-0">
@@ -326,6 +316,7 @@ $(document).ready(function(){
 									<a class="btn btn-default waves-effect waves-light m-l-5" href="ListadoEmpresa.php">
 											<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Volver
 								    </a>
+									 <input type="hidden" name="idEmpresa" id="idEmpresa" value="" />
                                 </div>
                                 </form>
                             </div>

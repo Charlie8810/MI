@@ -1,12 +1,11 @@
 <?php
 	session_start();
 	include("scripts/clases/class.mysql.php");
-	include("scripts/clases/class.data.php");
+	include("scripts/clases/class.data.relacionempresapersona.php");
 	include("scripts/clases/class.combos.php");
-	include("scripts/clases/class.data.curso.php");
 		
-	$idCurso = isset($_REQUEST["c"]) ? $_REQUEST["c"] : false;	
-	$data = new Data();	
+	$idEmpresa = isset($_REQUEST["e"]) ? $_REQUEST["e"] : false;	
+	$data = new RelacionEmpresaPersona();	
 		
 ?>
 
@@ -33,28 +32,7 @@
 	
     $(document).ready(function(){ 
     	
-    	$('#frmasoc').submit(function(){
-		
-		if($("#nivel").val() ==0)
-		{
-			BootstrapDialog.show({
-					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Mensaje de Validacion',
-					message: '<h5>Debe seleccionar un nivel</h5>',
-					closable: true,
-					draggable: true,
-					buttons: [{
-						label: 'Ok',
-						action: function(dialogItself){
-							dialogItself.close();
-						}
-					}],
-					type: BootstrapDialog.TYPE_WARNING,
-					size: BootstrapDialog.SIZE_SMALL
-				});
-			return false;
-		}
-		
-	})
+    	
     	/*Javascript aca*/
     	
     	$("#btn_enrrolar").click(function(){
@@ -70,49 +48,40 @@
     		$('#slEnrrolados option').prop('selected', 'selected');
     		$("#frmasoc").submit();
     	});
-    	
 		
-		    <?php 
-				  $data = new Curso(); 
-				if($idCurso){ 
-					$curso = $data->obtenerCurso($idCurso);
+		
+			<?php 
+				  $data = new RelacionEmpresaPersona(); 
+				if($idEmpresa){ 
+					$empresa = $data->obtenerEmpresa($idEmpresa);
 			?>
 			
-			$("#nombreRelacion").html('<?php echo $curso->Nombre_Curso  ?>');
+			$("#nombreEmpresa").html('<?php echo "Empresa:   ".$empresa->RazonSocial;  ?>');
 						
 			<?php } ?>
     	
-		
-	        <?php 
-				  $data = new Curso(); 
-				if($idCurso){ 
-					$curso = $data->obtenerEmpresadeCurso($idCurso);
-			?>
-			
-			$("#nombreEmpresa").html('<?php echo $curso->NombreEmpresa  ?>');
-						
-			<?php } ?>
-		
-		
+    	
     	
 		
-	<?php if(isset($_SESSION["asociacion_ok"])){ ?>
-	    BootstrapDialog.show({
-			title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Enrrolamiento Correcto',
-			message: '<h5>Alumnos enrrolados en curso correctamente!</h5>',
-			closable: true,
-		    draggable: true,
-			buttons: [{
-				label: 'Ok',
-				action: function(dialogItself){
-				dialogItself.close();
-			     	}
-					}],
-				type: BootstrapDialog.TYPE_SUCCESS,
-					size: BootstrapDialog.SIZE_SMALL
-				});
-			<?php unset($_SESSION["asociacion_ok"]); } ?>
+			<?php if(isset($_SESSION["asociacionempresa_ok"])){ ?>
+				BootstrapDialog.show({
+					title: '<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Enrrolamiento Correcto',
+					message: '<h5>Personas enrroladas en empresa correctamente!</h5>',
+					closable: true,
+					draggable: true,
+					buttons: [{
+						label: 'Ok',
+						action: function(dialogItself){
+						dialogItself.close();
+							}
+							}],
+						type: BootstrapDialog.TYPE_SUCCESS,
+							size: BootstrapDialog.SIZE_SMALL
+						});
+			<?php unset($_SESSION["asociacionempresa_ok"]); } ?>
 	});
+	
+	
 		
 		
     </script>
@@ -142,26 +111,23 @@
                     <!-- Page-Title -->
                     <div class="row">
                         <div class="col-sm-12">
-                            <h4 class="page-title">Mantenedor Relacion Cursos Persona</h4>
+                            <h4 class="page-title">Mantenedor Relacion Empresa Persona</h4>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card-box" style="height: 450px;">
                                 <h4 class="m-t-0 header-title">
-                                    <b id="nombreRelacion" name="nombreRelacion"></b>
-                                </h4>
-								 <h3 class="m-t-0 header-title">
                                     <b id="nombreEmpresa" name="nombreEmpresa"></b>
-                                </h3>
-                                <form id="frmasoc" action="guardar_asociacion_cursoalumno.php" data-parsley-validate novalidate method="post">		
+                                </h4>
+                                <form id="frmasoc" action="guardar_asociacion_empresapersona.php" data-parsley-validate novalidate method="post">
+                                			
                                 <div class="col-lg-5">
                                 	<div class="form-group">
-                                    	<label for="nivel">Alumnos Enrrolados</label>
+                                    	<label for="nivel">Personas Enrroladas</label>
                                			<select id="slEnrrolados" name="slEnrrolados[]" multiple="multiple" size="15" class="selectpicker  form-control" data-style="btn-white">
-                               				<?php $data = new Data();  
-											foreach($data->listarAlumnosEnrrolados($idCurso) as $enrrolados):?>
-                               					<option value="<?php echo $enrrolados->IdPersona;?>"><?php echo $enrrolados->Rut.", ".$enrrolados->NombreCompleto;?></option>
+                               				<?php foreach($data->listarPersonasEnrroladas($idEmpresa) as $enrrolados):?>
+                               					<option value="<?php echo $enrrolados->IdPersona;?>"><?php echo $enrrolados->Nombres;?></option>
                                				<?php endforeach;?>
                                			</select>
                                 	</div>
@@ -180,11 +146,10 @@
                                 </div>			
                                 <div class="col-lg-5">
                                 	<div class="form-group">
-                                    	<label for="nivel">Alumnos Disponibles</label>
+                                    	<label for="nivel">Personas No Enrroladas</label>
                                			<select id="slDesEnrrolados" multiple="multiple" size="15" class="selectpicker  form-control" data-style="btn-white">
-                               				<?php  $data = new Data(); 
-											foreach($data->listarAlumnosNoEnrrolados($idCurso) as $noEnrrolados):?>
-                               					<option value="<?php echo $noEnrrolados->IdPersona;?>"><?php echo $noEnrrolados->Rut.", ".$noEnrrolados->NombreCompleto;?></option>
+                               				<?php foreach($data->listarPersonasNoEnrroladas($idEmpresa) as $noEnrrolados):?>
+                               					<option value="<?php echo $noEnrrolados->IdPersona;?>"><?php echo $noEnrrolados->Nombres;?></option>
                                				<?php endforeach;?>
                                			</select>
                                 	</div>	
@@ -192,11 +157,11 @@
                                 			
 
                                 <div class="form-group text-right m-b-0">
-                                	<a href="ListadoCursos.php" class="btn btn-primary waves-effect waves-light">Volver al Listado</a>
+                                	<a href="ListadoEmpresa.php" class="btn btn-primary waves-effect waves-light">Volver al Listado</a>
                                     <button class="btn btn-primary waves-effect waves-light" type="button" id="btnSubmit">
                                         Guardar
                                     </button>
-                                    <input type="hidden" name="idCurso" id="idCurso" value="<?php echo $idCurso ?>" />
+                                    <input type="hidden" name="idEmpresa" id="idEmpresa" value="<?php echo $idEmpresa ?>" />
                                 </div>
                                 </form>
                             </div>

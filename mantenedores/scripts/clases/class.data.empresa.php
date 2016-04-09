@@ -23,9 +23,6 @@ class Empresa extends MySQL
 				$empresa->IdEmpresa        = $emp["IdEmpresa"];
 				$empresa->Rut 	           = $emp["Rut"];
 				$empresa->RazonSocial      = $emp["RazonSocial"];
-				$empresa->Direccion        = $emp["Direccion"];
-				$empresa->IdRegion 	       = $emp["IdRegion"];
-				$empresa->IdComuna 	       = $emp["IdComuna"];
 				$empresa->NombreContacto   = $emp["NombreContacto"];
 				$empresa->EmailContacto    = $emp["EmailContacto"];
 				$empresa->TelefonoContacto = $emp["TelefonoContacto"];
@@ -51,9 +48,6 @@ class Empresa extends MySQL
 			$empresa->IdEmpresa        = $emp["IdEmpresa"];
 			$empresa->Rut 	           = $emp["Rut"];
 			$empresa->RazonSocial      = $emp["RazonSocial"];
-			$empresa->Direccion        = $emp["Direccion"];
-			$empresa->IdRegion 	       = $emp["IdRegion"];
-			$empresa->IdComuna 	       = $emp["IdComuna"];
 			$empresa->NombreContacto   = $emp["NombreContacto"];
 			$empresa->EmailContacto    = $emp["EmailContacto"];
 			$empresa->TelefonoContacto = $emp["TelefonoContacto"];
