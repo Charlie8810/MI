@@ -100,6 +100,31 @@
 			  border: 2px dashed #add38d !important;
 			  background-color: #f6fbf4 !important;
 			}
+			
+			.text-line {
+				background-color: transparent;
+				color: #eeeeee;
+				outline: none;
+				outline-style: none;
+				outline-offset: 0;
+				border-top: none;
+				border-left: none;
+				border-right: none;
+				border-bottom: solid #eeeeee 1px;
+				padding: 3px 10px;
+			}
+			
+			.pregunta_simple {
+				background-color: transparent;
+				outline: none;
+				outline-style: none;
+				outline-offset: 0;
+				border-top: none;
+				border-left: none;
+				border-right: none;
+				border-bottom: solid #eeeeee 1px;
+				padding: 3px 10px;
+			}
 				  
 		  
   </style>
@@ -296,6 +321,9 @@
 												$data = new Data();
 												$ejercicio = $data->obtenerEjercicio($idEjercicio);
 												
+												echo "<h4>".$ejercicio->Nombre."</h4>";
+												
+												
 												if($ejercicio->IdTipo == 1 || $ejercicio->IdTipo == 2 || $ejercicio->IdTipo == 6 || $ejercicio->IdTipo == 7 || $ejercicio->IdTipo == 8 )
 												{
 													$datos = $data->obtenerGrupoPreguntasPorEjercicio($idEjercicio);
@@ -303,7 +331,7 @@
 													foreach($datos as $da)
 													{
 														
-														echo "<div class='col-lg-12'>".$da->HtmlGrupoPregunta."</div>";
+														echo "<div class='col-lg-12'>".$i.".- ".$da->HtmlGrupoPregunta."</div>";
 														
 														$i++;
 													}
